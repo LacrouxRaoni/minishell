@@ -46,16 +46,51 @@ static int get_n_space(t_minishell *data)
 	return (n_space);
 }
 
-static int	len_subline(t_minishell *data)
+static int	len_subline(t_minishell *data, int start)
 {
 	int i;
 	int	j;
 
-	i = 0;
-	while (data->line[i] != ' ')
+	i = start;
+	
+	j = 0;
+	while (data->line[i] != '\0')
 	{
-		j++;
-		i++;
+		if (data->line[i] == ' ')
+			break ;
+		else if(data->line[i] == '\'')
+		{
+			i++;
+			j++;
+			while (data->line[i] != '\'')
+			{
+				if (data->line[i] == '\0')
+					return (-1);
+				i++;
+				j++;
+			}
+			i++;
+			j++;
+		}
+		else if(data->line[i] == '\"')
+		{
+			i++;
+			j++;
+			while (data->line[i] != '\"')
+			{
+				if (data->line[i] == '\0')
+					return (-1);
+				i++;
+				j++;
+			}
+			i++;
+			j++;
+		}
+		else
+		{
+			j++;
+			i++;
+		}
 	}
 	return (j);
 }
@@ -70,9 +105,10 @@ static void split_line(char **parsed_line, t_minishell *data, int n)
 	i = 0;
 	while (i <= n)
 	{
-		len = len_subline(data);
+		len = len_subline(data, start);
 		parsed_line[i] = ft_substr(data->line, start, len);
-		printf ("teste %s\n", parsed_line[i]);
+		printf("%s\n", parsed_line[i]);
+		start = start + len + 1;
 		i++;
 	}
 }
@@ -84,7 +120,10 @@ static void parse_line(t_minishell *data)
 
 	n = get_n_space(data);
 	parsed_line = (char **)malloc(sizeof(char *) * (n + 1));
+	if (!parsed_line)
+		exit (1);
 	split_line(parsed_line, data, n);
+	//tem que dar free na parsed line
 }
 
 int	main(int argc, char *argv[], char *envp[])
