@@ -2,3 +2,5 @@ minishell
 *.o
 objects/
 *.odt
+*.odt#
+*.txt

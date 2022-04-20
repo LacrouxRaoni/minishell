@@ -13,7 +13,9 @@ CC	=	gcc
 CFLAGS	=	-Wall -Wextra -Werror -lreadline
 
 SRC_DIR		=	sources
-SRC_FILES	=	minishell.c
+SRC_FILES	=	minishell.c \
+				cmd_output_line.c \
+				split_minishell.c
 SRC	=	$(addprefix $(SRC_DIR)/, $(SRC_FILES))
 
 OBJ_DIR	=	objects
