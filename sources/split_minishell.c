@@ -6,99 +6,120 @@
 /*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/12 23:26:32 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/04/19 21:42:31 by rruiz-la         ###   ########.fr       */
+/*   Updated: 2022/04/21 23:22:27 by rruiz-la         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	get_n_space(t_minishell *data)
+static int count_tokens(t_minishell *data, int i)
+{
+	if (data->line[i] == '<')
+	{
+		if (data->line[i + 1] == '<')
+			i++;
+		if (data->line[i + 1] == '<')
+			i++;
+		i++;
+	}
+	else if (data->line[i] == '>')
+	{
+		if (data->line[i + 1] == '>')
+			i++;
+		else if (data->line[i + 1] == '|')
+			i++;
+		i++;
+	}
+	else if (data->line[i] == '|')
+	{
+		i++;
+	}
+	return (i);
+}
+
+static int count_quotes(t_minishell *data, int i)
+{
+	if (data->line[i] == '\'')
+	{
+		i++;
+		while (data->line[i] != '\'')
+			i++;
+		i++;
+	}
+	if (data->line[i] == '\"')
+	{
+		i++;
+		while (data->line[i] != '\"')
+			i++;
+		i++;
+	}
+	return (i);
+}
+
+static int	get_n_break(t_minishell *data)
 {
 	int	i;
-	int	n_space;
+	int	n_break;
 
-	n_space = 0;
+	n_break = 0;
 	i = 0;
 	while (data->line[i] != '\0')
 	{
-		if (data->line[i] == '\'')
-		{
+		while (data->line[i] == ' ' && data->line[i] != '\0')
 			i++;
-			while (data->line[i] != '\'')
-				i++;
-		}
-		else if (data->line[i] == '\"')
+		if (ft_strchr("><|" , data->line[i]) != NULL)
+			i = count_tokens(data, i);
+		else if (data->line[i] == '\'' || data->line[i] == '\"')
+			i = count_quotes(data, i);
+		else
 		{
-			i++;
-			while (data->line[i] != '\"')
+			while (ft_strchr("><|", data->line[i]) == NULL)
+			{
+				if (data->line[i] == ' ')
+					break ;
 				i++;
+			}	
 		}
-		else if (data->line[i] == '<')
-		{
-			while (data->line[i] == '<')
-				i++;
-			if (data->line[i] != ' ' && data->line[i] != '\0')
-				n_space++;
-		}
-		else if (data->line[i] == ' ')
-			n_space++;
-		i++;
+		n_break++;
 	}
-	return (n_space);
+	return (n_break);
 }
 
 static int	len_subline(t_minishell *data, int start)
 {
+	int	len;
 	int	i;
-	int	j;
 
 	i = start;
-	j = 0;
+	len = 0;
+	printf ("valor i: %d\n", i);
 	while (data->line[i] != '\0')
 	{
-		if (data->line[i] == ' ')
-			break ;
-		else if (data->line[i] == '\'')
-		{
-			//get_quotes();
+		while (data->line[i] == ' ' && data->line[i] != '\0')
+		{	
+			printf ("oi\n");
 			i++;
-			j++;
-			while (data->line[i] != '\'')
-			{
-				if (data->line[i] == '\0')
-					return (-1);
-				i++;
-				j++;
-			}
-			i++;
-			j++;
 		}
-		else if (data->line[i] == '\"')
-		{
-			i++;
-			j++;
-			while (data->line[i] != '\"')
-			{
-				if (data->line[i] == '\0')
-					return (-1);
-				i++;
-				j++;
-			}
-			i++;
-			j++;
-		}
-		else if (data->line[i] == '<')
-		{
-			i++;
-			j++;
-		}
+		if (ft_strchr("><|" , data->line[i]) != NULL)
+			len = count_tokens(data, i);
+		else if (data->line[i] == '\'' || data->line[i] == '\"')
+			len = count_quotes(data, i);
 		else
 		{
-			j++;
-			i++;
+			while (ft_strchr("><|", data->line[i]) == NULL)
+			{
+				if (data->line[i] == ' ')
+				{
+					len++;
+					break ;
+				}
+				i++;
+				len++;
+			}
 		}
+		return (len);
 	}
-	return (j);
+	return (0);
 }
 
 static void	split_line(char **parsed_line, t_minishell *data, int n)
@@ -113,9 +134,12 @@ static void	split_line(char **parsed_line, t_minishell *data, int n)
 	while (i <= n)
 	{
 		len = len_subline(data, start);
+		printf ("start %d len %d\n", start, len);
 		parsed_line[i] = ft_substr(data->line, start, len);
 		printf ("%s\n", parsed_line[i]);
-		start = start + len + 1;
+		start = start + len;
+		if (data->line[start] == '\0')
+			break ;
 		i++;
 	}
 }
@@ -125,8 +149,9 @@ void	parse_line(t_minishell *data)
 	int		n;
 	char	**parsed_line;
 
-	n = get_n_space(data);
-	printf ("%d\n", n);
+	n = get_n_break(data);
+	if (n < 0)
+		ft_putstr_fd("quote is missing\n", 1); //lembrar de tratar erro e frees e código de saída
 	parsed_line = (char **)malloc(sizeof(char *) * (n + 1));
 	if (!parsed_line)
 		exit (1);
