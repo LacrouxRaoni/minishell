@@ -1,10 +1,11 @@
 # ifndef MINISHELL_H
  #define MINISHELL_H
 
-typedef struct s_minishell
+typedef struct s_mns
 {
 	char	*line;
-} t_minishell;
+	struct	s_envp	*env;
+} t_mns;
 
 
  #include "env_list.h"
@@ -21,6 +22,6 @@ typedef struct s_minishell
 
 
 char	*print_terminal_line(char *line);
-void	parse_line(t_minishell *data);
+void	lexical_analysis(t_mns *data);
 
  #endif

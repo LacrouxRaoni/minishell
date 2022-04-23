@@ -49,6 +49,6 @@ re:	fclean all
 
 valgrind:
 	make
-	valgrind --leak-check=full ./minishell
+	valgrind --leak-check=full --suppressions=readline.supp ./minishell
 
 .PHONY: all clean fclean re

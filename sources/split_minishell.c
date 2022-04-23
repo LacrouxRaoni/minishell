@@ -6,16 +6,17 @@
 /*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/12 23:26:32 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/04/21 23:22:27 by rruiz-la         ###   ########.fr       */
+/*   Updated: 2022/04/23 14:20:34 by rruiz-la         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int count_tokens(t_minishell *data, int i)
+static int	count_tokens(t_mns *data, int i)
 {
 	if (data->line[i] == '<')
 	{
+
 		if (data->line[i + 1] == '<')
 			i++;
 		if (data->line[i + 1] == '<')
@@ -37,7 +38,7 @@ static int count_tokens(t_minishell *data, int i)
 	return (i);
 }
 
-static int count_quotes(t_minishell *data, int i)
+static int count_quotes(t_mns *data, int i)
 {
 	if (data->line[i] == '\'')
 	{
@@ -46,7 +47,7 @@ static int count_quotes(t_minishell *data, int i)
 			i++;
 		i++;
 	}
-	if (data->line[i] == '\"')
+	else if (data->line[i] == '\"')
 	{
 		i++;
 		while (data->line[i] != '\"')
@@ -56,7 +57,7 @@ static int count_quotes(t_minishell *data, int i)
 	return (i);
 }
 
-static int	get_n_break(t_minishell *data)
+static int	get_n_break(t_mns *data)
 {
 	int	i;
 	int	n_break;
@@ -69,15 +70,14 @@ static int	get_n_break(t_minishell *data)
 			i++;
 		if (ft_strchr("><|" , data->line[i]) != NULL)
 			i = count_tokens(data, i);
-		else if (data->line[i] == '\'' || data->line[i] == '\"')
-			i = count_quotes(data, i);
 		else
 		{
-			while (ft_strchr("><|", data->line[i]) == NULL)
+			while (ft_strchr("><| ", data->line[i]) == NULL)
 			{
-				if (data->line[i] == ' ')
-					break ;
-				i++;
+				if (data->line[i] == '\'' || data->line[i] == '\"')
+					i = count_quotes(data, i);
+				else
+					i++;
 			}	
 		}
 		n_break++;
@@ -85,36 +85,115 @@ static int	get_n_break(t_minishell *data)
 	return (n_break);
 }
 
-static int	len_subline(t_minishell *data, int start)
+static int	get_len_tokens(t_mns *data, int i)
+{
+	int len;
+
+	len = 0;
+	if (data->line[i] == '<')
+	{
+
+		if (data->line[i + 1] == '<')
+		{
+			i++;
+			len++;
+		}
+		if (data->line[i + 1] == '<')
+		{
+			i++;
+			len++;
+		}
+		i++;
+		len++;
+	}
+	else if (data->line[i] == '>')
+	{
+		if (data->line[i + 1] == '>')
+		{
+			i++;
+			len++;
+		}
+		else if (data->line[i + 1] == '|')
+		{
+			i++;
+			len++;
+		}
+		i++;
+		len++;
+	}
+	else if (data->line[i] == '|')
+	{
+		i++;
+		len++;
+	}
+	return (len);
+}
+
+static int get_len_quotes(t_mns *data, int i)
+{
+	int len;
+
+	len = 0;
+	if (data->line[i] == '\'')
+	{
+		i++;
+		len++;
+		while (data->line[i] != '\'')
+		{
+			i++;
+			len++;
+		}
+		i++;
+		len++;
+	}
+	else if (data->line[i] == '\"')
+	{
+		i++;
+		len++;
+		while (data->line[i] != '\"')
+		{
+			i++;
+			len++;
+		}
+		i++;
+		len++;
+	}
+	return (len);
+}
+
+static int	len_subline(t_mns *data, int start)
 {
 	int	len;
 	int	i;
+	int aux;
 
+	aux = 0;
 	i = start;
 	len = 0;
-	printf ("valor i: %d\n", i);
 	while (data->line[i] != '\0')
 	{
 		while (data->line[i] == ' ' && data->line[i] != '\0')
-		{	
-			printf ("oi\n");
 			i++;
-		}
 		if (ft_strchr("><|" , data->line[i]) != NULL)
-			len = count_tokens(data, i);
-		else if (data->line[i] == '\'' || data->line[i] == '\"')
-			len = count_quotes(data, i);
+		{
+			len = get_len_tokens(data, i);
+			i = i + len;
+		}
 		else
 		{
-			while (ft_strchr("><|", data->line[i]) == NULL)
+			while (ft_strchr("><| ", data->line[i]) == NULL)
 			{
-				if (data->line[i] == ' ')
+				if (data->line[i] == '\'' || data->line[i] == '\"')
 				{
-					len++;
-					break ;
+					aux = get_len_quotes(data, i);
+					i = i + aux;
+					len = len + aux;
 				}
-				i++;
-				len++;
+				else
+				{
+					i++;
+					len++;
+				}
 			}
 		}
 		return (len);
@@ -122,7 +201,7 @@ static int	len_subline(t_minishell *data, int start)
 	return (0);
 }
 
-static void	split_line(char **parsed_line, t_minishell *data, int n)
+static char	**split_line(char **parsed_line, t_mns *data, int n)
 {
 	int	i;
 	int	start;
@@ -134,17 +213,35 @@ static void	split_line(char **parsed_line, t_minishell *data, int n)
 	while (i <= n)
 	{
 		len = len_subline(data, start);
-		printf ("start %d len %d\n", start, len);
 		parsed_line[i] = ft_substr(data->line, start, len);
 		printf ("%s\n", parsed_line[i]);
 		start = start + len;
+		while (data->line[start] == ' ')
+		{
+			start++;
+		}
 		if (data->line[start] == '\0')
 			break ;
 		i++;
 	}
+	parsed_line[i] = NULL;
+	return (parsed_line);
 }
 
-void	parse_line(t_minishell *data)
+static void	free_parsed_line(char **parsed_line)
+{
+	int i;
+
+	i = 0;
+	while (parsed_line[i])
+	{
+		free (parsed_line[i]);
+		i++;
+	}
+	parsed_line[i] = NULL;
+}
+
+void	lexical_analysis(t_mns *data)
 {
 	int		n;
 	char	**parsed_line;
@@ -155,5 +252,6 @@ void	parse_line(t_minishell *data)
 	parsed_line = (char **)malloc(sizeof(char *) * (n + 1));
 	if (!parsed_line)
 		exit (1);
-	split_line(parsed_line, data, n);
+	parsed_line = split_line(parsed_line, data, n);
+	free_parsed_line(parsed_line);
 }

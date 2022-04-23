@@ -4,3 +4,4 @@ objects/
 *.odt
 *.odt#
 *.txt
+.vscode/
