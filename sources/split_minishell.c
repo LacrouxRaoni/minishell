@@ -6,7 +6,7 @@
 /*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/12 23:26:32 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/04/23 14:20:34 by rruiz-la         ###   ########.fr       */
+/*   Updated: 2022/04/25 17:56:27 by rruiz-la         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -227,20 +227,21 @@ static char	**split_line(char **parsed_line, t_mns *data, int n)
 	parsed_line[i] = NULL;
 	return (parsed_line);
 }
-
+/*
 static void	free_parsed_line(char **parsed_line)
 {
 	int i;
 
 	i = 0;
-	while (parsed_line[i])
+	while (parsed_line[i] != NULL)
 	{
 		free (parsed_line[i]);
 		i++;
 	}
-	parsed_line[i] = NULL;
+	free (parsed_line);
+	parsed_line = NULL;
 }
-
+*/
 void	lexical_analysis(t_mns *data)
 {
 	int		n;
@@ -249,9 +250,17 @@ void	lexical_analysis(t_mns *data)
 	n = get_n_break(data);
 	if (n < 0)
 		ft_putstr_fd("quote is missing\n", 1); //lembrar de tratar erro e frees e código de saída
-	parsed_line = (char **)malloc(sizeof(char *) * (n + 1));
+	parsed_line = (char **)ft_calloc(n + 1, sizeof(char *));
 	if (!parsed_line)
 		exit (1);
 	parsed_line = split_line(parsed_line, data, n);
-	free_parsed_line(parsed_line);
+	int i = 0;
+	//free_parsed_line(parsed_line);
+	while (i <= n)
+	{
+		free (parsed_line[i]);
+		i++;
+	}
+	free (parsed_line);
+	parsed_line = NULL;
 }

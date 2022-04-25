@@ -1,24 +1,38 @@
 #include "minishell.h"
 
-static void get_envp(char **envp, char **new_envp)
+static void get_envp(char **envp, t_envp *data_envp)
 {
 	int i;
 	int len;
 
 	len = 0;
-	while (envp[len])
+	while (envp[len] != NULL)
 		len++;
-	new_envp = (char **)malloc(sizeof(char *) * len + 1);
-	if (!new_envp)
+	data_envp->new_envp = (char **)ft_calloc(len + 1, sizeof(char *));
+	if (!data_envp->new_envp)
 	{
 		ft_putstr_fd("malloc error\n", 1);
 		exit(1);
 	}
-	i = 0;
-	while (i < len)
+	i = -1;
+	while (++i < len)
+		data_envp->new_envp[i] = ft_strdup(envp[i]);
+}
+
+static void free_envp(t_envp *d_envp)
+{
+	int i;
+
+	if (d_envp->new_envp != NULL)
 	{
-		new_envp[i] = ft_substr(envp[i], 0, ft_strlen(envp[i]));
-		i++;
+		i = 0;
+		while (d_envp->new_envp[i] != NULL)
+		{
+			free (d_envp->new_envp[i]);
+			i++;
+		}
+		free (d_envp->new_envp);
+		d_envp->new_envp = NULL;
 	}
 }
 
@@ -26,11 +40,11 @@ int	main(int argc, char *argv[], char *envp[])
 {
 	char		*line;
 	t_mns		data;
+	t_envp		d_envp;
 
-	data.env = NULL;
 	if (argc == 1 || argv[0] != NULL)
 	{
-		get_envp (envp, data.env->new_envp);
+		get_envp (envp, &d_envp);
 		while (1)
 		{
 			//imprime user+endereço na linha de comando
@@ -40,17 +54,16 @@ int	main(int argc, char *argv[], char *envp[])
 			free (line);
 			add_history(data.line);
 			//trata linha
-			
+			lexical_analysis(&data);			
 			if (ft_strncmp(data.line, "exit\n", 4) == 0)
 			{
 				//exit_shell
 
 				free (data.line);
-				return (0);
+				free_envp(&d_envp);
+				exit (0);
 			}
-			lexical_analysis(&data);
-			free (data.line);
-			
+			free (data.line);			
 		}
 	}
 	else

@@ -4,7 +4,6 @@
 typedef struct s_mns
 {
 	char	*line;
-	struct	s_envp	*env;
 } t_mns;
 
 
