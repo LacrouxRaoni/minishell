@@ -1,9 +1,20 @@
 # ifndef MINISHELL_H
  #define MINISHELL_H
 
+
+#define WORD
+#define PIPE
+#define LESS
+#define DLESS
+#define GLESS
+#define GREAT
+#define DGREAT
+#define CLOBBER
+
 typedef struct s_mns
 {
 	char	*line;
+	char	**lexical_line;
 } t_mns;
 
 
@@ -21,6 +32,7 @@ typedef struct s_mns
 
 
 char	*print_terminal_line(char *line);
-void	lexical_analysis(t_mns *data);
+int		token_analysis(t_mns *data);
+void	lexical_analysis(char **parsed_line, t_mns *data);
 
  #endif

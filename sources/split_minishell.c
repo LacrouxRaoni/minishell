@@ -6,7 +6,7 @@
 /*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/12 23:26:32 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/04/25 17:56:27 by rruiz-la         ###   ########.fr       */
+/*   Updated: 2022/04/27 22:26:59 by rruiz-la         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,14 +44,22 @@ static int count_quotes(t_mns *data, int i)
 	{
 		i++;
 		while (data->line[i] != '\'')
+		{
+			if (data->line[i] == '\0')
+				return (-1);
 			i++;
+		}
 		i++;
 	}
 	else if (data->line[i] == '\"')
 	{
 		i++;
 		while (data->line[i] != '\"')
+		{
+			if (data->line[i] == '\0')
+				return (-1);
 			i++;
+		}
 		i++;
 	}
 	return (i);
@@ -75,7 +83,11 @@ static int	get_n_break(t_mns *data)
 			while (ft_strchr("><| ", data->line[i]) == NULL)
 			{
 				if (data->line[i] == '\'' || data->line[i] == '\"')
+				{
 					i = count_quotes(data, i);
+					if (i < 0)
+						return (-1);
+				}
 				else
 					i++;
 			}	
@@ -214,20 +226,22 @@ static char	**split_line(char **parsed_line, t_mns *data, int n)
 	{
 		len = len_subline(data, start);
 		parsed_line[i] = ft_substr(data->line, start, len);
-		printf ("%s\n", parsed_line[i]);
 		start = start + len;
 		while (data->line[start] == ' ')
 		{
 			start++;
 		}
 		if (data->line[start] == '\0')
+		{
+			i++;
 			break ;
+		}
 		i++;
 	}
 	parsed_line[i] = NULL;
 	return (parsed_line);
 }
-/*
+
 static void	free_parsed_line(char **parsed_line)
 {
 	int i;
@@ -241,26 +255,22 @@ static void	free_parsed_line(char **parsed_line)
 	free (parsed_line);
 	parsed_line = NULL;
 }
-*/
-void	lexical_analysis(t_mns *data)
+
+int	token_analysis(t_mns *data)
 {
 	int		n;
 	char	**parsed_line;
 
 	n = get_n_break(data);
 	if (n < 0)
-		ft_putstr_fd("quote is missing\n", 1); //lembrar de tratar erro e frees e código de saída
+	{
+		return (-1);
+	}
 	parsed_line = (char **)ft_calloc(n + 1, sizeof(char *));
 	if (!parsed_line)
 		exit (1);
 	parsed_line = split_line(parsed_line, data, n);
-	int i = 0;
-	//free_parsed_line(parsed_line);
-	while (i <= n)
-	{
-		free (parsed_line[i]);
-		i++;
-	}
-	free (parsed_line);
-	parsed_line = NULL;
+	lexical_analysis(parsed_line, data);
+	free_parsed_line(parsed_line);
+	return (0);
 }

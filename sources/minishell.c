@@ -42,7 +42,7 @@ int	main(int argc, char *argv[], char *envp[])
 	t_mns		data;
 	t_envp		d_envp;
 
-	if (argc == 1 || argv[0] != NULL)
+	if (argc == 1 && argv[0] != NULL)
 	{
 		get_envp (envp, &d_envp);
 		while (1)
@@ -53,9 +53,7 @@ int	main(int argc, char *argv[], char *envp[])
 			data.line = readline(line);
 			free (line);
 			add_history(data.line);
-			//trata linha
-			lexical_analysis(&data);			
-			if (ft_strncmp(data.line, "exit\n", 4) == 0)
+			if (ft_strncmp(data.line, "exit\0", 5) == 0)
 			{
 				//exit_shell
 
@@ -63,6 +61,11 @@ int	main(int argc, char *argv[], char *envp[])
 				free_envp(&d_envp);
 				exit (0);
 			}
+			//trata linha
+			if (token_analysis(&data) == -1)
+			{
+				ft_putstr_fd("quote is missing\n", 1); //lembrar de tratar erro e frees e código de saída
+			}			
 			free (data.line);			
 		}
 	}
