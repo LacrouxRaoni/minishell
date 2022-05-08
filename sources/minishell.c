@@ -36,11 +36,25 @@ static void free_envp(t_envp *d_envp)
 	}
 }
 
+static void init_cmd_table(t_cmd *cmd)
+{
+	cmd->pipe = ft_strdup("");
+	cmd->less = ft_strdup("");
+	cmd->dless = ft_strdup("");
+	cmd->gless = ft_strdup("");
+	cmd->great = ft_strdup("");
+	cmd->dgreat = ft_strdup("");
+	cmd->clooper = ft_strdup("");
+	cmd->word = ft_strdup("");
+	cmd->next = NULL;
+}
+
 int	main(int argc, char *argv[], char *envp[])
 {
 	char		*line;
 	t_mns		data;
 	t_envp		d_envp;
+	t_cmd		cmd;
 
 	if (argc == 1 && argv[0] != NULL)
 	{
@@ -64,7 +78,8 @@ int	main(int argc, char *argv[], char *envp[])
 					exit (0);
 				}
 				//trata linha
-				if (token_analysis(&data) == -1)
+				init_cmd_table(&cmd);
+				if (token_analysis(&data, &cmd) == -1)
 					ft_putstr_fd("quote is missing\n", 1); //lembrar de tratar erro e frees e código de saída
 				free (data.line);			
 			}

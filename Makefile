@@ -18,7 +18,8 @@ SRC_FILES	=	minishell.c \
 				token_analysis.c \
 				count_line.c \
 				len_subline.c \
-				lexical_analysis.c
+				lexical_analysis.c \
+				cmd_table.c
 SRC	=	$(addprefix $(SRC_DIR)/, $(SRC_FILES))
 
 OBJ_DIR	=	objects
