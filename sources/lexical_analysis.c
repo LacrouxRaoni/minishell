@@ -1,10 +1,109 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   lexical_analysis.c                                 :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/05/08 11:14:21 by rruiz-la          #+#    #+#             */
+/*   Updated: 2022/05/08 11:18:54 by rruiz-la         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
-void	lexical_analysis(char **parsed_line, t_mns *data)
+int	syntax_analysist(char **lexical_line)
 {
 	int	i;
 
-	data->lexical_line = (char **)ft_calloc(sizeof(parsed_line), sizeof(char *) + 1);
+	i = 0;
+	while (lexical_line[i])
+		i++;
+	if (ft_strncmp(lexical_line[0], "PIPE", 4) == 0)
+	{
+		printf ("minishell: syntax error near unexpected token `|'\n");
+		return (2);
+	}
+	if (ft_strncmp(lexical_line[i - 1], "WORD", 4) != 0)
+	{
+		if (ft_strncmp(lexical_line[i - 1], "PIPE", 4) == 0)
+			printf ("minishell: syntax error near unexpected token `|'\n");
+		else
+			printf ("minishell: syntax error near unexpected token `newline'\n");
+		return (2);
+	}
+	i = 0;
+	while (lexical_line[i])
+	{
+		if (ft_strncmp(lexical_line[i], "PIPE", 4) == 0)
+		{
+			if (ft_strncmp(lexical_line[i + 1], "PIPE", 4) == 0)
+			{
+				printf ("minishell: syntax error near unexpected token `|'\n");
+				return (2);
+			}
+		}
+		else if (ft_strncmp(lexical_line[i], "LESS", 4) == 0)
+		{
+			if (ft_strncmp(lexical_line[i + 1], "WORD", 4) != 0)
+			{
+				printf ("minishell: syntax error near unexpected token `newline'\n");
+				return (2);
+			}
+		}
+		else if (ft_strncmp(lexical_line[i], "DLESS", 4) == 0)
+		{
+			if (ft_strncmp(lexical_line[i + 1], "WORD", 4) != 0)
+			{
+				printf ("minishell: syntax error near unexpected token `newline'\n");
+				return (2);
+			}
+		}
+		else if (ft_strncmp(lexical_line[i], "GLESS", 4) == 0)
+		{
+			if (ft_strncmp(lexical_line[i + 1], "WORD", 4) != 0)
+			{
+				printf ("minishell: syntax error near unexpected token `newline'\n");
+				return (2);
+			}
+		}
+		else if (ft_strncmp(lexical_line[i], "GREAT", 4) == 0)
+		{
+			if (ft_strncmp(lexical_line[i + 1], "WORD", 4) != 0)
+			{
+				printf ("minishell: syntax error near unexpected token `newline'\n");
+				return (2);
+			}
+		}
+		else if (ft_strncmp(lexical_line[i], "DGREAT", 4) == 0)
+		{
+			if (ft_strncmp(lexical_line[i + 1], "WORD", 4) != 0)
+			{
+				printf ("minishell: syntax error near unexpected token `newline'\n");
+				return (2);
+			}
+		}
+		else if (ft_strncmp(lexical_line[i], "CLOOPER", 4) == 0)
+		{
+			if (ft_strncmp(lexical_line[i + 1], "WORD", 4) != 0)
+			{
+				printf ("minishell: syntax error near unexpected token `newline'\n");
+				return (2);
+			}
+		}
+		i++;
+	}
+	return (0);
+}
+
+void	lexical_analysis(char **parsed_line, t_mns *data, int n)
+{
+	int	i;
+
+	data->lexical_line = (char **)ft_calloc(n + 1, sizeof(char *));
+	if (!data->lexical_line)
+		exit (1);
+	data->error_num = 0;
 	i = 0;
 	while (parsed_line[i] != NULL)
 	{
@@ -26,9 +125,9 @@ void	lexical_analysis(char **parsed_line, t_mns *data)
 			data->lexical_line[i] = ft_strdup("WORD");
 		printf ("%s ", data->lexical_line[i]);
 		i++;
+	printf ("\n");
 	}
-	data->lexical_line[i] = NULL;
-
+	data->error_num = syntax_analysist(data->lexical_line);
 	i = -1;
 	while (data->lexical_line[++i])
 		free (data->lexical_line[i]);

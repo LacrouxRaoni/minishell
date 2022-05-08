@@ -52,21 +52,24 @@ int	main(int argc, char *argv[], char *envp[])
 			//recebe argumento do terminal
 			data.line = readline(line);
 			free (line);
-			add_history(data.line);
-			if (ft_strncmp(data.line, "exit\0", 5) == 0)
+			if (data.line[0] != '\0')
 			{
-				//exit_shell
+				add_history(data.line);
+				if (ft_strncmp(data.line, "exit\0", 5) == 0)
+				{
+					//exit_shell
 
-				free (data.line);
-				free_envp(&d_envp);
-				exit (0);
+					free (data.line);
+					free_envp(&d_envp);
+					exit (0);
+				}
+				//trata linha
+				if (token_analysis(&data) == -1)
+					ft_putstr_fd("quote is missing\n", 1); //lembrar de tratar erro e frees e código de saída
+				free (data.line);			
 			}
-			//trata linha
-			if (token_analysis(&data) == -1)
-			{
-				ft_putstr_fd("quote is missing\n", 1); //lembrar de tratar erro e frees e código de saída
-			}			
-			free (data.line);			
+			else
+				free (data.line);
 		}
 	}
 	else
