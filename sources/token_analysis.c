@@ -6,7 +6,7 @@
 /*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/12 23:26:32 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/05/08 16:14:50 by rruiz-la         ###   ########.fr       */
+/*   Updated: 2022/05/09 22:17:41 by rruiz-la         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,17 @@ static void	free_parsed_line(char **parsed_line)
 	parsed_line = NULL;
 }
 
+static void	free_lexical_line(t_mns *data)
+{
+	int	i;
+
+	i = -1;
+	while (data->lexical_line[++i])
+		free (data->lexical_line[i]);
+	free(data->lexical_line);
+	data->lexical_line = NULL;
+}
+
 int	token_analysis(t_mns *data, t_cmd *cmd)
 {
 	int		n;
@@ -76,7 +87,8 @@ int	token_analysis(t_mns *data, t_cmd *cmd)
 		free_parsed_line(parsed_line);
 		return (2);
 	}
-	cmd_table(parsed_line, cmd);
+	cmd_table(parsed_line, data, cmd);
+	free_lexical_line(data);
 	free_parsed_line(parsed_line);
 	return (0);
 }

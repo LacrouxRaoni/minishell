@@ -6,7 +6,7 @@
 /*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/08 11:14:21 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/05/08 16:13:26 by rruiz-la         ###   ########.fr       */
+/*   Updated: 2022/05/09 12:22:25 by rruiz-la         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,15 +125,10 @@ int	lexical_analysis(char **parsed_line, t_mns *data, int n)
 			data->lexical_line[i] = ft_strdup("WORD");
 		printf ("%s ", data->lexical_line[i]);
 		i++;
-	printf ("\n");
 	}
+	printf ("\n");
 	data->error_num = syntax_analysist(data->lexical_line);
 	if (data->error_num == 2)
 		return (2);
-	i = -1;
-	while (data->lexical_line[++i])
-		free (data->lexical_line[i]);
-	free(data->lexical_line);
-	data->lexical_line = NULL;
 	return (0);
 }

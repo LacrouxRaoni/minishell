@@ -6,7 +6,7 @@
 /*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/08 11:01:55 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/05/08 16:12:23 by rruiz-la         ###   ########.fr       */
+/*   Updated: 2022/05/09 17:02:28 by rruiz-la         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,14 +34,10 @@ typedef struct s_mns
 
 typedef struct s_cmd
 {
-	char *pipe;
-	char *less;
-	char *dless;
-	char *gless;
-	char *great;
-	char *dgreat;
-	char *clooper;
-	char *word;	
+	//cmd, redirec, here_doc
+	char **cmd;
+	char **redirect;
+	char **here_doc;
 	struct s_cmd *next;
 } t_cmd;
 
@@ -51,5 +47,5 @@ int		token_analysis(t_mns *data, t_cmd *cmd);
 int		lexical_analysis(char **parsed_line, t_mns *data, int n);
 int		get_n_break(t_mns *data, int i, int n_break);
 int		len_subline(t_mns *data, int start, int len, int aux);
-void	cmd_table(char **parsed_line, t_cmd *cmd);
+void	cmd_table(char **parsed_line, t_mns *data, t_cmd *cmd);
 #endif
