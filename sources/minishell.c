@@ -41,7 +41,7 @@ int	main(int argc, char *argv[], char *envp[])
 	char		*line;
 	t_mns		data;
 	t_envp		d_envp;
-	t_cmd		cmd;
+	t_cmd		*cmd;
 
 	if (argc == 1 && argv[0] != NULL)
 	{
@@ -67,7 +67,7 @@ int	main(int argc, char *argv[], char *envp[])
 				//trata linha
 				if (token_analysis(&data, &cmd) == -1)
 					ft_putstr_fd("quote is missing\n", 1); //lembrar de tratar erro e frees e código de saída
-				free (data.line);			
+				free (data.line);
 			}
 			else
 				free (data.line);

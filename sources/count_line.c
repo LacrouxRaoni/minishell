@@ -6,7 +6,7 @@
 /*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/08 11:00:21 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/05/08 11:00:23 by rruiz-la         ###   ########.fr       */
+/*   Updated: 2022/05/12 12:10:49 by rruiz-la         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,8 +64,9 @@ static int	count_quotes(t_mns *data, int i)
 	return (i);
 }
 
-int	get_n_break(t_mns *data, int i, int n_break)
+int	get_n_break(t_mns *data, int i)
 {
+	data->n_break = 0;
 	while (data->line[i] != '\0')
 	{
 		while (data->line[i] == ' ' && data->line[i] != '\0')
@@ -86,7 +87,7 @@ int	get_n_break(t_mns *data, int i, int n_break)
 					i++;
 			}
 		}
-		n_break++;
+		data->n_break++;
 	}
-	return (n_break);
+	return (data->n_break);
 }

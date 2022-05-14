@@ -19,6 +19,7 @@ SRC_FILES	=	minishell.c \
 				count_line.c \
 				len_subline.c \
 				lexical_analysis.c \
+				syntax_analysis.c \
 				cmd_table.c
 SRC	=	$(addprefix $(SRC_DIR)/, $(SRC_FILES))
 
