@@ -6,7 +6,7 @@
 /*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/10 21:40:00 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/05/13 23:33:49 by rruiz-la         ###   ########.fr       */
+/*   Updated: 2022/05/14 14:56:33 by rruiz-la         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,8 @@ static int	count_lexical_line(char **lexical_line, int i, t_utils *utils)
 	return (i);
 }
 
-static void	define_cmd_size(char **lexical_line, t_utils *utils, t_cmd *cmd_node)
+static void	define_cmd_size(char **lexical_line,
+			t_utils *utils, t_cmd *cmd_node)
 {
 	int	i;
 
@@ -49,11 +50,16 @@ static void	define_cmd_size(char **lexical_line, t_utils *utils, t_cmd *cmd_node
 			break ;
 		i++;
 	}
-	
 	cmd_node->next = NULL;
 	cmd_node->word = (char **)ft_calloc(utils->cmd_n + 1, sizeof(char *));
+	if (!cmd_node->word)
+		exit (1);
 	cmd_node->redirect = (char **)ft_calloc(utils->red_n + 1, sizeof(char *));
+	if (!cmd_node->redirect)
+		exit (1);
 	cmd_node->here_doc = (char **)ft_calloc(utils->hdoc_n + 1, sizeof(char *));
+	if (!cmd_node->here_doc)
+		exit (1);
 }
 
 static int	fulfill_cmd_table(char **lexical_line, t_utils *utils,
@@ -61,14 +67,14 @@ static int	fulfill_cmd_table(char **lexical_line, t_utils *utils,
 {
 	if (ft_strncmp(lexical_line[utils->i], "PIPE", 4) == 0)
 	{
-		printf ("%s \n", cmd_node->redirect[utils->r]);
+		printf ("red %s \n", cmd_node->redirect[utils->r]);
 		return (-10);
 	}
 	else if (ft_strncmp(lexical_line[utils->i], "DLESS", 5) == 0)
 	{
 		cmd_node->here_doc[utils->h] = ft_strdup(parsed_line[utils->i]);
 		cmd_node->here_doc[utils->h + 1] = ft_strdup(parsed_line[utils->i + 1]);
-		printf("%s ", cmd_node->here_doc[utils->h]);
+		printf("hdoc %s ", cmd_node->here_doc[utils->h]);
 		printf("%s \n", cmd_node->here_doc[utils->h + 1]);
 		utils->i++;
 		utils->h++;
@@ -77,7 +83,7 @@ static int	fulfill_cmd_table(char **lexical_line, t_utils *utils,
 	{
 		cmd_node->redirect[utils->r] = ft_strdup(parsed_line[utils->i]);
 		cmd_node->redirect[utils->r + 1] = ft_strdup(parsed_line[utils->i + 1]);
-		printf ("%s ", cmd_node->redirect[utils->r]);
+		printf ("red %s ", cmd_node->redirect[utils->r]);
 		printf ("%s \n", cmd_node->redirect[utils->r + 1]);
 		utils->i++;
 		utils->r++;
@@ -85,45 +91,60 @@ static int	fulfill_cmd_table(char **lexical_line, t_utils *utils,
 	return (0);
 }
 
+static void	prepara_cmd_table(t_mns *data, t_utils *cmd_utils,
+		t_cmd *cmd_node, char **parsed_line)
+{
+	int	r;
+
+	define_cmd_size(data->lexical_line, cmd_utils, cmd_node);
+	cmd_utils->w = 0;
+	cmd_utils->h = 0;
+	cmd_utils->r = 0;
+	cmd_utils->i = cmd_utils->start;
+	r = 0;
+	while (data->lexical_line[cmd_utils->i])
+	{
+		if (ft_strncmp(data->lexical_line[cmd_utils->i], "WORD\0", 5) != 0)
+		{
+			r = fulfill_cmd_table(data->lexical_line,
+					cmd_utils, parsed_line, cmd_node);
+			if (r < 0)
+				break ;
+		}
+		else
+		{
+			cmd_node->word[cmd_utils->w] = ft_strdup(parsed_line[cmd_utils->i]);
+			printf ("word %s\n", cmd_node->word[cmd_utils->w]);
+			cmd_utils->w++;
+		}
+		cmd_utils->i++;
+	}
+}
+
 void	cmd_table(char **parsed_line, t_mns *data, t_cmd **cmd)
 {
 	t_utils	cmd_utils;
-	t_cmd *cmd_node;
-	int r;
+	t_cmd	*cmd_node;
+	t_cmd	*last_node;
 
 	*cmd = NULL;
 	cmd_utils.start = 0;
 	cmd_utils.i = 0;
-	//create_node
 	while (data->lexical_line[cmd_utils.i])
 	{
-		cmd_node = malloc(sizeof(t_cmd));
-	
-		define_cmd_size(data->lexical_line, &cmd_utils, cmd_node);
-		cmd_utils.w = 0;
-		cmd_utils.h = 0;
-		cmd_utils.r = 0;
-		cmd_utils.i = cmd_utils.start;
-		r = 0;
-		while (data->lexical_line[cmd_utils.i])
-		{
-			if (ft_strncmp(data->lexical_line[cmd_utils.i], "WORD\0", 5) != 0)
-			{
-				r = fulfill_cmd_table(data->lexical_line, &cmd_utils, parsed_line, cmd_node);
-				if (r < 0)
-					break ;
-			}
-			else
-			{
-				cmd_node->word[cmd_utils.w] = ft_strdup(parsed_line[cmd_utils.i]);
-				printf ("%s\n", cmd_node->word[cmd_utils.w]);
-				cmd_utils.w++;
-			}
-			cmd_utils.i++;
-		}
+		cmd_node = (t_cmd *)malloc(sizeof(t_cmd));
+		if (!cmd_node)
+			exit (1);
+		prepara_cmd_table(data, &cmd_utils, cmd_node, parsed_line);
 		cmd_utils.start = cmd_utils.i + 1;
-		printf ("i %d %d\n", cmd_utils.i, cmd_utils.start);
-		if ((*cmd) == NULL)
-			(*cmd) = cmd_node;
+		if (*cmd == NULL)
+			*cmd = cmd_node;
+		else
+		{
+			last_node = *cmd;
+			while (last_node->next != NULL)
+				last_node = last_node->next;
+			last_node->next = cmd_node;
+		}
 	}
 }

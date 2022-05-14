@@ -6,7 +6,7 @@
 /*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/08 11:01:55 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/05/13 22:44:03 by rruiz-la         ###   ########.fr       */
+/*   Updated: 2022/05/14 18:16:14 by rruiz-la         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ typedef struct s_mns
 {
 	char	*line;
 	char	**lexical_line;
+	char	**parsed_line;
 	int		error_num;
 	int		n_break;
 }	t_mns;

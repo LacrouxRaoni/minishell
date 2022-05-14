@@ -10,7 +10,7 @@ LINK	=	-I ./ -I ./librarie/libft/ -L ./librarie/libft/ -lft
 LDFLAGS	=	-lreadline
 
 CC	=	gcc
-#CFLAGS	=	-Wall -Wextra -Werror -lreadline
+CFLAGS	=	-Wall -Wextra -Werror -lreadline
 
 SRC_DIR		=	sources
 SRC_FILES	=	minishell.c \

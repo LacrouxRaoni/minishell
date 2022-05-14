@@ -59,7 +59,6 @@ int	main(int argc, char *argv[], char *envp[])
 				if (ft_strncmp(data.line, "exit\0", 5) == 0)
 				{
 					//exit_shell
-
 					free (data.line);
 					free_envp(&d_envp);
 					exit (0);

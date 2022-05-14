@@ -6,7 +6,7 @@
 /*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/12 23:26:32 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/05/13 22:39:05 by rruiz-la         ###   ########.fr       */
+/*   Updated: 2022/05/14 18:28:32 by rruiz-la         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,18 +40,18 @@ static char	**split_line(char **parsed_line, t_mns *data, int n)
 	return (parsed_line);
 }
 
-static void	free_parsed_line(char **parsed_line)
+static void	free_parsed_line(char **line)
 {
 	int	i;
 
 	i = 0;
-	while (parsed_line[i] != NULL)
+	while (line[i] != NULL)
 	{
-		free (parsed_line[i]);
+		free (line[i]);
 		i++;
 	}
-	free (parsed_line);
-	parsed_line = NULL;
+	free (line);
+	line = NULL;
 }
 
 static void	free_lexical_line(t_mns *data)
@@ -92,6 +92,13 @@ int	token_analysis(t_mns *data, t_cmd **cmd)
 		free_parsed_line(parsed_line);
 		return (0);
 	}
+	else
+	{
+		data->parsed_line = (char **)malloc(sizeof(parsed_line));
+		i = -1;
+		while (parsed_line[++i])
+			data->parsed_line[i] = ft_strdup(parsed_line[i]);
+	}
 	if (lexical_analysis(parsed_line, data, n) > 0)
 	{
 		free_lexical_line(data);
@@ -100,6 +107,6 @@ int	token_analysis(t_mns *data, t_cmd **cmd)
 	}
 	cmd_table(parsed_line, data, cmd);
 	free_lexical_line(data);
-	free_parsed_line(parsed_line);
+
 	return (0);
 }
