@@ -10,7 +10,7 @@ LINK	=	-I ./ -I ./librarie/libft/ -L ./librarie/libft/ -lft
 LDFLAGS	=	-lreadline
 
 CC	=	gcc
-CFLAGS	=	-Wall -Wextra -Werror -lreadline
+#CFLAGS	=	-Wall -Wextra -Werror -lreadline
 
 SRC_DIR		=	sources
 SRC_FILES	=	minishell.c \
@@ -20,7 +20,8 @@ SRC_FILES	=	minishell.c \
 				len_subline.c \
 				lexical_analysis.c \
 				syntax_analysis.c \
-				cmd_table.c
+				cmd_table.c \
+				free_cmd_table.c
 SRC	=	$(addprefix $(SRC_DIR)/, $(SRC_FILES))
 
 OBJ_DIR	=	objects

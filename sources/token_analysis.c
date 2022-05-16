@@ -6,13 +6,13 @@
 /*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/12 23:26:32 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/05/14 18:28:32 by rruiz-la         ###   ########.fr       */
+/*   Updated: 2022/05/15 20:49:00 by rruiz-la         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static char	**split_line(char **parsed_line, t_mns *data, int n)
+static char	**split_line(char **parsed_line, t_mns *data)
 {
 	int	i;
 	int	start;
@@ -21,7 +21,7 @@ static char	**split_line(char **parsed_line, t_mns *data, int n)
 
 	start = 0;
 	i = 0;
-	while (i <= n)
+	while (i <= data->n)
 	{
 		aux = 0;
 		len = 0;
@@ -54,17 +54,6 @@ static void	free_parsed_line(char **line)
 	line = NULL;
 }
 
-static void	free_lexical_line(t_mns *data)
-{
-	int	i;
-
-	i = -1;
-	while (data->lexical_line[++i])
-		free (data->lexical_line[i]);
-	free(data->lexical_line);
-	data->lexical_line = NULL;
-}
-
 static char	**malloc_parsed_line(int n)
 {
 	char	**parsed_line;
@@ -75,38 +64,37 @@ static char	**malloc_parsed_line(int n)
 	return (parsed_line);
 }
 
-int	token_analysis(t_mns *data, t_cmd **cmd)
+static void	malloc_data_parsed_line(t_mns *data, char **parsed_line)
 {
-	int		n;
+	int	i;
+
+	data->parsed_line
+		= (char **)ft_calloc(data->n + 1, sizeof(parsed_line));
+	if (!data->parsed_line)
+		exit (1);
+	i = -1;
+	while (parsed_line[++i])
+		data->parsed_line[i] = ft_strdup(parsed_line[i]);
+	free_parsed_line(parsed_line);
+}
+
+int	token_analysis(t_mns *data)
+{
 	int		i;
 	char	**parsed_line;
 
 	i = 0;
-	n = get_n_break(data, i);
-	if (n < 0)
+	data->n = get_n_break(data, i);
+	if (data->n < 0)
 		return (-1);
-	parsed_line = malloc_parsed_line(n);
-	parsed_line = split_line(parsed_line, data, n);
+	parsed_line = malloc_parsed_line(data->n);
+	parsed_line = split_line(parsed_line, data);
 	if (parsed_line[0] == 0)
 	{
 		free_parsed_line(parsed_line);
-		return (0);
+		return (-2);
 	}
 	else
-	{
-		data->parsed_line = (char **)malloc(sizeof(parsed_line));
-		i = -1;
-		while (parsed_line[++i])
-			data->parsed_line[i] = ft_strdup(parsed_line[i]);
-	}
-	if (lexical_analysis(parsed_line, data, n) > 0)
-	{
-		free_lexical_line(data);
-		free_parsed_line(parsed_line);
-		return (2);
-	}
-	cmd_table(parsed_line, data, cmd);
-	free_lexical_line(data);
-
+		malloc_data_parsed_line(data, parsed_line);
 	return (0);
 }

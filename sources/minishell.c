@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minishell.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/05/15 20:36:06 by rruiz-la          #+#    #+#             */
+/*   Updated: 2022/05/15 21:18:23 by rruiz-la         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 static void get_envp(char **envp, t_envp *data_envp)
@@ -64,8 +76,25 @@ int	main(int argc, char *argv[], char *envp[])
 					exit (0);
 				}
 				//trata linha
-				if (token_analysis(&data, &cmd) == -1)
-					ft_putstr_fd("quote is missing\n", 1); //lembrar de tratar erro e frees e código de saída
+				data.error_num = 0;
+				data.error_num = token_analysis(&data);
+				if (data.error_num < 0)
+				{
+					//write_error
+					if (data.error_num == -1)
+						printf("quote is missing\n");
+				}
+				else
+				{
+					lexical_analysis(&data);
+					data.error_num = syntax_analysis(data.lexical_line);
+					if (data.error_num > 0)
+						free_lexical_line(&data);
+					else
+						cmd_table(&data, &cmd);
+				}
+				free_cmd_table(&cmd);
+				free_lexical_line(&data);
 				free (data.line);
 			}
 			else
