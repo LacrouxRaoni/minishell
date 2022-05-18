@@ -1,22 +1,49 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   exec_cmds.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/05/17 12:26:53 by rruiz-la          #+#    #+#             */
+/*   Updated: 2022/05/17 22:47:12 by rruiz-la         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
-static void	write_line(t_cmd **cmd, int *fd)
+static char	*check_for_quotes(t_cmd *cmd_node)
+{
+	int		i;
+	int		len;
+	char	*aux;
+	
+	i = 1;
+	if(cmd_node->here_doc[i][0] == '\'' || cmd_node->here_doc[i][0] == '\"')
+	{
+		len = ft_strlen(cmd_node->here_doc[i]);
+		aux = ft_substr(cmd_node->here_doc[i], 1, len - 2);
+	}
+	else
+		aux = ft_strdup(cmd_node->here_doc[i]);
+	return (aux);
+}
+
+static void	write_line(char *limiter, int size_limiter, int *fd)
 {
 	char	*line;
-	int		limiter;
-
-	limiter = ft_strlen((*cmd)->here_doc[1]);
+	
 	while (1)
 	{
 		write (1, "> ", 2);
 		line = get_next_line(STDIN_FILENO);
-		if (ft_strncmp(line, (*cmd)->here_doc[1], limiter) == 0)
+		if (ft_strncmp(line, limiter, size_limiter) == 0)
 		{
-			if (line[limiter] == '\n')
+			if (line[size_limiter] == '\n')
 			{
-				free (line);
-		 		get_next_line(-1);
-			 break ; 
+				get_next_line(-1);
+				free(line);
+				break;
 			}
 			else
 				write (fd[1], line, ft_strlen(line));
@@ -27,27 +54,38 @@ static void	write_line(t_cmd **cmd, int *fd)
 	}
 }
 
-static void	exec_here_doc(t_cmd **cmd)
+static int	prepare_here_doc(t_cmd *cmd_node)
 {
 	int	fd[2];
+	int	size_limiter;
+	char *limiter;
 
-	if (pipe(fd) < 0)
-		exit(write(1, "Pipe error\n", ft_strlen("Pipe error\n")));
-	write_line(cmd, fd);
+	limiter = check_for_quotes(cmd_node);
+	size_limiter = ft_strlen(limiter);
+	pipe(fd);
+	if (fd < 0)
+		exit (write(1, "Pipe error\n", ft_strlen("Pipe error\n")));
+	write_line(limiter, size_limiter, fd);
+	free (limiter);
+	close(fd[1]);
+	return (fd[0]);
+	
+}
+
+static void exec_here_doc(t_cmd **cmd)
+{
+	int	fd;
+	t_cmd	*cmd_node;
+	
+	cmd_node = (*cmd);
+	fd = prepare_here_doc(cmd_node);
 }
 
 void	exec_cmds(t_cmd **cmd)
 {
-	int i;
-
-	i = 0;
-	if ((*cmd)->here_doc[i] != NULL)
+	if ((*cmd) != NULL)
 	{
-		if (ft_strncmp((*cmd)->here_doc[i], "<<\0,", ft_strlen("<<\0")) == 0)
-		{
+		if((*cmd)->here_doc[0] != NULL)
 			exec_here_doc(cmd);
-		}
-		else
-			return ;
 	}
 }

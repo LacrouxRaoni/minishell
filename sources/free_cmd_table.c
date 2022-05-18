@@ -6,7 +6,7 @@
 /*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/15 21:20:42 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/05/16 10:19:31 by rruiz-la         ###   ########.fr       */
+/*   Updated: 2022/05/17 17:39:24 by rruiz-la         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,38 +17,38 @@ void	free_cmd_table(t_cmd **cmd)
 	int		i;
 	t_cmd	*temp;
 
-	if(*cmd != NULL)
+	if ((*cmd) != NULL)
 	{
-
-		while ((*cmd)->next != NULL)
+		while ((*cmd) != NULL)
 		{
-			temp = (*cmd);	
-			if (temp->word !=NULL)
+			if ((*cmd)->word !=NULL)
 			{
 				i = -1;
-				while (temp->word[++i])
-					free(temp->word[i]);
-				free (temp->word);
-				temp->word = NULL;
+				while ((*cmd)->word[++i])
+					free((*cmd)->word[i]);
+				free ((*cmd)->word);
+				(*cmd)->word = NULL;
 			}
-			if (temp->redirect !=NULL)
+			if ((*cmd)->redirect !=NULL)
 			{
 				i = -1;
-				while (temp->redirect[++i])
-					free(temp->redirect[i]);
-				free (temp->redirect);
-				temp->redirect = NULL;
+				while ((*cmd)->redirect[++i])
+					free((*cmd)->redirect[i]);
+				free ((*cmd)->redirect);
+				(*cmd)->redirect = NULL;
 			}
-			if (temp->here_doc !=NULL)
+			if ((*cmd)->here_doc !=NULL)
 			{
 				i = -1;
-				while (temp->here_doc[++i])
-					free(temp->here_doc[i]);
-				free (temp->here_doc);
-				temp->here_doc = NULL;
+				while ((*cmd)->here_doc[++i])
+					free((*cmd)->here_doc[i]);
+				free ((*cmd)->here_doc);
+				(*cmd)->here_doc = NULL;
 			}
+			temp = (*cmd);
 			(*cmd) = temp->next;
 			free (temp);
 		}
+		
 	}
 }

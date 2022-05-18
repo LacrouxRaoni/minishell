@@ -6,7 +6,7 @@
 /*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/15 20:36:06 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/05/16 21:23:39 by rruiz-la         ###   ########.fr       */
+/*   Updated: 2022/05/17 22:14:41 by rruiz-la         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,8 +96,8 @@ int	main(int argc, char *argv[], char *envp[])
 						exec_cmds(&cmd);
 						free_cmd_table(&cmd);
 					}
+					free_lexical_line(&data);
 				}		
-				free_lexical_line(&data);
 				free (data.line);
 			}
 			else
