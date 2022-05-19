@@ -6,12 +6,13 @@
 /*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/11 09:31:32 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/05/12 12:25:33 by rruiz-la         ###   ########.fr       */
+/*   Updated: 2022/05/18 21:05:16 by rruiz-la         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+//incluir erros de < e >
 static void	print_error(char *word)
 {
 	if (ft_strncmp(word, "PIPE", 4) == 0)
