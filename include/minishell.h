@@ -6,7 +6,7 @@
 /*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/08 11:01:55 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/05/18 11:57:16 by rruiz-la         ###   ########.fr       */
+/*   Updated: 2022/05/20 18:12:21 by rruiz-la         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,10 +38,12 @@ typedef struct s_mns
 
 typedef struct s_cmd
 {
-	//cmd, redirec, here_doc
-	char **word;
-	char **redirect;
-	char **here_doc;
+
+	char 	**word;
+	char 	**redirect;
+	char 	**here_doc;
+	int		fd_in;
+	int		fd_out;
 	struct s_cmd *next;
 } t_cmd;
 

@@ -6,37 +6,37 @@
 /*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/18 11:58:19 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/05/18 11:59:10 by rruiz-la         ###   ########.fr       */
+/*   Updated: 2022/05/20 19:02:16 by rruiz-la         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static char	*check_for_quotes(char *word)
+static char	*check_for_quotes(char **word)
 {
 	int		len;
 	char	*aux;
 	
-	if(word[0] == '\'' || word[0] == '\"')
+	if((*word)[0] == '\'' || (*word)[0] == '\"')
 	{
-		len = ft_strlen(word);
-		aux = ft_substr(word, 1, len - 2);
+		len = ft_strlen(*word);
+		aux = ft_substr(*word, 1, len - 2);
 	}
 	else
-		aux = ft_strdup(word);
+		aux = ft_strdup(*word);
 	return (aux);
 }
 
-static void	write_line(char *limiter, int size_limiter, int *fd)
+static void	write_line(char **limiter, int size_limiter, int *fd)
 {
 	char	*line;
 	
-	close (fd[0]);
+	close(fd[0]);
 	while (1)
 	{
 		write (1, "> ", 2);
 		line = get_next_line(STDIN_FILENO);
-		if (ft_strncmp(line, limiter, size_limiter) == 0)
+		if (ft_strncmp(line, (*limiter), size_limiter) == 0)
 		{
 			if (line[size_limiter] == '\n')
 			{
@@ -52,13 +52,12 @@ static void	write_line(char *limiter, int size_limiter, int *fd)
 		free (line);
 	}
 	close(fd[1]);
-	exit(0);
 }
 
-static int	prepare_here_doc(char *here_doc, int wstatus)
+static int	prepare_here_doc(char **here_doc, t_cmd **cmd)
 {
-	int	fd[2];
 	int	pid;
+	int	fd[2];
 	int	size_limiter;
 	char *limiter;
 
@@ -70,10 +69,13 @@ static int	prepare_here_doc(char *here_doc, int wstatus)
 	if (pid < 0)
 		exit (write(1, "Fork error\n", ft_strlen("Fork error\n")));
 	if (pid == 0)
-		write_line(limiter, size_limiter, fd);
-	waitpid(pid, &wstatus, 0);
-	if (!WIFSIGNALED(wstatus));
-		printf("linha 76 hdoc %d\n", wstatus);
+	{
+		write_line(&limiter, size_limiter, fd);
+		free (limiter);
+		free_cmd_table(cmd);
+		exit(0);
+	}
+	waitpid(pid, NULL, 0);
 	free (limiter);
 	close(fd[1]);
 	return (fd[0]);
@@ -84,25 +86,20 @@ void exec_here_doc(t_cmd **cmd)
 {
 	int		i;
 	int		fd;
-	int		wstatus;
 	t_cmd	*cmd_node;
 	
 	cmd_node = (*cmd);
 	while (cmd_node != NULL)
 	{
-		i = 0;
-		while (cmd_node->here_doc[i] != NULL)
+		i = -1;
+		while (cmd_node->here_doc[++i] != NULL)
 		{
-			i++;
-			fd = prepare_here_doc(cmd_node->here_doc[i], wstatus);
-			i++;
+			if (ft_strncmp(cmd_node->here_doc[i], "<<", 2) != 0)
+				fd = prepare_here_doc(&cmd_node->here_doc[i], cmd);
 		}
+		cmd_node->fd_in = fd;
 		cmd_node = cmd_node->next;
-		if (i < 1)
-		{
-			if (cmd_node == NULL)
-				//dup2(fd, STDIN_FILENO);
-			close (fd);
-		}
+		close (fd);
+		
 	}
 }

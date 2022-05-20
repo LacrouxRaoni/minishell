@@ -6,7 +6,7 @@
 /*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/10 21:40:00 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/05/18 11:48:21 by rruiz-la         ###   ########.fr       */
+/*   Updated: 2022/05/20 18:12:42 by rruiz-la         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,8 @@ static void	define_cmd_size(char **lexical_line,
 		i++;
 	}
 	cmd_node->next = NULL;
+	cmd_node->fd_in = 0;
+	cmd_node->fd_out = 0;
 	cmd_node->word = (char **)ft_calloc(utils->cmd_n + 1, sizeof(char *));
 	if (!cmd_node->word)
 		exit (1);
@@ -78,7 +80,7 @@ static int	fulfill_cmd_table(char **lexical_line, t_utils *utils,
 		printf("hdoc %s ", cmd_node->here_doc[utils->h]);
 		printf("%s \n", cmd_node->here_doc[utils->h + 1]);
 		utils->i++;
-		utils->h++;
+		utils->h = utils->h + 2;
 	}
 	else
 	{
@@ -88,7 +90,7 @@ static int	fulfill_cmd_table(char **lexical_line, t_utils *utils,
 		printf ("red %s ", cmd_node->redirect[utils->r]);
 		printf ("%s \n", cmd_node->redirect[utils->r + 1]);
 		utils->i++;
-		utils->r++;
+		utils->r = utils->r + 2;
 	}
 	return (0);
 }
@@ -150,4 +152,5 @@ void	cmd_table(t_mns *data, t_cmd **cmd)
 			last_node->next = cmd_node;
 		}
 	}
+	free_lexical_line(data);
 }

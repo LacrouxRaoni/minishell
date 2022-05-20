@@ -6,7 +6,7 @@
 /*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/11 09:31:32 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/05/18 21:05:16 by rruiz-la         ###   ########.fr       */
+/*   Updated: 2022/05/19 10:55:53 by rruiz-la         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,16 @@ static void	print_error(char *word)
 {
 	if (ft_strncmp(word, "PIPE", 4) == 0)
 		printf ("minishell: syntax error near unexpected token `|'\n");
+	else if (ft_strncmp(word, "GREAT", 5) == 0)
+		printf ("minishell: syntax error near unexpected token `>'\n");
+	else if (ft_strncmp(word, "DGREAT", 6) == 0)
+		printf ("minishell: syntax error near unexpected token `>>'\n");
+	else if (ft_strncmp(word, "CLOOPER", 7) == 0)
+		printf ("minishell: syntax error near unexpected token `>|'\n");
+	else if (ft_strncmp(word, "LESS", 2) == 0)
+		printf ("minishell: syntax error near unexpected token `<'\n");
+	else if (ft_strncmp(word, "DLESS", 3) == 0)
+		printf ("minishell: syntax error near unexpected token `<<'\n");
 	else
 		printf ("minishell: syntax error near unexpected token `newline'\n");
 }

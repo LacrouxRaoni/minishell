@@ -6,7 +6,7 @@
 /*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/01 18:44:47 by rruiz-la          #+#    #+#             */
-/*   Updated: 2021/11/13 11:31:27 by rruiz-la         ###   ########.fr       */
+/*   Updated: 2022/05/20 11:01:27 by rruiz-la         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,12 +104,17 @@ char	*get_line(int fd, char **buff, char **backup_buff)
 
 char	*get_next_line(int fd)
 {
+	int			ret;
 	char		*buff;
 	char		*line;
 	static char	*backup_buff;
 
+	ret = 0;
 	if (fd < 0 || BUFFER_SIZE <= 0 || fd > 256)
+	{
+		free_reader(&backup_buff, ret);
 		return (NULL);
+	}
 	buff = (char *)malloc(sizeof(char) * (BUFFER_SIZE + 1));
 	if (!buff)
 		return (NULL);
