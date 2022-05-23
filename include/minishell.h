@@ -6,7 +6,7 @@
 /*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/08 11:01:55 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/05/20 18:12:21 by rruiz-la         ###   ########.fr       */
+/*   Updated: 2022/05/22 22:11:54 by rruiz-la         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,8 @@ typedef struct s_cmd
 	char 	**here_doc;
 	int		fd_in;
 	int		fd_out;
+	char	*var_name;
+	char	*content;
 	struct s_cmd *next;
 } t_cmd;
 
@@ -56,6 +58,7 @@ int		len_subline(t_mns *data, int start, int len, int aux);
 void	cmd_table(t_mns *data, t_cmd **cmd);
 void	exec_cmds(t_cmd **cmd);
 void	exec_here_doc(t_cmd **cmd);
+void	exec_redirect(t_cmd **cmd);
 void	free_cmd_table(t_cmd **cmd);
 void	free_lexical_line(t_mns *data);
 #endif

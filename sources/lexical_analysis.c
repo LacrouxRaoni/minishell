@@ -6,7 +6,7 @@
 /*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/08 11:14:21 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/05/15 19:24:06 by rruiz-la         ###   ########.fr       */
+/*   Updated: 2022/05/22 12:01:47 by rruiz-la         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,14 +42,10 @@ static int	sort_lexical_line(int i, t_mns *data)
 		data->lexical_line[i] = ft_strdup("LESS");
 	else if ((ft_strncmp(data->parsed_line[i], "<<\0", 3) == 0))
 		data->lexical_line[i] = ft_strdup("DLESS");
-	else if ((ft_strncmp(data->parsed_line[i], "<<<\0", 4) == 0))
-		data->lexical_line[i] = ft_strdup("GLESS");
 	else if ((ft_strncmp(data->parsed_line[i], ">\0", 2) == 0))
 		data->lexical_line[i] = ft_strdup("GREAT");
 	else if ((ft_strncmp(data->parsed_line[i], ">>\0", 3) == 0))
 		data->lexical_line[i] = ft_strdup("DGREAT");
-	else if ((ft_strncmp(data->parsed_line[i], ">|\0", 3) == 0))
-		data->lexical_line[i] = ft_strdup("CLOOPER");
 	else
 		data->lexical_line[i] = ft_strdup("WORD");
 	return (i);

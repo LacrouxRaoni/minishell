@@ -6,7 +6,7 @@
 /*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/08 11:05:44 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/05/08 11:06:10 by rruiz-la         ###   ########.fr       */
+/*   Updated: 2022/05/22 12:00:03 by rruiz-la         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,15 +21,11 @@ static int	get_len_tokens(t_mns *data, int i)
 	{
 		if (data->line[i + 1] == '<')
 			i++;
-		if (data->line[i + 1] == '<')
-			i++;
 		i++;
 	}
 	else if (data->line[i] == '>')
 	{
 		if (data->line[i + 1] == '>')
-			i++;
-		else if (data->line[i + 1] == '|')
 			i++;
 		i++;
 	}

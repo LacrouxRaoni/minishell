@@ -6,7 +6,7 @@
 /*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/18 11:58:19 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/05/20 19:02:16 by rruiz-la         ###   ########.fr       */
+/*   Updated: 2022/05/21 13:35:47 by rruiz-la         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,8 @@ static char	*check_for_quotes(char **word)
 {
 	int		len;
 	char	*aux;
-	
-	if((*word)[0] == '\'' || (*word)[0] == '\"')
+
+	if ((*word)[0] == '\'' || (*word)[0] == '\"')
 	{
 		len = ft_strlen(*word);
 		aux = ft_substr(*word, 1, len - 2);
@@ -30,7 +30,7 @@ static char	*check_for_quotes(char **word)
 static void	write_line(char **limiter, int size_limiter, int *fd)
 {
 	char	*line;
-	
+
 	close(fd[0]);
 	while (1)
 	{
@@ -42,7 +42,7 @@ static void	write_line(char **limiter, int size_limiter, int *fd)
 			{
 				get_next_line(-1);
 				free(line);
-				break;
+				break ;
 			}
 			else
 				write (fd[1], line, ft_strlen(line));
@@ -56,10 +56,10 @@ static void	write_line(char **limiter, int size_limiter, int *fd)
 
 static int	prepare_here_doc(char **here_doc, t_cmd **cmd)
 {
-	int	pid;
-	int	fd[2];
-	int	size_limiter;
-	char *limiter;
+	int		pid;
+	int		fd[2];
+	int		size_limiter;
+	char	*limiter;
 
 	limiter = check_for_quotes(here_doc);
 	size_limiter = ft_strlen(limiter);
@@ -79,15 +79,14 @@ static int	prepare_here_doc(char **here_doc, t_cmd **cmd)
 	free (limiter);
 	close(fd[1]);
 	return (fd[0]);
-	
 }
 
-void exec_here_doc(t_cmd **cmd)
+void	exec_here_doc(t_cmd **cmd)
 {
 	int		i;
 	int		fd;
 	t_cmd	*cmd_node;
-	
+
 	cmd_node = (*cmd);
 	while (cmd_node != NULL)
 	{
@@ -100,6 +99,5 @@ void exec_here_doc(t_cmd **cmd)
 		cmd_node->fd_in = fd;
 		cmd_node = cmd_node->next;
 		close (fd);
-		
 	}
 }

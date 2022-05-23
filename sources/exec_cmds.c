@@ -6,137 +6,104 @@
 /*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/17 12:26:53 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/05/20 19:31:12 by rruiz-la         ###   ########.fr       */
+/*   Updated: 2022/05/22 22:24:32 by rruiz-la         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static char	*check_for_quotes(char *word)
+static char *clean_quotes(char *content)
 {
-	int		len;
+	int	i;
+	int	j;
 	char	*aux;
-	
-	if(word[0] == '\'' || word[0] == '\"')
+
+	i = 0;
+	j = 0;
+	while (content[i])
 	{
-		len = ft_strlen(word);
-		aux = ft_substr(word, 1, len - 2);
+		if (content[i] != '\'' && content[i] != '\"')
+			j++;
+		i++;
 	}
-	else
-		aux = ft_strdup(word);
+	aux = (char *)ft_calloc(j + 1, sizeof(char *));
+	i = 0;
+	j = 0;
+	while (content[i])
+	{
+		if (content[i] != '\'' && content[i] != '\"')
+		{
+			aux[j] = content[i];
+			j++;
+		}
+		i++;
+	}
+	aux[j] = '\0';
 	return (aux);
 }
 
-static int	exec_less(t_cmd *cmd_node, int i)
+static int	check_for_var(t_cmd *cmd_node)
 {
-	char *file_in;
+	int		i;
+	int		j;
+	char	*content;
 
-	file_in = check_for_quotes(cmd_node->redirect[i]);
-	cmd_node->fd_in = open(file_in, O_RDONLY);
-	if (cmd_node->fd_in < 0)
+	i = 0;
+	j = 0;
+	if(ft_strchr(cmd_node->word[0], '=') != NULL)
 	{
-		if(errno == 13)
-		{	//prmission_denied
-			return (0);
-		}
-		else
+		if (ft_isalpha(cmd_node->word[0][0]) == 0)
+			return (1);
+		while (cmd_node->word[0][i])
 		{
-			//file doesn't exist
+			if (cmd_node->word[0][i] == '=')
+				break ;
+			else if (ft_isalnum(cmd_node->word[0][i])== 0)
+				return (1);
+			else
+				j++;
+			i++;
+		}
+		cmd_node->var_name = ft_substr(cmd_node->word[0], 0, i);
+		if (ft_strchr(cmd_node->var_name, '\'') != NULL || ft_strchr(cmd_node->var_name, '\"') != NULL)
+		{
+			free(cmd_node->var_name);
 			return (1);
 		}
+		content = ft_substr(cmd_node->word[0], i + 1, ft_strlen(cmd_node->word[0]));
+		if (ft_strchr(content, '\'') != NULL || ft_strchr(content, '\"') != NULL)
+			 cmd_node->content = clean_quotes(content);
+		printf ("%s\n", cmd_node->var_name);
+		printf ("aaaaa %s\n", cmd_node->content);
+		free(cmd_node->var_name);
+		free(cmd_node->content);
+		free(content);
 	}
-	free (file_in);
 	return (0);
 }
 
-static int	exec_great(t_cmd *cmd_node, int i)
+void	exec_words(t_cmd **cmd)
 {
-	char *file_out;
+	t_cmd	*cmd_node;
 
-	file_out = check_for_quotes(cmd_node->redirect[i]);
-	cmd_node->fd_out = open(file_out, O_WRONLY | O_CREAT | O_TRUNC, 0777);
-	if (cmd_node->fd_out < 0)
-	{
-		if(errno == 13)
-		{	//prmission_denied
-			return (0);
-		}
-		else
-		{
-			//file doesn't exist
-			return (1);
-		}
-	}
-	free (file_out);
-	return (0);
-}
-
-static int	exec_dgreat(t_cmd *cmd_node, int i)
-{
-	char *file_out;
-
-	file_out = check_for_quotes(cmd_node->redirect[i]);
-	cmd_node->fd_out = open(file_out, O_WRONLY | O_APPEND, 0777);
-	if (cmd_node->fd_out < 0)
-	{
-		if(errno == 13)
-		{	//prmission_denied
-			return (0);
-		}
-		else
-		{
-			//file doesn't exist
-			return (1);
-		}
-	}
-	free (file_out);
-	return (0);
-}
-
- void	exec_redirect(t_cmd **cmd)
-{
-	int	i;
-	t_cmd *cmd_node;
-	
 	cmd_node = (*cmd);
-	while (cmd_node != NULL)
+	if (cmd_node != NULL)
 	{
-		i = 0;
-		while (cmd_node->redirect[i] != NULL)
-		{
-			if (ft_strncmp(cmd_node->redirect[i], "<\0", 2) == 0)
-			{
-				i++;
-				exec_less(cmd_node, i);
-				i++;
-			}
-			else if (ft_strncmp(cmd_node->redirect[i], ">\0", 2) == 0
-				|| ft_strncmp(cmd_node->redirect[i], ">|\0", 3) == 0)
-			{
-				i++;
-				exec_great(cmd_node, i);
-				i++;
-			}
-			else if (ft_strncmp(cmd_node->redirect[i], ">>\0", 3) == 0)
-			{
-				i++;
-				exec_dgreat(cmd_node, i);
-				i++;
-			}
-		}
-		cmd_node = cmd_node->next;
+		if (cmd_node->word[0] != NULL)
+			check_for_var(cmd_node);
 	}
-		
 }
 
 void	exec_cmds(t_cmd **cmd)
 {
 	if ((*cmd) != NULL)
 	{
-		if((*cmd)->here_doc[0] != NULL)
+		if ((*cmd)->here_doc[0] != NULL)
 			exec_here_doc(cmd);
-		if((*cmd)->redirect[0] != NULL)
+		if ((*cmd)->redirect[0] != NULL)
 			exec_redirect(cmd);
+		if ((*cmd)->word[0] != NULL)
+			exec_words(cmd);
 	}
 	printf("%d\n", (*cmd)->fd_in);
 	printf("%d\n", (*cmd)->fd_out);

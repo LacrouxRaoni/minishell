@@ -6,7 +6,7 @@
 /*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/15 20:36:06 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/05/18 10:55:04 by rruiz-la         ###   ########.fr       */
+/*   Updated: 2022/05/21 16:39:24 by rruiz-la         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ int	main(int argc, char *argv[], char *envp[])
 
 	if (argc == 1 && argv[0] != NULL)
 	{
-		get_envp (envp, &d_envp);
+		//get_envp (envp, &d_envp);
 		while (1)
 		{
 			//imprime user+endereço na linha de comando
@@ -72,7 +72,7 @@ int	main(int argc, char *argv[], char *envp[])
 				{
 					//exit_shell
 					free (data.line);
-					free_envp(&d_envp);
+					//free_envp(&d_envp);
 					rl_clear_history();
 					exit (0);
 				}
