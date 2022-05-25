@@ -6,7 +6,7 @@
 /*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/21 14:14:07 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/05/22 12:05:07 by rruiz-la         ###   ########.fr       */
+/*   Updated: 2022/05/24 23:00:58 by rruiz-la         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,8 @@ static char	*check_for_quotes(char *word)
 {
 	int		len;
 	char	*aux;
-	
-	if(word[0] == '\'' || word[0] == '\"')
+
+	if (word[0] == '\'' || word[0] == '\"')
 	{
 		len = ft_strlen(word);
 		aux = ft_substr(word, 1, len - 2);
@@ -98,24 +98,25 @@ void	exec_redirect(t_cmd **cmd)
 		{
 			if (ft_strncmp(cmd_node->redirect[i], "<\0", 2) == 0)
 			{
-				i++;
-				exec_less(cmd_node, i);
-				i++;
+				exec_less(cmd_node, i + 1);
+				i = i + 2;
+			}
+			else if (ft_strncmp(cmd_node->redirect[i], "<<\0", 3) == 0)
+			{				
+				exec_here_doc(cmd_node, cmd, i);
+				i = i + 2;
 			}
 			else if (ft_strncmp(cmd_node->redirect[i], ">\0", 2) == 0)
 			{
-				i++;
-				exec_great(cmd_node, i);
-				i++;
+				exec_great(cmd_node, i + 1);
+				i = i + 2;
 			}
 			else if (ft_strncmp(cmd_node->redirect[i], ">>\0", 3) == 0)
 			{
-				i++;
-				exec_dgreat(cmd_node, i);
-				i++;
+				exec_dgreat(cmd_node, i + 1);
+				i = i + 2;
 			}
 		}
 		cmd_node = cmd_node->next;
-	}
-		
+	}	
 }

@@ -6,7 +6,7 @@
 /*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/15 21:20:42 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/05/21 14:02:43 by rruiz-la         ###   ########.fr       */
+/*   Updated: 2022/05/24 22:07:59 by rruiz-la         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,14 +30,6 @@ static void	free_sublines(t_cmd **cmd, int i)
 		free ((*cmd)->redirect);
 		(*cmd)->redirect = NULL;
 	}
-	if ((*cmd)->here_doc != NULL)
-	{
-		i = -1;
-		while ((*cmd)->here_doc[++i])
-			free((*cmd)->here_doc[i]);
-		free ((*cmd)->here_doc);
-		(*cmd)->here_doc = NULL;
-	}
 }
 
 void	free_cmd_table(t_cmd **cmd)
@@ -50,6 +42,10 @@ void	free_cmd_table(t_cmd **cmd)
 		while ((*cmd) != NULL)
 		{
 			free_sublines(cmd, i);
+			if ((*cmd)->var_name != NULL)
+				free((*cmd)->var_name);
+			if ((*cmd)->content != NULL)
+				free((*cmd)->content);
 			temp = (*cmd);
 			(*cmd) = temp->next;
 			free (temp);

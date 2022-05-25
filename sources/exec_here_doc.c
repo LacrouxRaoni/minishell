@@ -6,7 +6,7 @@
 /*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/18 11:58:19 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/05/21 13:35:47 by rruiz-la         ###   ########.fr       */
+/*   Updated: 2022/05/24 22:56:58 by rruiz-la         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,23 +81,15 @@ static int	prepare_here_doc(char **here_doc, t_cmd **cmd)
 	return (fd[0]);
 }
 
-void	exec_here_doc(t_cmd **cmd)
+void	exec_here_doc(t_cmd *cmd_node, t_cmd **cmd, int i)
 {
-	int		i;
 	int		fd;
-	t_cmd	*cmd_node;
 
-	cmd_node = (*cmd);
-	while (cmd_node != NULL)
+	if (ft_strncmp(cmd_node->redirect[i], "<<", 2) == 0)
 	{
-		i = -1;
-		while (cmd_node->here_doc[++i] != NULL)
-		{
-			if (ft_strncmp(cmd_node->here_doc[i], "<<", 2) != 0)
-				fd = prepare_here_doc(&cmd_node->here_doc[i], cmd);
-		}
-		cmd_node->fd_in = fd;
-		cmd_node = cmd_node->next;
-		close (fd);
+		i++;
+		fd = prepare_here_doc(&cmd_node->redirect[i], cmd);
 	}
+	cmd_node->fd_in = fd;
+	close (fd);
 }
