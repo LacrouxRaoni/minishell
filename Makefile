@@ -58,6 +58,6 @@ re:	fclean all
 
 valgrind:
 	make
-	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --suppressions=readline.supp ./minishell
+	valgrind --suppressions=readline.supp --leak-check=full --show-leak-kinds=all --track-origins=yes ./minishell
 
 .PHONY: all clean fclean re

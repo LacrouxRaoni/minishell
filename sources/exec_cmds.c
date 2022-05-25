@@ -6,7 +6,7 @@
 /*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/17 12:26:53 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/05/24 22:08:30 by rruiz-la         ###   ########.fr       */
+/*   Updated: 2022/05/25 18:57:55 by rruiz-la         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,36 +99,25 @@ static int	check_for_var(t_cmd *cmd_node, int *w)
 
 
 
-static void tild_expansion(t_cmd *cmd_node)
+static void tild_expansion(t_cmd *cmd_node, int i)
 {
-	int	i;
 	char *line;
 	
-	i = 0;
-	if(cmd_node->word[0][0] == '~')	
+	line = '\0';
+	if(cmd_node->word[i][0] == '~')	
 	{
-		if (cmd_node->word[0][1] == '\0')
-		{	
+		if (cmd_node->word[i][1] == '\0')
 			line = getenv("HOME");
-			printf ("minishell: %s: is a directory\n", line);
-		}
-		else if ((ft_strchr(cmd_node->word[0], '\'') == NULL) || ft_strchr(cmd_node->word[0], '\"') == NULL)
+		else if ((ft_strchr(cmd_node->word[i], '\'') == NULL) || ft_strchr(cmd_node->word[i], '\"') == NULL)
 		{
-			if (cmd_node->word[0][1] == '+')
-			{
-				line = getenv("PWD");
-			}
-			else if (cmd_node->word[0][1] == '-')
-			{
+			if (ft_strcmp(cmd_node->word[i], "~+\0") == 0)
+					line = getenv("PWD");
+			else if (ft_strcmp(cmd_node->word[i], "~-\0") == 0)
 				line = getenv("OLDPWD");
-			}
-			else
-			{
-				i = 1;
-				while (ft_isalpha(cmd_node->word[0][i]))
-				{
-					i++;					
-				}
+			else if (ft_strchr(cmd_node->word[i], '/') != NULL)
+			{	
+				if (ft_strcmp(cmd_node->word[i], "~/\0") == 0)
+					line = getenv("HOME");
 			}
 		}
 		printf ("tilde %s\n", line);
@@ -149,7 +138,7 @@ void	exec_words(t_cmd **cmd)
 			if (ft_strchr((*cmd)->word[i], '=') != NULL)
 				check_for_var(cmd_node, &i);
 			else if((ft_strchr((*cmd)->word[i], '~') != NULL))
-				tild_expansion(cmd_node);
+				tild_expansion(cmd_node, i);
 			i++;
 		}
 		cmd_node = cmd_node->next;

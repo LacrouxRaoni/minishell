@@ -6,7 +6,7 @@
 /*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/11 22:33:28 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/02/12 14:32:20 by rruiz-la         ###   ########.fr       */
+/*   Updated: 2022/05/25 18:34:12 by rruiz-la         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,6 +132,9 @@ int		ft_memcmp(const void *s1, const void *s2, size_t n);
     *nated string little in the	string big, where not more than	len characters
     *are searched.
 **/
+
+int		ft_strcmp(const char *s1, const char *s2);
+
 char	*ft_strnstr(const char *big, const char *little, size_t len);
 /**
  	*The  atoi()  function  converts the initial portion of the string
