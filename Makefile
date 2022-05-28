@@ -24,6 +24,10 @@ SRC_FILES	=	minishell.c \
 				exec_cmds.c \
 				exec_here_doc.c \
 				exec_redirects.c \
+				tild_expansion.c \
+				quote_exapansion.c \
+				handle_s_quote.c \
+				handle_d_quotes.c \
 				free_cmd_table.c
 SRC	=	$(addprefix $(SRC_DIR)/, $(SRC_FILES))
 

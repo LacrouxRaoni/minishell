@@ -6,7 +6,7 @@
 /*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/08 11:01:55 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/05/24 22:45:26 by rruiz-la         ###   ########.fr       */
+/*   Updated: 2022/05/27 21:14:53 by rruiz-la         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,12 @@ void	cmd_table(t_mns *data, t_cmd **cmd);
 void	exec_cmds(t_cmd **cmd);
 void	exec_here_doc(t_cmd *cmd_node, t_cmd **cmd, int i);
 void	exec_redirect(t_cmd **cmd);
+int		tild_expansion(t_cmd *cmd_node, int i);
+void	quote_expansion(t_cmd *cmd_node, int i);
+void	handle_s_quote(t_cmd *cmd_node, int i);
+void	handle_d_quotes(t_cmd *cmd_node, int i);
+char	*clean_quotes(char *content);
+void	assignment_expansion(t_cmd *cmd_node, int i);
 void	free_cmd_table(t_cmd **cmd);
 void	free_lexical_line(t_mns *data);
 #endif
