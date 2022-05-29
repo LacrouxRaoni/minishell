@@ -28,6 +28,6 @@
    fun:malloc
    fun:xmalloc
    fun:add_history
-   fun:alloc_history_entry
+   fun:main
    ...
 }

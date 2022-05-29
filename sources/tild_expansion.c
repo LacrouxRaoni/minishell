@@ -6,7 +6,7 @@
 /*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/27 12:59:43 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/05/27 18:03:26 by rruiz-la         ###   ########.fr       */
+/*   Updated: 2022/05/28 19:32:42 by rruiz-la         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,16 +61,19 @@ int	tild_expansion(t_cmd *cmd_node, int i)
 	if (cmd_node->word[i][0] == '~')
 	{
 		if (cmd_node->word[i][1] == '\0')
+		{
 			line = getenv("HOME");
+			cmd_node->word[i] = ft_strdup(line);
+		}
 		else if ((ft_strchr(cmd_node->word[i], '\'') == NULL)
 			|| ft_strchr(cmd_node->word[i], '\"') == NULL)
 		{
 			if (check_tild_type(cmd_node, i, &line, &tmp) == 1)
-				return (0);
+				return (1);
 			else
 				include_tild_in_cmd_table(cmd_node, i, &line, &tmp);
-			printf ("tilde %s\n", cmd_node->word[i]);
 		}
 	}
+	printf ("tilde %s\n", cmd_node->word[i]);
 	return (0);
 }

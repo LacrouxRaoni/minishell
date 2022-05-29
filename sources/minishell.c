@@ -6,58 +6,145 @@
 /*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/15 20:36:06 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/05/25 12:41:55 by rruiz-la         ###   ########.fr       */
+/*   Updated: 2022/05/29 11:29:59 by rruiz-la         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void get_envp(char **envp, t_envp *data_envp)
+static t_hash *create_hashtable(char **variables)
 {
-	int i;
-	int len;
+	t_hash	*hashtable;
 
-	len = 0;
-	while (envp[len] != NULL)
-		len++;
-	data_envp->new_envp = (char **)ft_calloc(len + 1, sizeof(char *));
-	if (!data_envp->new_envp)
+	hashtable = ft_calloc(1, sizeof(t_hash));
+	hashtable->size= 0;
+	if (variables)
 	{
-		ft_putstr_fd("malloc error\n", 1);
+		while (variables[hashtable->size])
+			hashtable->size++;
+	}
+	if (hashtable->size > 0)
+		hashtable->list = ft_calloc(hashtable->size, sizeof(t_env_list *));
+	else
+		hashtable->list = NULL;
+	hashtable->count = 0;
+	return (hashtable);
+}
+static char *extract_key(char  *key_line)
+{
+	int	i;
+	char *key;
+
+	key = '\0';		
+	i = 0;
+	while (key_line[i] != '=')
+		i++;
+	key = ft_substr(key_line, 0, i);
+	return (key);
+}
+
+static char *extract_value(char *value_line)
+{
+	int	i;
+	char	*value;	
+
+	value = NULL;
+	i = 0;
+	while (value_line[i] != '=')
+		i++;
+	value = ft_substr(value_line, i + 1, ft_strlen(value_line) - i);
+	return (value);
+}
+
+static int	get_hash_pos(char *key, int size)
+{
+	unsigned long int	hash;
+	int	i;
+
+	hash = 5381;
+	i = 0;
+	while (key && key[i])
+	{
+		hash = (((hash << 5) + hash) + key[i]);
+		i++;
+	}
+	return (hash % size);
+}
+
+static void hash_add_pos(t_env_list **list, char *key, char *value)
+{
+	t_env_list *node;
+	t_env_list *tmp;
+
+	node = (t_env_list *)malloc(sizeof(t_env_list));
+	if (!node)
 		exit(1);
-	}
-	i = -1;
-	while (++i < len)
-		data_envp->new_envp[i] = ft_strdup(envp[i]);
-}
-
-static void free_envp(t_envp *d_envp)
-{
-	int i;
-
-	if (d_envp->new_envp != NULL)
+	node->key = ft_strdup(key);
+	node->value = ft_strdup(value);
+	node->next = NULL;
+	if (!(*list))
+		(*list) = node;
+	else
 	{
-		i = 0;
-		while (d_envp->new_envp[i] != NULL)
+		int i = 0;
+		tmp = (*list);
+		while (tmp->next)
 		{
-			free (d_envp->new_envp[i]);
-			i++;
+			tmp = tmp->next;
 		}
-		free (d_envp->new_envp);
-		d_envp->new_envp = NULL;
-	}
+		tmp->next = node;
+	}		
 }
+
+static void hash_insert(char *key, char *value)
+{
+	int	index;
+	t_hash *table;
+	
+	table = g_data.hash[0];
+
+
+	index = get_hash_pos(key, table->size);
+
+	hash_add_pos(&(table->list[index]), key, value);
+	table->count++;
+}
+
+static void fulfill_hash(char **envp, t_hash *hash)
+{
+	int		i;
+	char	*key;
+	char	*value;
+
+	i = 0;
+	while (envp[i])
+	{
+		key = extract_key(envp[i]);
+		value = extract_value(envp[i]);
+		hash_insert(key, value);		
+		i++;	
+	}
+
+}
+
+t_main g_data;
 
 int	main(int argc, char *argv[], char *envp[])
 {
 	char		*line;
 	t_mns		data;
-	t_envp		d_envp;
-	t_cmd		*cmd;
+
 
 	if (argc == 1 && argv[0] != NULL)
 	{
-		//get_envp (envp, &d_envp);
+		g_data.hash[0] = create_hashtable(envp);
+		g_data.hash[1] = create_hashtable(NULL);
+		fulfill_hash(envp, g_data.hash[0]);
+		
+		
+		
+		
+		
 		while (1)
 		{
 			//imprime user+endereço na linha de comando
@@ -72,7 +159,7 @@ int	main(int argc, char *argv[], char *envp[])
 				{
 					//exit_shell
 					free (data.line);
-					//free_envp(&d_envp);
+					
 					rl_clear_history();
 					exit (0);
 				}
@@ -93,9 +180,9 @@ int	main(int argc, char *argv[], char *envp[])
 						free_lexical_line(&data);
 					else
 					{
-						cmd_table(&data, &cmd);
-						exec_cmds(&cmd);
-						free_cmd_table(&cmd);
+						cmd_table(&data, &g_data.cmd);
+						exec_cmds(&g_data.cmd);
+						free_cmd_table(&g_data.cmd);
 					}
 					free_lexical_line(&data);
 				}		
