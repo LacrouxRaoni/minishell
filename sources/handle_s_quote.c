@@ -6,7 +6,7 @@
 /*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/27 19:50:29 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/05/27 19:51:49 by rruiz-la         ###   ########.fr       */
+/*   Updated: 2022/05/30 11:49:16 by rruiz-la         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,5 +84,4 @@ void	handle_s_quote(t_cmd *cmd_node, int i)
 	free(cmd_node->word[i]);
 	cmd_node->word[i] = ft_strdup(quote_line);
 	free (quote_line);
-	printf ("quote %s\n", cmd_node->word[i]);
 }

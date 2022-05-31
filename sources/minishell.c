@@ -6,7 +6,7 @@
 /*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/15 20:36:06 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/05/29 11:29:59 by rruiz-la         ###   ########.fr       */
+/*   Updated: 2022/05/30 11:32:19 by rruiz-la         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ static char *extract_value(char *value_line)
 	return (value);
 }
 
-static int	get_hash_pos(char *key, int size)
+int	get_hash_pos(char *key, int size)
 {
 	unsigned long int	hash;
 	int	i;

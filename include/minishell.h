@@ -6,7 +6,7 @@
 /*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/08 11:01:55 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/05/28 14:13:46 by rruiz-la         ###   ########.fr       */
+/*   Updated: 2022/05/30 22:50:08 by rruiz-la         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,10 @@ void	quote_expansion(t_cmd *cmd_node, int i);
 void	handle_s_quote(t_cmd *cmd_node, int i);
 void	handle_d_quotes(t_cmd *cmd_node, int i);
 char	*clean_quotes(char *content);
-void	assignment_expansion(t_cmd *cmd_node, int i);
+void	parse_assignment_expansion(t_cmd *cmd_node, int i);
+void	assignment_expansion(char *assi_word);
 void	free_cmd_table(t_cmd **cmd);
 void	free_lexical_line(t_mns *data);
+
+int	get_hash_pos(char *key, int size);
 #endif
