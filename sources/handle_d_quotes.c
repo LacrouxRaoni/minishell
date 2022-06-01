@@ -6,7 +6,7 @@
 /*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/27 21:09:16 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/05/30 20:25:14 by rruiz-la         ###   ########.fr       */
+/*   Updated: 2022/05/31 09:30:00 by rruiz-la         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,6 @@ void	handle_d_quotes(t_cmd *cmd_node, int i)
 	free(cmd_node->word[i]);
 	cmd_node->word[i] = ft_strdup(dquote_line);
 	if (ft_strchr(cmd_node->word[i], '$') != NULL)
-		parse_assignmet_expansion(cmd_node, i);
+		parse_assignment_expansion(cmd_node, i);
 	free (dquote_line);
 }

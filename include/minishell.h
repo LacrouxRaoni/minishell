@@ -6,7 +6,7 @@
 /*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/08 11:01:55 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/05/30 22:50:08 by rruiz-la         ###   ########.fr       */
+/*   Updated: 2022/06/01 17:46:01 by rruiz-la         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ int		syntax_analysis(char **lexical_line);
 int		get_n_break(t_mns *data, int i);
 int		len_subline(t_mns *data, int start, int len, int aux);
 void	cmd_table(t_mns *data, t_cmd **cmd);
-void	exec_cmds(t_cmd **cmd);
+void	prepare_to_exec(t_cmd **cmd);
 void	exec_here_doc(t_cmd *cmd_node, t_cmd **cmd, int i);
 void	exec_redirect(t_cmd **cmd, t_cmd *cmd_node);
 int		tild_expansion(t_cmd *cmd_node, int i);
@@ -73,9 +73,14 @@ void	handle_s_quote(t_cmd *cmd_node, int i);
 void	handle_d_quotes(t_cmd *cmd_node, int i);
 char	*clean_quotes(char *content);
 void	parse_assignment_expansion(t_cmd *cmd_node, int i);
-void	assignment_expansion(char *assi_word);
+int		count_keys(char *word, int j);
+int		count_dollars(t_cmd *cmd_node, int i, int *len, int *k);
+char	*assignment_expansion(char *assi_word);
 void	free_cmd_table(t_cmd **cmd);
 void	free_lexical_line(t_mns *data);
+
+char *ft_str_superjoin(char **s1);
+
 
 int	get_hash_pos(char *key, int size);
 #endif

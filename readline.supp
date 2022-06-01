@@ -22,12 +22,11 @@
    ...
 }
 {
-   <AddHistory>
+   <Readline/AddHistory>
    Memcheck:Leak
    match-leak-kinds: reachable
    fun:malloc
    fun:xmalloc
    fun:add_history
-   fun:main
    ...
 }

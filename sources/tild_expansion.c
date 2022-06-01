@@ -6,7 +6,7 @@
 /*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/27 12:59:43 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/05/28 19:32:42 by rruiz-la         ###   ########.fr       */
+/*   Updated: 2022/06/01 17:52:03 by rruiz-la         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,5 @@ int	tild_expansion(t_cmd *cmd_node, int i)
 				include_tild_in_cmd_table(cmd_node, i, &line, &tmp);
 		}
 	}
-	printf ("tilde %s\n", cmd_node->word[i]);
 	return (0);
 }

@@ -26,6 +26,9 @@ SRC_FILES	=	minishell.c \
 				exec_redirects.c \
 				tild_expansion.c \
 				quote_exapansion.c \
+				pre_assingment_expansion.c \
+				pre_assingment_expansion_utils.c \
+				assingment_expansion.c \
 				handle_s_quote.c \
 				handle_d_quotes.c \
 				free_cmd_table.c
