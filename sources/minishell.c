@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: tyago-ri <tyago-ri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/15 20:36:06 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/06/03 09:16:38 by rruiz-la         ###   ########.fr       */
+/*   Updated: 2022/06/03 17:38:22 by tyago-ri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	free_hash_table()
 	h = 0;
 	while (h < 2)
 	{
-		table = g_data.hash[h];
+		table = g_data->hash[h];
 		i = 0;
 		while (i < table->count)
 		{		
@@ -50,18 +50,21 @@ void	free_hash_table()
 	}
 }
 
-t_main g_data;
+t_main *g_data;
 
 int	main(int argc, char *argv[], char *envp[])
 {
 	char		*line;
 	t_mns		data;
+	g_data = (t_main *) malloc (sizeof(t_main));
+	g_data->list.env = cp_first_env(envp);
+	printf("%s \n", *g_data->list.env); //Copiando o Path Env
 
 	if (argc == 1 && argv[0] != NULL)
 	{
-		g_data.hash[0] = create_hashtable(envp);
-		g_data.hash[1] = create_hashtable(NULL);
-		fulfill_hash(envp, g_data.hash[0]);
+		g_data->hash[0] = create_hashtable(envp);
+		g_data->hash[1] = create_hashtable(NULL);
+		fulfill_hash(envp, g_data->hash[0]);
 		while (1)
 		{
 			//imprime user+endereço na linha de comando
@@ -72,6 +75,7 @@ int	main(int argc, char *argv[], char *envp[])
 			if (data.line[0] != '\0')
 			{
 				add_history(data.line);
+				
 				if (ft_strncmp(data.line, "exit\0", 5) == 0)
 				{
 					//exit_shell
@@ -97,9 +101,9 @@ int	main(int argc, char *argv[], char *envp[])
 						free_lexical_line(&data);
 					else
 					{
-						cmd_table(&data, &g_data.cmd);
-						prepare_to_exec(&g_data.cmd);
-						free_cmd_table(&g_data.cmd);
+						cmd_table(&data, &g_data->cmd);
+						prepare_to_exec(&g_data->cmd);
+						free_cmd_table(&g_data->cmd);
 					}
 					free_lexical_line(&data);
 				}		

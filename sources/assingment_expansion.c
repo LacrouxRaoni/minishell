@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   assingment_expansion.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: tyago-ri <tyago-ri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/01 10:00:48 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/06/02 18:49:04 by rruiz-la         ###   ########.fr       */
+/*   Updated: 2022/06/03 17:28:37 by tyago-ri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,14 +17,14 @@ static int	check_key_in_hash(char **dollar, int r)
 	t_hash	*h_list;
 	int		index;
 
-	if (g_data.hash[(r)]->size == 0)
+	if (g_data->hash[(r)]->size == 0)
 	{
 		free (*dollar);
 		*dollar = ft_strdup("");
 		return (1);
 	}
-	index = get_hash_pos(*dollar, g_data.hash[(r)]->size);
-	h_list = g_data.hash[(r)];
+	index = get_hash_pos(*dollar, g_data->hash[(r)]->size);
+	h_list = g_data->hash[(r)];
 	while (h_list->list[index])
 	{
 		if (ft_strcmp(h_list->list[index]->key, *dollar) > 0)

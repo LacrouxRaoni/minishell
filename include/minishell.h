@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: tyago-ri <tyago-ri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/08 11:01:55 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/06/03 12:07:07 by rruiz-la         ###   ########.fr       */
+/*   Updated: 2022/06/03 17:31:37 by tyago-ri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ typedef struct s_mns
 	int		error_num;
 	int		n_break;
 	int		n;
+	int		exit_code;
 }	t_mns;
 
 typedef struct s_cmd
@@ -52,9 +53,10 @@ typedef struct	s_main
 	t_hash *hash[2];
 	t_mns	mns;
 	t_cmd	*cmd;
+	t_env_list list;
 }	t_main;
 
-extern t_main g_data;
+extern t_main *g_data;
 
 t_hash	*create_hashtable(char **variables);
 void	fulfill_hash(char **envp, t_hash *hash);
@@ -88,4 +90,11 @@ void	free_hash_table();
 
 
 int	get_hash_pos(char *key, int size);
+
+char	**cp_first_env(char **env);
+char	**copy_env(char **env);
+char	*find_env(char *var);
+char	**get_sorted_env(void);
+void	env_built_in(char **cmd);
+
 #endif
