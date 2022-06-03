@@ -6,21 +6,21 @@
 /*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/17 12:26:53 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/06/03 12:11:38 by rruiz-la         ###   ########.fr       */
+/*   Updated: 2022/06/03 18:25:17 by rruiz-la         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	split_var_n_content(t_cmd *cmd_node, int *i, int *j)
+static int	split_var_n_content(t_cmd *cmd_node, int w, int *i, int *j)
 {
-	if (ft_isalpha(cmd_node->word[0][0]) == 0)
+	if (ft_isalpha(cmd_node->word[w][0]) == 0)
 		return (-1);
-	while (cmd_node->word[0][(*i)])
+	while (cmd_node->word[w][(*i)])
 	{
-		if (cmd_node->word[0][(*i)] == '=')
+		if (cmd_node->word[w][(*i)] == '=')
 			break ;
-		else if (ft_isalnum(cmd_node->word[0][(*i)]) == 0)
+		else if (ft_isalnum(cmd_node->word[w][(*i)]) == 0)
 			return (-1);
 		else
 			*j++;
@@ -67,7 +67,7 @@ int	check_for_var(t_cmd *cmd_node, int w)
 	j = 0;
 	if (ft_strchr(cmd_node->word[w], '=') != NULL)
 	{
-		if (split_var_n_content(cmd_node, &i, &j) == -1)
+		if (split_var_n_content(cmd_node, w, &i, &j) == -1)
 			return (1);
 		cmd_node->var_name = ft_substr(cmd_node->word[w], 0, i);
 		if (ft_strchr(cmd_node->var_name, '\'') != NULL
@@ -138,6 +138,117 @@ void	printf_cmd(t_cmd **cmd, int j)
 }
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+static void exec_cmd(t_cmd **cmd)
+{
+	int	i;
+	t_cmd *cmd_node;
+
+	cmd_node = (*cmd);
+	while (cmd_node != NULL)
+	{
+		if (cmd_node->word != NULL)
+		{
+			//check_bult_in();
+
+
+
+			while (cmd_node->word[i] != NULL)
+			{
+				if (ft_strcmp(cmd_node->word[i], "echo") == 0)
+				{
+					//exec_echo	
+				}
+				else if (ft_strcmp(cmd_node->word[i], "cd") == 0)
+				{	
+					//exec_cd
+				}
+				else if (ft_strcmp(cmd_node->word[i], "pwd") == 0)
+				{
+					//exec_pwd	
+				}
+				else if (ft_strcmp(cmd_node->word[i], "export") == 0)
+				{
+					//exec_export	
+				}
+				else if (ft_strcmp(cmd_node->word[i], "unset") == 0)
+				{
+					//exec_unset	
+				}
+				else if (ft_strcmp(cmd_node->word[i], "env") == 0)
+				{
+					//exec_env	
+				}
+				else if (ft_strcmp(cmd_node->word[i], "exit") == 0)
+				{
+					//exec_exit					
+				}
+				i++;
+			}			
+		}
+		cmd_node = cmd_node->next;
+	}
+}
+
 void	prepare_to_exec(t_cmd **cmd)
 {
 	t_cmd *cmd_node;
@@ -156,4 +267,5 @@ void	prepare_to_exec(t_cmd **cmd)
 	//if (cmd_node->redirect[0] != NULL)
 	//	exec_redirect(cmd, cmd_node);
 	//printf_cmd(cmd, i);
+	exec_cmd(cmd);
 }
