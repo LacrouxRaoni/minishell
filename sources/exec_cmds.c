@@ -6,7 +6,7 @@
 /*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/17 12:26:53 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/06/01 17:51:16 by rruiz-la         ###   ########.fr       */
+/*   Updated: 2022/06/03 12:11:38 by rruiz-la         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ char	*clean_quotes(char *content)
 	return (aux);
 }
 
-static int	check_for_var(t_cmd *cmd_node, int w)
+int	check_for_var(t_cmd *cmd_node, int w)
 {
 	int		i;
 	int		j;
@@ -91,54 +91,69 @@ static int	check_for_var(t_cmd *cmd_node, int w)
 }
 
 
-void	word_expansion(t_cmd *cmd_node)
-{
-	int		i;
 
-	i = 0;
-	if (cmd_node != NULL)
+void	printf_cmd(t_cmd **cmd, int j)
+{
+	int i;
+	t_cmd *cmd_node;
+
+	cmd_node = (*cmd);
+
+	while (cmd_node != NULL)
 	{
-		while (cmd_node->word[i] != NULL)
-		{	
-			if (ft_strchr(cmd_node->word[i], '=') != NULL)
+		if (cmd_node->word[0] != NULL)
+		{
+			i = 0;
+			while (cmd_node->word[i] != NULL)
 			{
-				//mudar de lugar
-				check_for_var(cmd_node, i);
+				if (j == 0)
+					printf ("cmd word: %s\n" ,cmd_node->word[i]);
+				else
+					printf ("new cmd word: %s\n" ,cmd_node->word[i]);
 				i++;
 			}
-			else if (cmd_node->word[i][0] == '~')
-			{
-				if (tild_expansion(cmd_node, i) == 1)
-					i++;
-			}
-			else if ((ft_strchr(cmd_node->word[i], '\'') != NULL)
-				|| (ft_strchr(cmd_node->word[i], '\"') != NULL))
-			{
-				quote_expansion(cmd_node, i);
-				i++;
-			}
-			else if (ft_strchr(cmd_node->word[i], '$') != NULL)
-			{
-				parse_assignment_expansion(cmd_node, i);
-				i++;
-			}
-			else
-				i++;
 		}
+		if (cmd_node->redirect[0] != NULL)
+		{
+			i = 0;
+			while (cmd_node->redirect[i] != NULL)
+			{
+				if (j == 0)
+				{
+					printf ("fd in node %d: %d\n" , i, cmd_node->fd_in);
+					printf ("fd out node %d: %d\n" , i, cmd_node->fd_out);
+					printf ("cmd red: %s\n" ,cmd_node->redirect[i]);
+				}
+				else
+				{
+					printf ("new fd in node %d: %d\n" , i, cmd_node->fd_in);
+					printf ("new fd out node %d: %d\n" , i, cmd_node->fd_out);
+					printf ("new cmd red: %s\n" ,cmd_node->redirect[i]);
+				}
+				i++;
+			}
+		}
+		cmd_node = cmd_node->next;
 	}
 }
+
 
 void	prepare_to_exec(t_cmd **cmd)
 {
 	t_cmd *cmd_node;
-
+	//int	i;
+	
+	//i = 0;
 	cmd_node = (*cmd);
+	//printf_cmd(cmd, i);
+	//i++;
 	while (cmd_node != NULL)
 	{
 		if (cmd_node->word[0] != NULL)
 			word_expansion(cmd_node);
-		if (cmd_node->redirect[0] != NULL)
-			exec_redirect(cmd, cmd_node);
 		cmd_node = cmd_node->next;
 	}
+	//if (cmd_node->redirect[0] != NULL)
+	//	exec_redirect(cmd, cmd_node);
+	//printf_cmd(cmd, i);
 }

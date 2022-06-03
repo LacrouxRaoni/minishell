@@ -6,7 +6,7 @@
 /*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/31 21:27:12 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/06/01 17:38:57 by rruiz-la         ###   ########.fr       */
+/*   Updated: 2022/06/03 09:17:16 by rruiz-la         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,6 @@ static char	*substring_word(char *word, int j, int *k)
 		start = 0;
 	len = j - start;
 	assi_word = ft_substr(word, start, len);
-	printf ("assi %s\n", assi_word);
 	start = j;
 	return (assi_word);
 }

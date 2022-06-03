@@ -1,35 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strdup.c                                        :+:      :+:    :+:   */
+/*   create_hashtable.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/08/10 20:25:13 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/06/02 17:14:20 by rruiz-la         ###   ########.fr       */
+/*   Created: 2022/06/02 10:30:52 by rruiz-la          #+#    #+#             */
+/*   Updated: 2022/06/02 12:20:35 by rruiz-la         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "minishell.h"
 
-char	*ft_strdup(const char *s)
+t_hash	*create_hashtable(char **variables)
 {
-	char		*str;
-	size_t		i;
-	size_t		len;
+	t_hash	*hashtable;
 
-	i = 0;
-	len = ft_strlen(s);
-	str = (char *)malloc(sizeof(char) * (len + 1));
-	if (!str)
+	hashtable = ft_calloc(1, sizeof(t_hash));
+	hashtable->size = 0;
+	if (variables)
 	{
-		return (NULL);
+		while (variables[hashtable->size])
+			hashtable->size++;
 	}
-	while (s[i] != '\0')
-	{
-		str[i] = s[i];
-		i++;
-	}
-	str[i] = '\0';
-	return (str);
+	if (hashtable->size > 0)
+		hashtable->list = ft_calloc(hashtable->size, sizeof(t_env_list *));
+	else
+		hashtable->list = NULL;
+	hashtable->count = 0;
+	return (hashtable);
 }

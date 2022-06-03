@@ -6,125 +6,48 @@
 /*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/15 20:36:06 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/06/01 17:45:09 by rruiz-la         ###   ########.fr       */
+/*   Updated: 2022/06/03 09:16:38 by rruiz-la         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static t_hash *create_hashtable(char **variables)
+void	free_hash_table()
 {
-	t_hash	*hashtable;
-
-	hashtable = ft_calloc(1, sizeof(t_hash));
-	hashtable->size= 0;
-	if (variables)
-	{
-		while (variables[hashtable->size])
-			hashtable->size++;
-	}
-	if (hashtable->size > 0)
-		hashtable->list = ft_calloc(hashtable->size, sizeof(t_env_list *));
-	else
-		hashtable->list = NULL;
-	hashtable->count = 0;
-	return (hashtable);
-}
-static char *extract_key(char  *key_line)
-{
-	int	i;
-	char *key;
-
-	key = '\0';		
-	i = 0;
-	while (key_line[i] != '=')
-		i++;
-	key = ft_substr(key_line, 0, i);
-	return (key);
-}
-
-static char *extract_value(char *value_line)
-{
-	int	i;
-	char	*value;	
-
-	value = NULL;
-	i = 0;
-	while (value_line[i] != '=')
-		i++;
-	value = ft_substr(value_line, i + 1, ft_strlen(value_line) - i);
-	return (value);
-}
-
-int	get_hash_pos(char *key, int size)
-{
-	unsigned long int	hash;
-	int	i;
-
-	hash = 5381;
-	i = 0;
-	while (key && key[i])
-	{
-		hash = (((hash << 5) + hash) + key[i]);
-		i++;
-	}
-	return (hash % size);
-}
-
-static void hash_add_pos(t_env_list **list, char *key, char *value)
-{
-	t_env_list *node;
-	t_env_list *tmp;
-
-	node = (t_env_list *)malloc(sizeof(t_env_list));
-	if (!node)
-		exit(1);
-	node->key = ft_strdup(key);
-	node->value = ft_strdup(value);
-	node->next = NULL;
-	if (!(*list))
-		(*list) = node;
-	else
-	{
-		int i = 0;
-		tmp = (*list);
-		while (tmp->next)
-		{
-			tmp = tmp->next;
-		}
-		tmp->next = node;
-	}		
-}
-
-static void hash_insert(char *key, char *value)
-{
-	int	index;
 	t_hash *table;
-	
-	table = g_data.hash[0];
+	t_env_list *node;
+	t_env_list	*tmp;
+	int	i;
+	int	h;
 
-
-	index = get_hash_pos(key, table->size);
-
-	hash_add_pos(&(table->list[index]), key, value);
-	table->count++;
-}
-
-static void fulfill_hash(char **envp, t_hash *hash)
-{
-	int		i;
-	char	*key;
-	char	*value;
-
-	i = 0;
-	while (envp[i])
+	h = 0;
+	while (h < 2)
 	{
-		key = extract_key(envp[i]);
-		value = extract_value(envp[i]);
-		hash_insert(key, value);		
-		i++;	
+		table = g_data.hash[h];
+		i = 0;
+		while (i < table->count)
+		{		
+			if (table->list[i])
+			{
+				node = table->list[i];
+				while (node)
+				{
+					tmp = node;
+					node = node->next;
+					if (tmp->key != NULL)
+						free (tmp->key);
+					if (tmp->value != NULL)
+						free (tmp->value);
+					free (tmp);
+				}
+			}
+			i++;
+		}
+		free (table->list);
+		free (table);
+		free (node);
+		h++;
 	}
-
 }
 
 t_main g_data;
@@ -134,17 +57,11 @@ int	main(int argc, char *argv[], char *envp[])
 	char		*line;
 	t_mns		data;
 
-
 	if (argc == 1 && argv[0] != NULL)
 	{
 		g_data.hash[0] = create_hashtable(envp);
 		g_data.hash[1] = create_hashtable(NULL);
 		fulfill_hash(envp, g_data.hash[0]);
-		
-		
-		
-		
-		
 		while (1)
 		{
 			//imprime user+endereço na linha de comando
@@ -159,7 +76,7 @@ int	main(int argc, char *argv[], char *envp[])
 				{
 					//exit_shell
 					free (data.line);
-					
+					free_hash_table();
 					rl_clear_history();
 					exit (0);
 				}

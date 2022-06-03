@@ -6,7 +6,7 @@
 /*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/08 11:01:55 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/06/01 17:46:01 by rruiz-la         ###   ########.fr       */
+/*   Updated: 2022/06/03 12:07:07 by rruiz-la         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,10 @@ typedef struct	s_main
 
 extern t_main g_data;
 
-
+t_hash	*create_hashtable(char **variables);
+void	fulfill_hash(char **envp, t_hash *hash);
+char	*extract_key(char  *key_line);
+char	*extract_value(char *value_line);
 char	*print_terminal_line(char *line);
 int		token_analysis(t_mns *data);
 int		lexical_analysis(t_mns *data);
@@ -67,6 +70,8 @@ void	cmd_table(t_mns *data, t_cmd **cmd);
 void	prepare_to_exec(t_cmd **cmd);
 void	exec_here_doc(t_cmd *cmd_node, t_cmd **cmd, int i);
 void	exec_redirect(t_cmd **cmd, t_cmd *cmd_node);
+void	word_expansion(t_cmd *cmd_node);
+int		check_for_var(t_cmd *cmd_node, int w);
 int		tild_expansion(t_cmd *cmd_node, int i);
 void	quote_expansion(t_cmd *cmd_node, int i);
 void	handle_s_quote(t_cmd *cmd_node, int i);
@@ -79,7 +84,7 @@ char	*assignment_expansion(char *assi_word);
 void	free_cmd_table(t_cmd **cmd);
 void	free_lexical_line(t_mns *data);
 
-char *ft_str_superjoin(char **s1);
+void	free_hash_table();
 
 
 int	get_hash_pos(char *key, int size);

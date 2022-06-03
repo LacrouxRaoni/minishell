@@ -1,35 +1,39 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strdup.c                                        :+:      :+:    :+:   */
+/*   extract_key_n_value.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/08/10 20:25:13 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/06/02 17:14:20 by rruiz-la         ###   ########.fr       */
+/*   Created: 2022/06/02 10:39:52 by rruiz-la          #+#    #+#             */
+/*   Updated: 2022/06/02 10:50:11 by rruiz-la         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "minishell.h"
 
-char	*ft_strdup(const char *s)
+char	*extract_key(char  *key_line)
 {
-	char		*str;
-	size_t		i;
-	size_t		len;
+	int		i;
+	char	*key;
 
+	key = '\0';
 	i = 0;
-	len = ft_strlen(s);
-	str = (char *)malloc(sizeof(char) * (len + 1));
-	if (!str)
-	{
-		return (NULL);
-	}
-	while (s[i] != '\0')
-	{
-		str[i] = s[i];
+	while (key_line[i] != '=')
 		i++;
-	}
-	str[i] = '\0';
-	return (str);
+	key = ft_substr(key_line, 0, i);
+	return (key);
+}
+
+char	*extract_value(char *value_line)
+{
+	int		i;
+	char	*value;	
+
+	value = NULL;
+	i = 0;
+	while (value_line[i] != '=')
+		i++;
+	value = ft_substr(value_line, i + 1, ft_strlen(value_line) - i);
+	return (value);
 }

@@ -14,6 +14,9 @@ CC	=	gcc
 
 SRC_DIR		=	sources
 SRC_FILES	=	minishell.c \
+				create_hashtable.c \
+				fulfill_hash.c \
+				extract_key_n_value.c \
 				cmd_output_line.c \
 				token_analysis.c \
 				count_line.c \
@@ -21,9 +24,7 @@ SRC_FILES	=	minishell.c \
 				lexical_analysis.c \
 				syntax_analysis.c \
 				cmd_table.c \
-				exec_cmds.c \
-				exec_here_doc.c \
-				exec_redirects.c \
+				word_expansion.c \
 				tild_expansion.c \
 				quote_exapansion.c \
 				pre_assingment_expansion.c \
@@ -31,6 +32,9 @@ SRC_FILES	=	minishell.c \
 				assingment_expansion.c \
 				handle_s_quote.c \
 				handle_d_quotes.c \
+				exec_cmds.c \
+				exec_here_doc.c \
+				exec_redirects.c \
 				free_cmd_table.c
 SRC	=	$(addprefix $(SRC_DIR)/, $(SRC_FILES))
 

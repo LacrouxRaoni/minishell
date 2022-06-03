@@ -6,7 +6,7 @@
 /*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/18 11:58:19 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/05/28 10:18:05 by rruiz-la         ###   ########.fr       */
+/*   Updated: 2022/06/03 11:53:21 by rruiz-la         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@ static void	write_line(char **limiter, int size_limiter, int *fd)
 {
 	char	*line;
 
-	close(fd[0]);
 	while (1)
 	{
 		write (1, "> ", 2);
@@ -36,7 +35,6 @@ static void	write_line(char **limiter, int size_limiter, int *fd)
 			write (fd[1], line, ft_strlen(line));
 		free (line);
 	}
-	close(fd[1]);
 }
 
 static int	prepare_here_doc(char **here_doc, t_cmd **cmd)
@@ -50,18 +48,7 @@ static int	prepare_here_doc(char **here_doc, t_cmd **cmd)
 	size_limiter = ft_strlen(limiter);
 	if (pipe(fd) < 0)
 		exit (write(1, "Pipe error\n", ft_strlen("Pipe error\n")));
-	pid = fork();
-	if (pid < 0)
-		exit (write(1, "Fork error\n", ft_strlen("Fork error\n")));
-	if (pid == 0)
-	{
-		write_line(&limiter, size_limiter, fd);
-		free (limiter);
-		free_cmd_table(cmd);
-		rl_clear_history();
-		exit(0);
-	}
-	waitpid(pid, NULL, 0);
+	write_line(&limiter, size_limiter, fd);
 	free (limiter);
 	close(fd[1]);
 	return (fd[0]);

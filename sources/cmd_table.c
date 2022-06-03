@@ -6,7 +6,7 @@
 /*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/10 21:40:00 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/05/24 22:06:20 by rruiz-la         ###   ########.fr       */
+/*   Updated: 2022/06/03 09:50:14 by rruiz-la         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,17 +61,12 @@ static int	fulfill_cmd_table(char **lexical_line, t_iterator *utils,
 		t_mns *data, t_cmd *cmd_node)
 {
 	if (ft_strncmp(lexical_line[utils->i], "PIPE", 4) == 0)
-	{
-		printf ("red %s \n", cmd_node->redirect[utils->r]);
 		return (-10);
-	}
 	else
 	{
 		cmd_node->redirect[utils->r] = ft_strdup(data->parsed_line[utils->i]);
 		cmd_node->redirect[utils->r + 1]
 			= ft_strdup(data->parsed_line[utils->i + 1]);
-		printf ("red %s ", cmd_node->redirect[utils->r]);
-		printf ("%s \n", cmd_node->redirect[utils->r + 1]);
 		utils->i++;
 		utils->r = utils->r + 2;
 	}
@@ -101,7 +96,6 @@ static void	prepara_cmd_table(t_mns *data, t_iterator *cmd_utils,
 		{
 			cmd_node->word[cmd_utils->w]
 				= ft_strdup(data->parsed_line[cmd_utils->i]);
-			printf ("word %s\n", cmd_node->word[cmd_utils->w]);
 			cmd_utils->w++;
 		}
 		cmd_utils->i++;
