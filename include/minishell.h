@@ -6,13 +6,14 @@
 /*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/08 11:01:55 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/06/03 12:07:07 by rruiz-la         ###   ########.fr       */
+/*   Updated: 2022/06/04 12:38:09 by rruiz-la         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
+# include "execve.h"
 # include "env_list.h"
 # include "cmd_iterator.h"
 # include <stdio.h>
@@ -52,6 +53,7 @@ typedef struct	s_main
 	t_hash *hash[2];
 	t_mns	mns;
 	t_cmd	*cmd;
+	t_exec  *exec;
 }	t_main;
 
 extern t_main g_data;
