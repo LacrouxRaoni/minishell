@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_cmds.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: tyago-ri <tyago-ri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/17 12:26:53 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/06/03 12:11:38 by rruiz-la         ###   ########.fr       */
+/*   Updated: 2022/06/04 00:32:25 by tyago-ri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,18 +137,37 @@ void	printf_cmd(t_cmd **cmd, int j)
 	}
 }
 
+int	check_if_built_in(t_cmd *cmd)
+{
+	if (ft_str_check(cmd->word[0], "echo"))
+		return (1);
+	else if (ft_str_check(cmd->word[0], "pwd"))
+		return (1);
+	else
+		return (0);
+}
+void	exec_built_in(t_cmd *cmd)
+{
+	if (ft_str_check(cmd->word[0], "echo"))
+		echo_built_in(cmd);
+	else if (ft_str_check(cmd->word[0], "pwd"))
+		pwd_built_in();
+}
 
 void	prepare_to_exec(t_cmd **cmd)
 {
-	t_cmd *cmd_node;
+	t_cmd	*cmd_node;
 	//int	i;
 	
 	//i = 0;
 	cmd_node = (*cmd);
 	//printf_cmd(cmd, i);
 	//i++;
+	if (check_if_built_in(cmd_node))
+			exec_built_in(cmd_node);
 	while (cmd_node != NULL)
 	{
+		
 		if (cmd_node->word[0] != NULL)
 			word_expansion(cmd_node);
 		cmd_node = cmd_node->next;

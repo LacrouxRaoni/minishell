@@ -6,7 +6,7 @@
 /*   By: tyago-ri <tyago-ri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/08 11:01:55 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/06/03 17:31:37 by tyago-ri         ###   ########.fr       */
+/*   Updated: 2022/06/04 00:26:18 by tyago-ri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,12 +89,20 @@ void	free_lexical_line(t_mns *data);
 void	free_hash_table();
 
 
-int	get_hash_pos(char *key, int size);
+int		get_hash_pos(char *key, int size);
 
 char	**cp_first_env(char **env);
 char	**copy_env(char **env);
 char	*find_env(char *var);
 char	**get_sorted_env(void);
 void	env_built_in(char **cmd);
+
+void	exec_built_in(t_cmd *cmd);
+int	check_if_built_in(t_cmd *cmd);
+int	ft_str_check(const char *s1, const char *s2);
+
+void	echo_built_in(char **cmd);
+void	pwd_built_in(void);
+
 
 #endif

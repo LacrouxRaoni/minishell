@@ -15,6 +15,7 @@
 void	echo_built_in(char **cmd)
 {
 	int	i;
+	int	exit_code;
 
 	i = 1;
 	if (cmd[1] == NULL)
@@ -34,6 +35,6 @@ void	echo_built_in(char **cmd)
 		if ((ft_str_check(cmd[1], "-n")) == 0)
 			write (1, "\n", 1);
 	}
-	g_data->mns.exit_code = 0;
+	exit_code = 0;
 	return ;
 }
