@@ -6,7 +6,7 @@
 /*   By: tyago-ri <tyago-ri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/17 12:26:53 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/06/04 00:32:25 by tyago-ri         ###   ########.fr       */
+/*   Updated: 2022/06/04 00:49:29 by tyago-ri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,7 +149,7 @@ int	check_if_built_in(t_cmd *cmd)
 void	exec_built_in(t_cmd *cmd)
 {
 	if (ft_str_check(cmd->word[0], "echo"))
-		echo_built_in(cmd);
+		echo_built_in(cmd->word);
 	else if (ft_str_check(cmd->word[0], "pwd"))
 		pwd_built_in();
 }
@@ -167,7 +167,6 @@ void	prepare_to_exec(t_cmd **cmd)
 			exec_built_in(cmd_node);
 	while (cmd_node != NULL)
 	{
-		
 		if (cmd_node->word[0] != NULL)
 			word_expansion(cmd_node);
 		cmd_node = cmd_node->next;

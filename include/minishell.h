@@ -6,7 +6,7 @@
 /*   By: tyago-ri <tyago-ri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/08 11:01:55 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/06/04 00:26:18 by tyago-ri         ###   ########.fr       */
+/*   Updated: 2022/06/04 00:40:45 by tyago-ri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,6 +103,10 @@ int	ft_str_check(const char *s1, const char *s2);
 
 void	echo_built_in(char **cmd);
 void	pwd_built_in(void);
+
+// void	kill_loop(int signum);
+// void	quit_core(int signum);
+
 
 
 #endif
