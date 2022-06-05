@@ -6,7 +6,7 @@
 /*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/08 11:01:55 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/06/04 12:38:09 by rruiz-la         ###   ########.fr       */
+/*   Updated: 2022/06/05 16:13:56 by rruiz-la         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ typedef struct	s_main
 	t_hash *hash[2];
 	t_mns	mns;
 	t_cmd	*cmd;
-	t_exec  *exec;
+	t_exec  exec;
 }	t_main;
 
 extern t_main g_data;
@@ -63,13 +63,13 @@ void	fulfill_hash(char **envp, t_hash *hash);
 char	*extract_key(char  *key_line);
 char	*extract_value(char *value_line);
 char	*print_terminal_line(char *line);
-int		token_analysis(t_mns *data);
-int		lexical_analysis(t_mns *data);
-int		syntax_analysis(char **lexical_line);
+int		token_analysis(void);
+int		lexical_analysis(void);
+int		syntax_analysis(void);
 int		get_n_break(t_mns *data, int i);
 int		len_subline(t_mns *data, int start, int len, int aux);
-void	cmd_table(t_mns *data, t_cmd **cmd);
-void	prepare_to_exec(t_cmd **cmd);
+void	cmd_table(void);
+void	prepare_to_exec(void);
 void	exec_here_doc(t_cmd *cmd_node, t_cmd **cmd, int i);
 void	exec_redirect(t_cmd **cmd, t_cmd *cmd_node);
 void	word_expansion(t_cmd *cmd_node);
@@ -83,8 +83,8 @@ void	parse_assignment_expansion(t_cmd *cmd_node, int i);
 int		count_keys(char *word, int j);
 int		count_dollars(t_cmd *cmd_node, int i, int *len, int *k);
 char	*assignment_expansion(char *assi_word);
-void	free_cmd_table(t_cmd **cmd);
-void	free_lexical_line(t_mns *data);
+void	free_cmd_table(void);
+void	free_lexical_line(void);
 
 void	free_hash_table();
 

@@ -6,7 +6,7 @@
 /*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/17 12:26:53 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/06/04 17:30:53 by rruiz-la         ###   ########.fr       */
+/*   Updated: 2022/06/05 16:28:39 by rruiz-la         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -214,67 +214,71 @@ static char  **get_path()
 	return (NULL);
 }
 
-static void free_path(char ***path)
+static void free_path(void)
 {
 	int	i;
 
 	i = -1;
-	while ((*path)[++i] != NULL)
-		free((*path)[i]);
-	free ((*path));
-	(*path) = NULL;
+	while (g_data.exec.path[++i] != NULL)
+		free(g_data.exec.path[i]);
+	free (g_data.exec.path);
+	g_data.exec.path = NULL;
 }
 
 
 static int	check_valid_path_cmd(t_cmd *cmd_node, int i)
 {
-	t_exec pipex;
+	t_exec *exec;
 	int		j;
 	char	*aux;
 	
-	pipex.path = get_path();
+	exec = &(g_data.exec);
+	exec->path = get_path();
 	if (cmd_node->word[i][0] == '/')
 	{
-		pipex.path_confirmed = ft_strdup(cmd_node->word[i]);
-		if (access(pipex.path_confirmed, F_OK) == 0)
+		exec->path_confirmed = ft_strdup(cmd_node->word[i]);
+		if (access(exec->path_confirmed, F_OK) == 0)
 			return (0);
 	}
 	j = 0;
-	while (pipex.path[j])
+	while (exec->path[j])
 	{
-		aux = ft_strjoin(pipex.path[j], "/");
-		pipex.path_confirmed = ft_strjoin(aux, cmd_node->word[i]);
-		if (access(pipex.path_confirmed, F_OK) == 0)
+		aux = ft_strjoin(exec->path[j], "/");
+		exec->path_confirmed = ft_strjoin(aux, cmd_node->word[i]);
+		if (access(exec->path_confirmed, F_OK) == 0)
 		{
-			free_path(&pipex.path);
+			free_path();
 			free (aux);
 			return (0);
 		}
 		free (aux);
-		free (pipex.path_confirmed);
-		pipex.path_confirmed = NULL;
+		free (exec->path_confirmed);
+		exec->path_confirmed = NULL;
 		j++;
 	}
+	free_path();
 	return (1);
 }
 
-static void exec_child(t_cmd *cmd_node, int *fd, t_exec *pipex)
+static void exec_child(int *fd)
 {
 		close(fd[0]);
-		if (cmd_node->next != NULL)
+		if (g_data.cmd->next != NULL)
 			dup2(fd[1], STDOUT_FILENO);
 		close (fd[1]);
-		if (execve(pipex->path_confirmed, cmd_node->word, NULL) == -1)
+		if (execve(g_data.exec.path_confirmed, g_data.cmd->word, NULL) == -1)
 			exit(1);
 		else
 			exit (1);
 }
 
-static void call_child_process(t_cmd *cmd_node, int i)
+static void call_child_process(void)
 {
-	t_exec pipex;
 	int	fd[2];
 	int	pid;
+	t_exec *exec;
+
+	exec = &(g_data.exec);
 
 	if (pipe(fd) < 0)
 		return ;
@@ -283,13 +287,14 @@ static void call_child_process(t_cmd *cmd_node, int i)
 		return	;
 	if (pid == 0)
 	{
-		exec_child(cmd_node, fd, &pipex);
+		exec_child(fd);
 	}
 	waitpid(pid, NULL, 0);
-	if (cmd_node->next != NULL)
+	if (g_data.cmd->next != NULL)
 		dup2(fd[0], STDIN_FILENO);
 	close(fd[0]);
 	close(fd[1]);
+	free (exec->path_confirmed);
 }
 
 
@@ -320,12 +325,12 @@ static void call_child_process(t_cmd *cmd_node, int i)
 
 
 
-static void exec_cmd(t_cmd **cmd)	
+static void exec_cmd(void)	
 {
 	int	i;
 	t_cmd *cmd_node;
 
-	cmd_node = (*cmd);
+	cmd_node = g_data.cmd;
 	while (cmd_node != NULL)
 	{
 		if (cmd_node->word != NULL)
@@ -352,11 +357,12 @@ static void exec_cmd(t_cmd **cmd)
 				{
 					if (check_valid_path_cmd(cmd_node, i) != 0)
 					{
+						printf ("cmd not found\n");
 						//command not found (127)
 					}
 					else
 					{
-						call_child_process(cmd_node, i);
+						call_child_process();
 					}
 				}
 				i++;
@@ -367,14 +373,14 @@ static void exec_cmd(t_cmd **cmd)
 	}
 }
 
-void	prepare_to_exec(t_cmd **cmd)
+void	prepare_to_exec(void)
 {
 	t_cmd *cmd_node;
 	//int	i;
 	
 	//i = 0;
-	cmd_node = (*cmd);
-	//printf_cmd(cmd, i);
+	cmd_node = g_data.cmd;
+	//printf_cmd(&g_data.cmd, i);
 	//i++;
 	while (cmd_node != NULL)
 	{
@@ -384,6 +390,6 @@ void	prepare_to_exec(t_cmd **cmd)
 	}
 	//if (cmd_node->redirect[0] != NULL)
 	//	exec_redirect(cmd, cmd_node);
-	//printf_cmd(cmd, i);
-	exec_cmd(cmd);
+	//printf_cmd(&g_data.cmd, i);
+	exec_cmd();
 }
