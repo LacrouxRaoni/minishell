@@ -6,7 +6,7 @@
 /*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/08 11:01:55 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/06/05 16:13:56 by rruiz-la         ###   ########.fr       */
+/*   Updated: 2022/06/05 17:50:53 by rruiz-la         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,8 +70,8 @@ int		get_n_break(t_mns *data, int i);
 int		len_subline(t_mns *data, int start, int len, int aux);
 void	cmd_table(void);
 void	prepare_to_exec(void);
-void	exec_here_doc(t_cmd *cmd_node, t_cmd **cmd, int i);
-void	exec_redirect(t_cmd **cmd, t_cmd *cmd_node);
+void	exec_redirect(void);
+void	exec_here_doc(t_cmd *cmd_node, int i);
 void	word_expansion(t_cmd *cmd_node);
 int		check_for_var(t_cmd *cmd_node, int w);
 int		tild_expansion(t_cmd *cmd_node, int i);

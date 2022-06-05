@@ -6,7 +6,7 @@
 /*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/15 20:36:06 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/06/05 12:58:08 by rruiz-la         ###   ########.fr       */
+/*   Updated: 2022/06/05 17:28:57 by rruiz-la         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,9 @@ int	main(int argc, char *argv[], char *envp[])
 				(g_data.mns).error_num = 0;
 				(g_data.mns).error_num = token_analysis();
 				if ((g_data.mns).error_num < 0)
-				{
+				{		
+		
+					
 					//write_error
 					if ((g_data.mns).error_num == -1)
 						printf("quote is missing\n");
