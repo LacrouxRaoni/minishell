@@ -6,7 +6,7 @@
 /*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/17 12:26:53 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/06/05 17:56:08 by rruiz-la         ###   ########.fr       */
+/*   Updated: 2022/06/06 17:26:33 by rruiz-la         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -261,25 +261,26 @@ static int	check_valid_path_cmd(t_cmd *cmd_node, int i)
 	return (1);
 }
 
-static void exec_child(int *fd)
+
+static void exec_child(t_cmd *cmd_node,int *fd)
 {
 		close(fd[0]);
-		if (g_data.cmd->fd_in > 0)
-			dup2(g_data.cmd->fd_in, STDIN_FILENO);
-		if (g_data.cmd->next != NULL)
+		printf ("fd in %d\n", cmd_node->fd_in);
+		printf ("fd in %d\n", cmd_node->fd_out);
+		if (cmd_node->fd_in > 0)
+			dup2(cmd_node->fd_in, STDIN_FILENO);
+		if (cmd_node->next != NULL)
 			dup2(fd[1], STDOUT_FILENO);
+		else if (cmd_node->fd_out > 0)
+			dup2(cmd_node->fd_out, STDOUT_FILENO);
 		close (fd[1]);
-		if (execve(g_data.exec.path_confirmed, g_data.cmd->word, NULL) == -1)
+		if (execve(g_data.exec.path_confirmed, cmd_node->word, NULL) == -1)
 			exit(1);
 }
 
-static void call_child_process(void)
+static void call_child_process(t_cmd *cmd_node, int *fd)
 {
-	int	fd[2];
 	int	pid;
-	t_exec *exec;
-
-	exec = &(g_data.exec);
 
 	if (pipe(fd) < 0)
 		return ;
@@ -288,50 +289,32 @@ static void call_child_process(void)
 		return	;
 	if (pid == 0)
 	{
-		exec_child(fd);
+		exec_child(cmd_node, fd);
 	}
 	waitpid(pid, NULL, 0);
-	if (g_data.cmd->next != NULL)
+	if (cmd_node->next != NULL)
 		dup2(fd[0], STDIN_FILENO);
 	close(fd[0]);
 	close(fd[1]);
-	free (exec->path_confirmed);
+	free (g_data.exec.path_confirmed);
+	if (cmd_node->redirect != NULL)
+	{
+		if (cmd_node->fd_in > 0)
+			close (cmd_node->fd_in);
+		if (cmd_node->fd_out > 0)
+			close (cmd_node->fd_out);
+	}
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 static void exec_cmd(void)	
 {
 	int	i;
+	int	fd[2];
+	int	tmp_fd;
 	t_cmd *cmd_node;
 
 	cmd_node = g_data.cmd;
+	tmp_fd = dup(STDIN_FILENO);
 	while (cmd_node != NULL)
 	{
 		if (cmd_node->redirect[0] != NULL)
@@ -347,13 +330,13 @@ static void exec_cmd(void)
 				else if (ft_strcmp(cmd_node->word[i], "cd") == 0)
 					printf ("%s\n", cmd_node->word[i]);//exec_cd
 				else if (ft_strcmp(cmd_node->word[i], "pwd") == 0)
-					printf ("%s\n", cmd_node->word[i]);//exec_pwd	
+					printf ("%s\n", cmd_node->word[i]);//exec_pwd
+				else if (ft_strcmp(cmd_node->word[i], "env") == 0)
+					printf ("%s\n", cmd_node->word[i]);//exec_env
 				else if (ft_strcmp(cmd_node->word[i], "export") == 0)
 					printf ("%s\n", cmd_node->word[i]);//exec_export	
 				else if (ft_strcmp(cmd_node->word[i], "unset") == 0)
 					printf ("%s\n", cmd_node->word[i]);//exec_unset	
-				else if (ft_strcmp(cmd_node->word[i], "env") == 0)
-					printf ("%s\n", cmd_node->word[i]);//exec_env
 				else if (ft_strcmp(cmd_node->word[i], "exit") == 0)
 					printf ("%s\n", cmd_node->word[i]);//exec_exit
 				else
@@ -365,7 +348,8 @@ static void exec_cmd(void)
 					}
 					else
 					{
-						call_child_process();
+						call_child_process(cmd_node, fd);
+						break ;
 					}
 				}
 				i++;
@@ -373,6 +357,7 @@ static void exec_cmd(void)
 		}
 		cmd_node = cmd_node->next;
 	}
+	dup2(tmp_fd, STDIN_FILENO);
 }
 
 void	prepare_to_exec()
