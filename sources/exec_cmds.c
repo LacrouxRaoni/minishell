@@ -6,7 +6,7 @@
 /*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/17 12:26:53 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/06/07 17:56:53 by rruiz-la         ###   ########.fr       */
+/*   Updated: 2022/06/07 19:03:50 by rruiz-la         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -209,6 +209,14 @@ int	check_if_built_in(t_cmd *cmd)
 }
 void	exec_built_in(t_cmd *cmd, int *fd)
 {
+	if (cmd->next != NULL)
+	{
+		if (pipe(fd) < 0)
+			exit (write(1, "Pipe error\n", ft_strlen("Pipe error\n")));
+		dup2(fd[1], STDOUT_FILENO);
+		close (fd[1]);
+		g_data.mns.n_break = 200;
+	}
 	if (ft_str_check(cmd->word[0], "echo"))
 		echo_built_in(cmd->word);
 	else if (ft_str_check(cmd->word[0], "pwd"))
@@ -216,63 +224,11 @@ void	exec_built_in(t_cmd *cmd, int *fd)
 	else if (ft_str_check(cmd->word[0], "env"))
 		env_built_in(cmd->word);
 // 	else if (ft_str_check(cmd->word[0], "cd"))
-// 		cd_built_in(cmd->word);
-	if (cmd->next != NULL)
-	{
-		cmd->fd_out = 3;
+// 		cd_built_in(cmd->word);		
+	dup2(fd[0], STDIN_FILENO);
+	close (fd[0]);
 
-		dup2(cmd->fd_out, STDOUT_FILENO);
-	}
-		
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -359,6 +315,8 @@ static void exec_child(t_cmd *cmd_node,int *fd)
 			dup2(fd[1], STDOUT_FILENO);
 		else if (cmd_node->fd_out > 0)
 			dup2(cmd_node->fd_out, STDOUT_FILENO);
+		else if (g_data.mns.n_break == 200)
+			dup2(g_data.mns.n, STDOUT_FILENO);
 		close (fd[1]);
 		if (execve(g_data.exec.path_confirmed, cmd_node->word, NULL) == -1)
 			exit(1);
@@ -401,6 +359,7 @@ static void exec_cmd(void)
 
 	cmd_node = g_data.cmd;
 	tmp_fd = dup(STDIN_FILENO);
+	g_data.mns.n = tmp_fd;
 	while (cmd_node != NULL)
 	{
 		if (cmd_node->redirect != NULL)
@@ -434,7 +393,10 @@ static void exec_cmd(void)
 		}
 		cmd_node = cmd_node->next;
 	}
-	dup2(tmp_fd, STDIN_FILENO);
+	if (g_data.mns.n_break != 200)
+		dup2(tmp_fd, STDIN_FILENO);
+	else
+		dup2(g_data.mns.n, STDIN_FILENO);
 }
 
 void	prepare_to_exec()
