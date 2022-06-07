@@ -39,7 +39,9 @@ SRC_FILES	=	minishell.c \
 				env.c \
 				pwd.c \
 				echo.c \
-				ft_str_check.c
+				ft_str_check.c \
+				# ft_my_strjoin.c \
+				# cd.c
 SRC	=	$(addprefix $(SRC_DIR)/, $(SRC_FILES))
 
 OBJ_DIR	=	objects

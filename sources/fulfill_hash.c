@@ -6,7 +6,7 @@
 /*   By: tyago-ri <tyago-ri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/02 10:37:02 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/06/03 17:28:07 by tyago-ri         ###   ########.fr       */
+/*   Updated: 2022/06/06 22:14:10 by tyago-ri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ static void	hash_insert(char **key, char **value)
 	int		index;
 	t_hash	*table;
 
-	table = g_data->hash[0];
+	table = g_data.hash[0];
 	index = get_hash_pos((*key), table->size);
 	hash_add_pos(&(table->list[index]), (*key), (*value));
 	table->count++;

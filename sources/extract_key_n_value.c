@@ -6,13 +6,13 @@
 /*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/02 10:39:52 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/06/02 10:50:11 by rruiz-la         ###   ########.fr       */
+/*   Updated: 2022/06/03 14:10:54 by rruiz-la         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*extract_key(char  *key_line)
+char	*extract_key(char *key_line)
 {
 	int		i;
 	char	*key;
