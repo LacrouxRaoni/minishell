@@ -6,7 +6,7 @@
 /*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/17 12:26:53 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/06/06 17:26:33 by rruiz-la         ###   ########.fr       */
+/*   Updated: 2022/06/07 10:21:36 by rruiz-la         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -265,8 +265,6 @@ static int	check_valid_path_cmd(t_cmd *cmd_node, int i)
 static void exec_child(t_cmd *cmd_node,int *fd)
 {
 		close(fd[0]);
-		printf ("fd in %d\n", cmd_node->fd_in);
-		printf ("fd in %d\n", cmd_node->fd_out);
 		if (cmd_node->fd_in > 0)
 			dup2(cmd_node->fd_in, STDIN_FILENO);
 		if (cmd_node->next != NULL)
@@ -318,7 +316,7 @@ static void exec_cmd(void)
 	while (cmd_node != NULL)
 	{
 		if (cmd_node->redirect[0] != NULL)
-			exec_redirect();
+			exec_redirect(fd);
 		if (cmd_node->word != NULL)
 		{
 			i = 0;

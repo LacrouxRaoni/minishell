@@ -6,7 +6,7 @@
 /*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/18 11:58:19 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/06/06 14:58:05 by rruiz-la         ###   ########.fr       */
+/*   Updated: 2022/06/07 10:03:33 by rruiz-la         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,10 +37,9 @@ static void	write_line(char **limiter, int size_limiter, int *fd)
 	}
 }
 
-static int	prepare_here_doc(char **here_doc)
+static int	prepare_here_doc(char **here_doc, int *fd)
 {
 	int		pid;
-	int		fd[2];
 	int		size_limiter;
 	char	*limiter;
 
@@ -54,15 +53,15 @@ static int	prepare_here_doc(char **here_doc)
 	return (fd[0]);
 }
 
-void	exec_here_doc(t_cmd *cmd_node, int i)
+void	exec_here_doc(t_cmd *cmd_node, int i, int *fd)
 {
-	int		fd;
+	int		fd_tmp;
 
 	if (ft_strncmp(cmd_node->redirect[i], "<<", 2) == 0)
 	{
 		i++;
-		fd = prepare_here_doc(&cmd_node->redirect[i]);
+		cmd_node->fd_in = prepare_here_doc(&cmd_node->redirect[i], fd);
+		dup2(cmd_node->fd_in, STDIN_FILENO);
 	}
-	cmd_node->fd_in = fd;
-	close (fd);
+	close (fd[0]);
 }

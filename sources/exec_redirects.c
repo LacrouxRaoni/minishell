@@ -6,7 +6,7 @@
 /*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/21 14:14:07 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/06/05 17:50:26 by rruiz-la         ###   ########.fr       */
+/*   Updated: 2022/06/07 09:44:34 by rruiz-la         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ static int	exec_dgreat(t_cmd *cmd_node, int i)
 	return (0);
 }
 
-static void	check_redirect_type(t_cmd *cmd_node, int *i)
+static void	check_redirect_type(t_cmd *cmd_node, int *i, int *fd)
 {
 	if (ft_strncmp(cmd_node->redirect[(*i)], "<\0", 2) == 0)
 	{
@@ -81,7 +81,7 @@ static void	check_redirect_type(t_cmd *cmd_node, int *i)
 	}
 	else if (ft_strncmp(cmd_node->redirect[(*i)], "<<\0", 3) == 0)
 	{				
-		exec_here_doc(cmd_node, (*i));
+		exec_here_doc(cmd_node, (*i), fd);
 		(*i) = (*i) + 2;
 	}
 	else if (ft_strncmp(cmd_node->redirect[(*i)], ">\0", 2) == 0)
@@ -96,7 +96,7 @@ static void	check_redirect_type(t_cmd *cmd_node, int *i)
 	}
 }
 
-void	exec_redirect(void)
+void	exec_redirect(int *fd)
 {
 	int		i;
 	t_cmd *cmd_node;
@@ -107,7 +107,7 @@ void	exec_redirect(void)
 		i = 0;
 		while (cmd_node->redirect[i] != NULL)
 		{
-			check_redirect_type(cmd_node, &i);
+			check_redirect_type(cmd_node, &i, fd);
 		}
 	}	
 }
