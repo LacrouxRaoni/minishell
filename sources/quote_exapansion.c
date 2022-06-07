@@ -6,13 +6,13 @@
 /*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/27 18:18:10 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/05/27 21:11:53 by rruiz-la         ###   ########.fr       */
+/*   Updated: 2022/06/07 13:21:25 by rruiz-la         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	quote_expansion(t_cmd *cmd_node, int i)
+int	quote_expansion(t_cmd *cmd_node, int i)
 {
 	int	j;
 
@@ -22,12 +22,14 @@ void	quote_expansion(t_cmd *cmd_node, int i)
 		if (cmd_node->word[i][j] == '\'')
 		{
 			handle_s_quote(cmd_node, i);
-			break ;
+			return (0);
 		}
 		else if (cmd_node->word[i][j] == '\"')
 		{
-			handle_d_quotes(cmd_node, i);
-			break ;
+			if (handle_d_quotes(cmd_node, i) < 0)
+				return (-1);
+			else
+				return (0);
 		}
 		j++;
 	}

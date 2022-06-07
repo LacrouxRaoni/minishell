@@ -6,7 +6,7 @@
 /*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/31 21:27:12 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/06/03 09:17:16 by rruiz-la         ###   ########.fr       */
+/*   Updated: 2022/06/07 13:28:58 by rruiz-la         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,14 +100,10 @@ static void	get_value_expansion(t_cmd *cmd_node, int i, char ***assi_word)
 	}
 	free(cmd_node->word[i]);
 	cmd_node->word[i] = ft_str_superjoin(aux);
-	j = -1;
-	while (aux[++j])
-		free (aux[j]);
-	free (aux);
-	aux = NULL;
+	free_aux_assig(&aux);
 }
 
-void	parse_assignment_expansion(t_cmd *cmd_node, int i)
+int	parse_assignment_expansion(t_cmd *cmd_node, int i)
 {
 	int		j;
 	int		size;
@@ -115,6 +111,8 @@ void	parse_assignment_expansion(t_cmd *cmd_node, int i)
 	int		k;
 
 	size = malloc_assignment_word(cmd_node, i, &assi_word);
+	if (size < 0)
+		return (-1);
 	j = 0;
 	k = 0;
 	while (j < size)
@@ -124,9 +122,6 @@ void	parse_assignment_expansion(t_cmd *cmd_node, int i)
 	}
 	assi_word[k] = NULL;
 	get_value_expansion(cmd_node, i, &assi_word);
-	j = -1;
-	while (assi_word[++j])
-		free(assi_word[j]);
-	free(assi_word);
-	assi_word = NULL;
+	free_aux_assig(&assi_word);
+	return (0);
 }

@@ -6,13 +6,13 @@
 /*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/08 11:07:27 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/05/08 11:08:17 by rruiz-la         ###   ########.fr       */
+/*   Updated: 2022/06/07 11:09:18 by rruiz-la         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*print_terminal_line(char *line)
+void	print_terminal_line(void)
 {
 	char	*user;
 	char	dir[1024];
@@ -23,8 +23,7 @@ char	*print_terminal_line(char *line)
 	getcwd(dir, sizeof(dir));
 	aux = ft_strjoin(user, "@:");
 	aux2 = ft_strjoin(dir, "$ ");
-	line = ft_strjoin(aux, aux2);
+	(g_data.mns).line_cmd = ft_strjoin(aux, aux2);
 	free (aux);
 	free (aux2);
-	return (line);
 }

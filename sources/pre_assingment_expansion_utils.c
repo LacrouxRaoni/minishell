@@ -6,7 +6,7 @@
 /*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/01 09:14:27 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/06/01 13:08:07 by rruiz-la         ###   ########.fr       */
+/*   Updated: 2022/06/07 12:10:33 by rruiz-la         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,4 +45,14 @@ int	count_dollars(t_cmd *cmd_node, int i, int *len, int *k)
 			(*len)++;
 		(*k)++;
 	}
+}
+
+void	free_aux_assig(char ***tmp)
+{
+	int	i;
+	i = -1;
+	while ((*tmp)[++i])
+		free ((*tmp)[i]);
+	free ((*tmp));
+	(*tmp) = NULL;
 }

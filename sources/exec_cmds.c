@@ -6,7 +6,7 @@
 /*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/17 12:26:53 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/06/07 10:21:36 by rruiz-la         ###   ########.fr       */
+/*   Updated: 2022/06/07 16:34:25 by rruiz-la         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,36 @@ int	check_for_var(t_cmd *cmd_node, int w)
 	}
 	return (0);
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -367,12 +397,6 @@ void	prepare_to_exec()
 	cmd_node = g_data.cmd;
 	//printf_cmd(&g_data.cmd, i);
 	//i++;
-	while (cmd_node != NULL)
-	{
-		if (cmd_node->word[0] != NULL)
-			word_expansion(cmd_node);
-		cmd_node = cmd_node->next;
-	}
 	//printf_cmd(&g_data.cmd, i);
 	exec_cmd();
 }

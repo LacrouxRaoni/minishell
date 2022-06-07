@@ -6,7 +6,7 @@
 /*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/08 11:01:55 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/06/07 09:48:30 by rruiz-la         ###   ########.fr       */
+/*   Updated: 2022/06/07 13:22:27 by rruiz-la         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,10 @@
 typedef struct s_mns
 {
 	char	*line;
+	char	*line_cmd;
 	char	**lexical_line;
 	char	**parsed_line;
-	int		error_num;
+	int		err_num;
 	int		n_break;
 	int		n;
 }	t_mns;
@@ -62,7 +63,7 @@ t_hash	*create_hashtable(char **variables);
 void	fulfill_hash(char **envp, t_hash *hash);
 char	*extract_key(char  *key_line);
 char	*extract_value(char *value_line);
-char	*print_terminal_line(char *line);
+void	print_terminal_line(void);
 int		token_analysis(void);
 int		lexical_analysis(void);
 int		syntax_analysis(void);
@@ -72,14 +73,15 @@ void	cmd_table(void);
 void	prepare_to_exec(void);
 void	exec_here_doc(t_cmd *cmd_node, int i, int *fd);
 void	exec_redirect(int *fd);
-void	word_expansion(t_cmd *cmd_node);
+int		word_expansion(void);
 int		check_for_var(t_cmd *cmd_node, int w);
 int		tild_expansion(t_cmd *cmd_node, int i);
-void	quote_expansion(t_cmd *cmd_node, int i);
+int		quote_expansion(t_cmd *cmd_node, int i);
 void	handle_s_quote(t_cmd *cmd_node, int i);
-void	handle_d_quotes(t_cmd *cmd_node, int i);
+int		handle_d_quotes(t_cmd *cmd_node, int i);
 char	*clean_quotes(char *content);
-void	parse_assignment_expansion(t_cmd *cmd_node, int i);
+int		parse_assignment_expansion(t_cmd *cmd_node, int i);
+void	free_aux_assig(char ***tmp);
 int		count_keys(char *word, int j);
 int		count_dollars(t_cmd *cmd_node, int i, int *len, int *k);
 char	*assignment_expansion(char *assi_word);

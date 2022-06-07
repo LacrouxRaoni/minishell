@@ -6,7 +6,7 @@
 /*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/08 11:14:21 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/06/05 12:41:46 by rruiz-la         ###   ########.fr       */
+/*   Updated: 2022/06/07 11:20:29 by rruiz-la         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,9 +66,7 @@ int	lexical_analysis(void)
 	while (data->parsed_line[i] != NULL)
 	{
 		i = sort_lexical_line(i, data);
-		printf ("%s ", data->lexical_line[i]);
 		i++;
 	}
-	printf ("\n");
 	return (0);
 }
