@@ -6,9 +6,10 @@
 /*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/17 12:26:53 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/06/07 16:34:25 by rruiz-la         ###   ########.fr       */
+/*   Updated: 2022/06/07 17:56:53 by rruiz-la         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 #include "minishell.h"
 
@@ -193,6 +194,63 @@ void	printf_cmd(t_cmd **cmd, int j)
 
 
 
+int	check_if_built_in(t_cmd *cmd)
+{
+	if (ft_str_check(cmd->word[0], "echo"))
+		return (1);
+	else if (ft_str_check(cmd->word[0], "pwd"))
+		return (1);
+	else if (ft_str_check(cmd->word[0], "env"))
+		return (1);
+	// else if (ft_str_check(cmd->word[0], "cd"))
+	// 	return (1);
+	else
+		return (0);
+}
+void	exec_built_in(t_cmd *cmd, int *fd)
+{
+	if (ft_str_check(cmd->word[0], "echo"))
+		echo_built_in(cmd->word);
+	else if (ft_str_check(cmd->word[0], "pwd"))
+		pwd_built_in();
+	else if (ft_str_check(cmd->word[0], "env"))
+		env_built_in(cmd->word);
+// 	else if (ft_str_check(cmd->word[0], "cd"))
+// 		cd_built_in(cmd->word);
+	if (cmd->next != NULL)
+	{
+		cmd->fd_out = 3;
+
+		dup2(cmd->fd_out, STDOUT_FILENO);
+	}
+		
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -345,7 +403,7 @@ static void exec_cmd(void)
 	tmp_fd = dup(STDIN_FILENO);
 	while (cmd_node != NULL)
 	{
-		if (cmd_node->redirect[0] != NULL)
+		if (cmd_node->redirect != NULL)
 			exec_redirect(fd);
 		if (cmd_node->word != NULL)
 		{
@@ -353,20 +411,11 @@ static void exec_cmd(void)
 			while (cmd_node->word[i] != NULL)
 			{
 				//check_bult_in();
-				if (ft_strcmp(cmd_node->word[i], "echo") == 0)
-					printf ("%s\n", cmd_node->word[i]);//exec_echo
-				else if (ft_strcmp(cmd_node->word[i], "cd") == 0)
-					printf ("%s\n", cmd_node->word[i]);//exec_cd
-				else if (ft_strcmp(cmd_node->word[i], "pwd") == 0)
-					printf ("%s\n", cmd_node->word[i]);//exec_pwd
-				else if (ft_strcmp(cmd_node->word[i], "env") == 0)
-					printf ("%s\n", cmd_node->word[i]);//exec_env
-				else if (ft_strcmp(cmd_node->word[i], "export") == 0)
-					printf ("%s\n", cmd_node->word[i]);//exec_export	
-				else if (ft_strcmp(cmd_node->word[i], "unset") == 0)
-					printf ("%s\n", cmd_node->word[i]);//exec_unset	
-				else if (ft_strcmp(cmd_node->word[i], "exit") == 0)
-					printf ("%s\n", cmd_node->word[i]);//exec_exit
+				if (check_if_built_in(cmd_node))
+				{
+					exec_built_in(cmd_node, fd);
+					break ;
+				}
 				else
 				{
 					if (check_valid_path_cmd(cmd_node, i) != 0)
@@ -390,13 +439,23 @@ static void exec_cmd(void)
 
 void	prepare_to_exec()
 {
-	t_cmd *cmd_node;
+	t_cmd	*cmd_node;
 	//int	i;
 	
 	//i = 0;
 	cmd_node = g_data.cmd;
 	//printf_cmd(&g_data.cmd, i);
 	//i++;
+	/*while (cmd_node != NULL)
+	{
+		if (cmd_node->word[0] != NULL)
+		{
+			if (check_if_built_in(cmd_node))
+					exec_built_in(cmd_node);
+		}
+		cmd_node = cmd_node->next;
+	}
 	//printf_cmd(&g_data.cmd, i);
+	*/
 	exec_cmd();
 }

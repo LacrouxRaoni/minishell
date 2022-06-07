@@ -6,9 +6,10 @@
 /*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/08 11:01:55 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/06/07 13:22:27 by rruiz-la         ###   ########.fr       */
+/*   Updated: 2022/06/07 17:53:06 by rruiz-la         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
@@ -36,6 +37,7 @@ typedef struct s_mns
 	int		err_num;
 	int		n_break;
 	int		n;
+	int		exit_code;
 }	t_mns;
 
 typedef struct s_cmd
@@ -54,6 +56,7 @@ typedef struct	s_main
 	t_hash *hash[2];
 	t_mns	mns;
 	t_cmd	*cmd;
+	t_env_list list;
 	t_exec  exec;
 }	t_main;
 
@@ -92,4 +95,29 @@ void	free_hash_table();
 
 
 int	get_hash_pos(char *key, int size);
+
+char	**cp_first_env(char **env);
+char	**copy_env(char **env);
+char	*find_env(char *var);
+char	**get_sorted_env(void);
+void	env_built_in(char **cmd);
+
+void	exec_built_in(t_cmd *cmd, int *fd);
+int		check_if_built_in(t_cmd *cmd);
+int		ft_str_check(const char *s1, const char *s2);
+// char	*ft_my_strjoin(char *s1, char *s2);
+
+void	echo_built_in(char **cmd);
+void	pwd_built_in(void);
+
+// static void	no_dir_error(char **cmd); CORRIGINDO VAZAMENTO
+// static void	cd_to_oldpwd(void);
+// static void	change_pwd(void);
+// void	cd_built_in(char **cmd);
+
+// void	kill_loop(int signum); IN PROGRESS
+// void	quit_core(int signum);
+
+
+
 #endif

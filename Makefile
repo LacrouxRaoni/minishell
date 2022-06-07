@@ -35,7 +35,13 @@ SRC_FILES	=	minishell.c \
 				exec_cmds.c \
 				exec_here_doc.c \
 				exec_redirects.c \
-				free_cmd_table.c
+				free_cmd_table.c \
+				env.c \
+				pwd.c \
+				echo.c \
+				ft_str_check.c \
+				# ft_my_strjoin.c \
+				# cd.c
 SRC	=	$(addprefix $(SRC_DIR)/, $(SRC_FILES))
 
 OBJ_DIR	=	objects

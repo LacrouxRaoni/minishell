@@ -6,9 +6,10 @@
 /*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/15 20:36:06 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/06/07 13:33:35 by rruiz-la         ###   ########.fr       */
+/*   Updated: 2022/06/07 17:32:40 by rruiz-la         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 #include "minishell.h"
 
@@ -54,13 +55,15 @@ t_main g_data;
 
 int	main(int argc, char *argv[], char *envp[])
 {
+	// g_data = (t_main *) malloc (sizeof(t_main));
 	if (argc == 1 && argv[0] != NULL)
 	{
-		//função
+		//ou esse função
 		g_data.hash[0] = create_hashtable(envp);
 		g_data.hash[1] = create_hashtable(NULL);
 		fulfill_hash(envp, g_data.hash[0]);
-		
+		//ou esse função - dar free
+		g_data.list.env = cp_first_env(envp);
 
 		while (1)
 		{
