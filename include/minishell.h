@@ -6,7 +6,7 @@
 /*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/08 11:01:55 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/06/09 12:36:11 by rruiz-la         ###   ########.fr       */
+/*   Updated: 2022/06/09 18:23:36 by rruiz-la         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,11 @@ char	*assignment_expansion(char *assi_word);
 void	free_cmd_table(void);
 void	free_lexical_line(void);
 
+
+
 void	free_hash_table();
+void	free_envp_list(void);
+
 
 
 int	get_hash_pos(char *key, int size);

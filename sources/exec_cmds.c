@@ -6,7 +6,7 @@
 /*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/17 12:26:53 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/06/09 14:04:13 by rruiz-la         ###   ########.fr       */
+/*   Updated: 2022/06/09 18:42:45 by rruiz-la         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -289,9 +289,15 @@ static int	check_valid_path_cmd(t_cmd *cmd_node, int i)
 
 
 
-
-	
-
+static void free_everything()
+{
+	free_cmd_table();
+	free_lexical_line();		
+	rl_clear_history();
+	free_hash_table();
+	free_envp_list();
+	free (g_data.exec.path_confirmed);
+}
 
 static void exec_child(t_cmd *cmd_node)
 {
@@ -304,32 +310,45 @@ static void exec_child(t_cmd *cmd_node)
 		exit (1);
 	if (pid == 0)
 	{
+		if (cmd_node->redirect != NULL)
+			exec_redirect(cmd_node);
 		printf ("%d\n", cmd_node->fd_in);
 		printf ("%d\n", cmd_node->fd_out);
 		if (cmd_node->fd_in > 0)
 		{
+			printf ("aqui tb\n");
 			dup2(cmd_node->fd_in, STDIN_FILENO);
 		}
 		if (cmd_node->fd_out > 0)
 		{
 			dup2(cmd_node->fd_out, STDOUT_FILENO);
 		}
-		else if (cmd_node->next != NULL)
+		if (cmd_node->next != NULL)
 		{
 			dup2(exec->fd[1], STDOUT_FILENO);
 			close (exec->fd[0]);
 			close (exec->fd[1]);
 		}
-		execve(exec->path_confirmed, cmd_node->word, NULL);
+		if (exec->error == 0)
+		{
+			if (execve(exec->path_confirmed, cmd_node->word, NULL) - 1)
+				exit(write (1, "execve returned an error\n", 30));
+		}
+		else
+		{
+			free_everything();
+			exit(0);
+		}
 	}
 	waitpid(pid, NULL, 0);
 	if (cmd_node->next != NULL)
 	{
+		printf ("oi aqui\n");
 		dup2(exec->fd[0], STDIN_FILENO);
 		close (exec->fd[0]);
 		close (exec->fd[1]);
 	}
-
+	cmd_node->fd_out = 0;
 	free (exec->path_confirmed);
 }
 
@@ -355,12 +374,23 @@ int	exec_cmd(void)
 	{
 		if (cmd_node->next != NULL)
 			open_pipe();
-		if (cmd_node->redirect != NULL)
-			exec_redirect(cmd_node);
-		if (cmd_node->word != NULL)
+		if (cmd_node->word[i] != NULL)
 		{
-			if (check_valid_path_cmd(cmd_node, i) == 0)
-				exec_child(cmd_node);
+			if (check_valid_path_cmd(cmd_node, i) != 0)
+			{
+				g_data.exec.error = 0;
+				if (cmd_node->next == NULL)
+				{
+					write (1, cmd_node->word[i], ft_strlen(cmd_node->word[i]));
+					write (1, ": command not found\n", 21);
+					g_data.mns.exit_code = 127;
+					break ;
+				}
+				write (1, cmd_node->word[i], ft_strlen(cmd_node->word[i]));
+				write (1, ": command not found\n", 21);
+				g_data.exec.error = 1;
+			}
+			exec_child(cmd_node);
 		}
 		cmd_node = cmd_node->next;
 	}

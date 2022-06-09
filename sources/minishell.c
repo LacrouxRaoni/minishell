@@ -6,13 +6,43 @@
 /*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/15 20:36:06 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/06/07 17:32:40 by rruiz-la         ###   ########.fr       */
+/*   Updated: 2022/06/09 18:42:16 by rruiz-la         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 
 #include "minishell.h"
 
+void	free_envp_list(void)
+{
+	t_env_list *env;
+	t_env_list *tmp;
+	int	i;
+
+	env = &(g_data.list);
+	while (env != NULL)
+	{
+		i = 0;
+		tmp = env->next;
+		if (env->key != NULL)	
+			free (env->key);
+		if (env->value != NULL)
+			free (env->value);
+		if (env->env[i] != NULL)
+		{
+			while (env->env[i] != NULL)
+			{
+				free(env->env[i]);
+				i++;
+			}
+			free (env->env);
+			env->env = NULL;
+		}
+		free(tmp);
+		env = env->next;
+	}
+	free (env);
+}
 void	free_hash_table()
 {
 	t_hash *table;
@@ -80,6 +110,7 @@ int	main(int argc, char *argv[], char *envp[])
 				{
 					free ((g_data.mns).line);
 					free_hash_table();
+					free_envp_list();
 					rl_clear_history();
 					exit (0);
 				}

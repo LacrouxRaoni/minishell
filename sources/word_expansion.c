@@ -6,7 +6,7 @@
 /*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/03 12:01:02 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/06/09 09:15:44 by rruiz-la         ###   ########.fr       */
+/*   Updated: 2022/06/09 16:36:56 by rruiz-la         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,9 +48,9 @@ int	word_expansion(void)
 	t_cmd	*cmd_node;
 
 	cmd_node = g_data.cmd;
-	i = 0;
 	while (cmd_node != NULL)
 	{
+		i = 0;
 		while (cmd_node->word[i] != NULL)
 		{
 			i = check_expansion_type(cmd_node, i);
