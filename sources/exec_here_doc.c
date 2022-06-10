@@ -6,7 +6,7 @@
 /*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/18 11:58:19 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/06/09 13:07:28 by rruiz-la         ###   ########.fr       */
+/*   Updated: 2022/06/10 19:59:38 by rruiz-la         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,6 @@ static void	write_line(char **limiter, int size_limiter, t_exec *exec)
 
 static void	prepare_here_doc(char **here_doc, t_exec *exec)
 {
-	int		pid;
 	int		size_limiter;
 	char	*limiter;
 

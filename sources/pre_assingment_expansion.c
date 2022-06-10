@@ -6,7 +6,7 @@
 /*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/31 21:27:12 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/06/07 13:28:58 by rruiz-la         ###   ########.fr       */
+/*   Updated: 2022/06/10 15:34:44 by rruiz-la         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,7 @@ static void	get_value_expansion(t_cmd *cmd_node, int i, char ***assi_word)
 		else
 			aux[j] = ft_strdup((*assi_word)[j]);
 		j++;
-	}
+	}	
 	free(cmd_node->word[i]);
 	cmd_node->word[i] = ft_str_superjoin(aux);
 	free_aux_assig(&aux);
@@ -123,5 +123,6 @@ int	parse_assignment_expansion(t_cmd *cmd_node, int i)
 	assi_word[k] = NULL;
 	get_value_expansion(cmd_node, i, &assi_word);
 	free_aux_assig(&assi_word);
+	cmd_node->expansion++;
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/21 14:14:07 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/06/09 12:59:44 by rruiz-la         ###   ########.fr       */
+/*   Updated: 2022/06/10 19:22:12 by rruiz-la         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,27 +68,25 @@ static int	exec_dgreat(t_cmd *cmd_node, int i)
 	return (0);
 }
 
-static void	check_redirect_type(t_cmd *cmd_node, int *i)
+static void	check_redirect_type(t_cmd *cmd_node, int i)
 {
-	if (ft_strncmp(cmd_node->redirect[(*i)], "<\0", 2) == 0)
+	if (ft_strncmp(cmd_node->redirect[i], "<\0", 2) == 0)
 	{
-		(g_data.mns).err_num = exec_less(cmd_node, (*i) + 1);
-		(*i) = (*i) + 2;
+		(g_data.mns).err_num = exec_less(cmd_node, i + 1);
 	}
-	else if (ft_strncmp(cmd_node->redirect[(*i)], "<<\0", 3) == 0)
-	{				
-		exec_here_doc(cmd_node, (*i));
-		(*i) = (*i) + 2;
-	}
-	else if (ft_strncmp(cmd_node->redirect[(*i)], ">\0", 2) == 0)
+	else if (ft_strncmp(cmd_node->redirect[i], "<<\0", 3) == 0)
 	{
-		(g_data.mns).err_num = exec_great(cmd_node, (*i) + 1);
-		(*i) = (*i) + 2;
+		exec_here_doc(cmd_node, i);
 	}
-	else if (ft_strncmp(cmd_node->redirect[(*i)], ">>\0", 3) == 0)
+	else if (ft_strncmp(cmd_node->redirect[i], ">\0", 2) == 0)
 	{
-		(g_data.mns).err_num = exec_dgreat(cmd_node, (*i) + 1);
-		(*i) = (*i) + 2;
+		(g_data.mns).err_num = exec_great(cmd_node, i + 1);
+		
+	}
+	else if (ft_strncmp(cmd_node->redirect[i], ">>\0", 3) == 0)
+	{
+		(g_data.mns).err_num = exec_dgreat(cmd_node, i + 1);
+		
 	}
 }
 
@@ -101,7 +99,8 @@ void	exec_redirect(t_cmd *cmd_node)
 		i = 0;
 		while (cmd_node->redirect[i] != NULL)
 		{
-			check_redirect_type(cmd_node, &i);
+			check_redirect_type(cmd_node, i);
+			i = i + 2;
 		}
 	}
 }

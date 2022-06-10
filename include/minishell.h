@@ -6,7 +6,7 @@
 /*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/08 11:01:55 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/06/09 18:23:36 by rruiz-la         ###   ########.fr       */
+/*   Updated: 2022/06/10 11:43:11 by rruiz-la         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@
 # include <stdlib.h>
 # include <fcntl.h>
 # include <sys/types.h>
+# include <dirent.h>
 # include <sys/wait.h>
 # include <errno.h>
 # include "./libft.h"
@@ -48,6 +49,7 @@ typedef struct s_cmd
 	int		fd_out;
 	char	*var_name;
 	char	*content;
+	int		expansion;
 	struct s_cmd *next;
 } t_cmd;
 

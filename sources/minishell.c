@@ -6,7 +6,7 @@
 /*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/15 20:36:06 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/06/09 18:42:16 by rruiz-la         ###   ########.fr       */
+/*   Updated: 2022/06/10 09:26:25 by rruiz-la         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,8 +112,9 @@ int	main(int argc, char *argv[], char *envp[])
 					free_hash_table();
 					free_envp_list();
 					rl_clear_history();
+					clear_history();
 					exit (0);
-				}
+				};
 				//função
 				if (token_analysis() < 0)
 				{

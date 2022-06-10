@@ -6,7 +6,7 @@
 /*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/17 12:26:53 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/06/09 18:42:45 by rruiz-la         ###   ########.fr       */
+/*   Updated: 2022/06/10 18:33:35 by rruiz-la         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -310,13 +310,8 @@ static void exec_child(t_cmd *cmd_node)
 		exit (1);
 	if (pid == 0)
 	{
-		if (cmd_node->redirect != NULL)
-			exec_redirect(cmd_node);
-		printf ("%d\n", cmd_node->fd_in);
-		printf ("%d\n", cmd_node->fd_out);
 		if (cmd_node->fd_in > 0)
 		{
-			printf ("aqui tb\n");
 			dup2(cmd_node->fd_in, STDIN_FILENO);
 		}
 		if (cmd_node->fd_out > 0)
@@ -325,6 +320,7 @@ static void exec_child(t_cmd *cmd_node)
 		}
 		if (cmd_node->next != NULL)
 		{
+			printf ("aqui tb\n");	
 			dup2(exec->fd[1], STDOUT_FILENO);
 			close (exec->fd[0]);
 			close (exec->fd[1]);
@@ -364,6 +360,7 @@ void	open_pipe()
 int	exec_cmd(void)
 {
 	t_cmd *cmd_node;
+	DIR	*dir;
 	int	tfd;
 	int	i;
 
@@ -372,13 +369,34 @@ int	exec_cmd(void)
 	i = 0;
 	while (cmd_node != NULL)
 	{
+		g_data.exec.error = 0;
 		if (cmd_node->next != NULL)
 			open_pipe();
+		if (cmd_node->redirect != NULL)
+			exec_redirect(cmd_node);
 		if (cmd_node->word[i] != NULL)
 		{
+			if (cmd_node->expansion > 0)
+			{	
+				if (ft_strchr(cmd_node->word[i], '/') != NULL)
+				{
+					dir = opendir(cmd_node->word[i]);
+					if (!dir)
+					{
+						write (1, "bash: ", ft_strlen("bash: "));
+						perror(cmd_node->word[i]);
+						g_data.mns.exit_code = 127;
+					}
+					else
+					{
+						printf ("bash: %s: Is a directory\n", cmd_node->word[0]);
+						closedir(dir);
+					}
+					break ;
+				}
+			}
 			if (check_valid_path_cmd(cmd_node, i) != 0)
 			{
-				g_data.exec.error = 0;
 				if (cmd_node->next == NULL)
 				{
 					write (1, cmd_node->word[i], ft_strlen(cmd_node->word[i]));
@@ -419,5 +437,7 @@ void	prepare_to_exec()
 		cmd_node = cmd_node->next;
 	} 
 	printf_cmd(&g_data.cmd);
-*/	exec_cmd();
+
+*/	
+	exec_cmd();
 }
