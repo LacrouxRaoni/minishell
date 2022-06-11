@@ -15,9 +15,8 @@
 void	pwd_built_in(void)
 {
 	char	*str;
-	int		exit_code;
 
-	exit_code = 0;
+	g_data.mns.exit_code = 0;
 	str = malloc (1024);
 	ft_putstr_fd(getcwd(str, 1024), STDOUT);
 	write (1, "\n", 1);
