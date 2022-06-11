@@ -6,7 +6,7 @@
 /*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/12 23:26:32 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/06/05 12:36:14 by rruiz-la         ###   ########.fr       */
+/*   Updated: 2022/06/11 16:46:19 by rruiz-la         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,12 +88,16 @@ int	token_analysis(void)
 	i = 0;
 	data->n = get_n_break(data, i);
 	if (data->n < 0)
+	{
+		data->err_num = -1;
 		return (-1);
+	}
 	parsed_line = malloc_parsed_line(data->n);
 	parsed_line = split_line(parsed_line, data);
 	if (parsed_line[0] == 0)
 	{
 		free_parsed_line(parsed_line);
+		data->err_num = -2;
 		return (-2);
 	}
 	else

@@ -6,7 +6,7 @@
 /*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/01 10:00:48 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/06/10 10:17:16 by rruiz-la         ###   ########.fr       */
+/*   Updated: 2022/06/11 17:29:37 by rruiz-la         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ static int	check_key_in_hash(char **dollar, int r)
 		}
 	}
 }
+
 static int	expand_key_value(char **dollar)
 {
 	int	i;

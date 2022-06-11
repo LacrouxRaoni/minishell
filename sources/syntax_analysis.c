@@ -6,7 +6,7 @@
 /*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/11 09:31:32 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/06/05 12:47:30 by rruiz-la         ###   ########.fr       */
+/*   Updated: 2022/06/11 17:08:09 by rruiz-la         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ static int	loop_lexical_line(char **lexical_line, int i)
 
 int	syntax_analysis(void)
 {
-	int	i;
+	int		i;
 	char	**lexical_line;
 
 	lexical_line = g_data.mns.lexical_line;

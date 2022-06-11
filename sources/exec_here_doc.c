@@ -6,7 +6,7 @@
 /*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/18 11:58:19 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/06/11 12:43:36 by rruiz-la         ###   ########.fr       */
+/*   Updated: 2022/06/11 15:16:36 by rruiz-la         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,8 @@ static void	write_line(char **limiter, int size_limiter, int *fd)
 {
 	char	*line;
 
-	close (fd[0]);
+	if (g_data.exec.i > 0)
+		dup2(g_data.exec.temp_fd, STDIN_FILENO);
 	while (1)
 	{
 		write (1, "> ", 2);
@@ -36,7 +37,6 @@ static void	write_line(char **limiter, int size_limiter, int *fd)
 			write (fd[1], line, ft_strlen(line));
 		free (line);
 	}
-	close (fd[1]);
 }
 
 static int	prepare_here_doc(char **here_doc, t_cmd *cmd_node)
@@ -44,27 +44,12 @@ static int	prepare_here_doc(char **here_doc, t_cmd *cmd_node)
 	int		size_limiter;
 	char	*limiter;
 	int		fd[2];
-	int		pid;
 
 	limiter = clean_quotes(*here_doc);
 	size_limiter = ft_strlen(limiter);
 	if (pipe(fd) < 0)
 		exit (write(1, "Pipe error\n", ft_strlen("Pipe error\n")));
-	pid = fork();
-	if (pid < 0)
-		exit (write (1, "Fork error\n", 14));
-	if (pid == 0)
-	{
-		write_line(&limiter, size_limiter, fd);
-		free_cmd_table();
-		free_envp_list();
-		free_hash_table();
-		free_lexical_line();
-		rl_clear_history();
-		free (limiter);
-		exit (0);
-	}
-	waitpid (pid, NULL, 0);
+	write_line(&limiter, size_limiter, fd);
 	free (limiter);
 	close(fd[1]);
 	cmd_node->fd_in = dup(fd[0]);

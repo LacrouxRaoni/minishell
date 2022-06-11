@@ -14,16 +14,26 @@ CC	=	gcc
 
 SRC_DIR		=	sources
 SRC_FILES	=	minishell.c \
+				\
 				create_hashtable.c \
 				fulfill_hash.c \
 				extract_key_n_value.c \
-				cmd_output_line.c \
+				\
+				env.c \
+				\
+				prompt.c \
+				\
+				parsing_n_exec.c \
+				\
 				token_analysis.c \
 				count_line.c \
 				len_subline.c \
 				lexical_analysis.c \
 				syntax_analysis.c \
+				\
+				create_cmd_table.c\
 				cmd_table.c \
+				\
 				word_expansion.c \
 				tild_expansion.c \
 				quote_exapansion.c \
@@ -36,7 +46,7 @@ SRC_FILES	=	minishell.c \
 				exec_here_doc.c \
 				exec_redirects.c \
 				free_cmd_table.c \
-				env.c \
+				\
 				pwd.c \
 				echo.c \
 				ft_str_check.c \

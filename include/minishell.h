@@ -6,7 +6,7 @@
 /*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/08 11:01:55 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/06/10 11:43:11 by rruiz-la         ###   ########.fr       */
+/*   Updated: 2022/06/11 17:28:11 by rruiz-la         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,13 +68,23 @@ t_hash	*create_hashtable(char **variables);
 void	fulfill_hash(char **envp, t_hash *hash);
 char	*extract_key(char  *key_line);
 char	*extract_value(char *value_line);
-void	print_terminal_line(void);
+
+char	**cp_first_env(char **env);
+
+
+void	exec_prompt(void);
+
+int		parsing_and_exec(void);
+
 int		token_analysis(void);
 int		lexical_analysis(void);
 int		syntax_analysis(void);
 int		get_n_break(t_mns *data, int i);
 int		len_subline(t_mns *data, int start, int len, int aux);
-void	cmd_table(void);
+
+void	create_cmd_table(void);
+void	cmd_table(t_cmd *cmd_node, t_mns *data, t_cmd *last_node);
+
 void	prepare_to_exec(void);
 void	exec_here_doc(t_cmd *cmd_node, int i);
 void	exec_redirect(t_cmd *cmd_node);
@@ -102,7 +112,7 @@ void	free_envp_list(void);
 
 int	get_hash_pos(char *key, int size);
 
-char	**cp_first_env(char **env);
+
 char	**copy_env(char **env);
 char	*find_env(char *var);
 char	**get_sorted_env(void);
