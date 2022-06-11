@@ -7,7 +7,9 @@ typedef struct s_exec
 	char	**path;
 	int		fd[2];
 	int		error;
-	int		free_p;
+	int		temp_fd;
+	int		i;
+	int		pid;
 } t_exec;
 #endif
 

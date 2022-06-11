@@ -6,10 +6,9 @@
 /*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/10 21:40:00 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/06/10 10:38:31 by rruiz-la         ###   ########.fr       */
+/*   Updated: 2022/06/11 17:27:59 by rruiz-la         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #include "minishell.h"
 
@@ -104,17 +103,12 @@ static void	prepara_cmd_table(t_mns *data, t_iterator *cmd_utils,
 	}
 }
 
-void	cmd_table(void)
+void	cmd_table(t_cmd *cmd_node, t_mns *data, t_cmd *last_node)
 {
 	t_iterator	cmd_utils;
-	t_cmd		*cmd_node;
-	t_cmd		*last_node;
-	t_mns		*data;
 
-	g_data.cmd = NULL;
 	cmd_utils.start = 0;
 	cmd_utils.i = 0;
-	data = &(g_data.mns);
 	while (data->lexical_line[cmd_utils.i])
 	{
 		cmd_node = (t_cmd *)malloc(sizeof(t_cmd));

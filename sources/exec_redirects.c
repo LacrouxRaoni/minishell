@@ -6,7 +6,7 @@
 /*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/21 14:14:07 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/06/10 19:22:12 by rruiz-la         ###   ########.fr       */
+/*   Updated: 2022/06/11 15:42:33 by rruiz-la         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ static int	exec_great(t_cmd *cmd_node, int i)
 	{
 		perror(file_out);
 		free (file_out);
-		g_data.mns.exit_code = 1;	
+		g_data.mns.exit_code = 1;
 		return (0);
 	}
 	free (file_out);
@@ -56,7 +56,7 @@ static int	exec_dgreat(t_cmd *cmd_node, int i)
 	char	*file_out;
 
 	file_out = clean_quotes(cmd_node->redirect[i]);
-	cmd_node->fd_out = open(file_out, O_WRONLY | O_CREAT |O_APPEND, 0777);
+	cmd_node->fd_out = open (file_out, O_WRONLY | O_CREAT | O_APPEND, 0777);
 	if (cmd_node->fd_out < 0)
 	{
 		perror(file_out);
@@ -81,12 +81,10 @@ static void	check_redirect_type(t_cmd *cmd_node, int i)
 	else if (ft_strncmp(cmd_node->redirect[i], ">\0", 2) == 0)
 	{
 		(g_data.mns).err_num = exec_great(cmd_node, i + 1);
-		
 	}
 	else if (ft_strncmp(cmd_node->redirect[i], ">>\0", 3) == 0)
 	{
 		(g_data.mns).err_num = exec_dgreat(cmd_node, i + 1);
-		
 	}
 }
 

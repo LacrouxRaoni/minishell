@@ -6,7 +6,7 @@
 /*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/17 12:26:53 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/06/10 18:33:35 by rruiz-la         ###   ########.fr       */
+/*   Updated: 2022/06/11 17:32:45 by rruiz-la         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -307,23 +307,18 @@ static void exec_child(t_cmd *cmd_node)
 	exec = &(g_data.exec);
 	pid = fork();
 	if (pid < 0)
-		exit (1);
+		exit (write (1, "Fork error\n", 14));
 	if (pid == 0)
 	{
-		if (cmd_node->fd_in > 0)
+		if (cmd_node->next != NULL)
 		{
-			dup2(cmd_node->fd_in, STDIN_FILENO);
+			dup2(exec->fd[1], STDOUT_FILENO);
+			close (exec->fd[0]);
+			close (exec->fd[1]);
 		}
 		if (cmd_node->fd_out > 0)
 		{
 			dup2(cmd_node->fd_out, STDOUT_FILENO);
-		}
-		if (cmd_node->next != NULL)
-		{
-			printf ("aqui tb\n");	
-			dup2(exec->fd[1], STDOUT_FILENO);
-			close (exec->fd[0]);
-			close (exec->fd[1]);
 		}
 		if (exec->error == 0)
 		{
@@ -339,12 +334,10 @@ static void exec_child(t_cmd *cmd_node)
 	waitpid(pid, NULL, 0);
 	if (cmd_node->next != NULL)
 	{
-		printf ("oi aqui\n");
 		dup2(exec->fd[0], STDIN_FILENO);
 		close (exec->fd[0]);
 		close (exec->fd[1]);
 	}
-	cmd_node->fd_out = 0;
 	free (exec->path_confirmed);
 }
 
@@ -361,19 +354,22 @@ int	exec_cmd(void)
 {
 	t_cmd *cmd_node;
 	DIR	*dir;
-	int	tfd;
 	int	i;
 
-	tfd = dup(STDIN_FILENO);
+	g_data.exec.temp_fd = dup(STDIN_FILENO);
 	cmd_node = g_data.cmd;
+	g_data.exec.i = 0;
 	i = 0;
 	while (cmd_node != NULL)
 	{
 		g_data.exec.error = 0;
 		if (cmd_node->next != NULL)
 			open_pipe();
-		if (cmd_node->redirect != NULL)
+		if (cmd_node->redirect[i] != NULL)
+		{
 			exec_redirect(cmd_node);
+			dup2(cmd_node->fd_in, STDIN_FILENO);
+		}
 		if (cmd_node->word[i] != NULL)
 		{
 			if (cmd_node->expansion > 0)
@@ -410,9 +406,14 @@ int	exec_cmd(void)
 			}
 			exec_child(cmd_node);
 		}
+		if (cmd_node->fd_in > 0)
+			close (cmd_node->fd_in);
+		if (cmd_node->fd_out > 0)
+			close (cmd_node->fd_out);
 		cmd_node = cmd_node->next;
+		g_data.exec.i = 1;
 	}
-	dup2(tfd, STDIN_FILENO);
+	dup2(g_data.exec.temp_fd, STDIN_FILENO);
 	return (0);
 }
 
@@ -439,5 +440,5 @@ void	prepare_to_exec()
 	printf_cmd(&g_data.cmd);
 
 */	
-	exec_cmd();
+exec_cmd();
 }

@@ -6,7 +6,7 @@
 /*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/15 20:36:06 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/06/10 09:26:25 by rruiz-la         ###   ########.fr       */
+/*   Updated: 2022/06/11 17:00:39 by rruiz-la         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,14 +97,11 @@ int	main(int argc, char *argv[], char *envp[])
 
 		while (1)
 		{
-			//função
-			print_terminal_line();
-			(g_data.mns).line = readline((g_data.mns).line_cmd);
-			free ((g_data.mns).line_cmd);
-			
+			exec_prompt();
 			if ((g_data.mns).line[0] != '\0')
 			{
 				add_history((g_data.mns).line);
+				
 				//função
 				if (ft_strncmp((g_data.mns).line, "exit\0", 5) == 0)
 				{
@@ -115,41 +112,8 @@ int	main(int argc, char *argv[], char *envp[])
 					clear_history();
 					exit (0);
 				};
-				//função
-				if (token_analysis() < 0)
-				{
-					if ((g_data.mns).err_num == -1)
-						printf("quote is missing\n");
-				}
-				else
-				{
-					//função
-					lexical_analysis();
-					if (syntax_analysis() > 0)
-					{
-						(g_data.mns).err_num = 2;
-						//retorna 1
-					}
-					else
-					{
-						//função
-						cmd_table();
-						if (word_expansion() < 0)
-						{
-							(g_data.mns).err_num = 1;
-							free_cmd_table();
-						}
-						else
-						{
-							//exec_cmd
-							prepare_to_exec();
-							free_cmd_table();
-						}
-						//retorna 0
-					}
-					free_lexical_line();
-				}		
-				free ((g_data.mns).line);
+
+				parsing_and_exec();
 			}
 			else
 				free ((g_data.mns).line);
