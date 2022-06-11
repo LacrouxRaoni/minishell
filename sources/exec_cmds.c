@@ -6,7 +6,7 @@
 /*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/17 12:26:53 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/06/11 12:41:57 by rruiz-la         ###   ########.fr       */
+/*   Updated: 2022/06/11 12:47:41 by rruiz-la         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -408,6 +408,10 @@ int	exec_cmd(void)
 			}
 			exec_child(cmd_node);
 		}
+		if (cmd_node->fd_in > 0)
+			close (cmd_node->fd_in);
+		if (cmd_node->fd_out > 0)
+			close (cmd_node->fd_out);
 		cmd_node = cmd_node->next;
 	}
 	dup2(tfd, STDIN_FILENO);

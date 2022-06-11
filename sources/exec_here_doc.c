@@ -6,7 +6,7 @@
 /*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/18 11:58:19 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/06/11 12:30:03 by rruiz-la         ###   ########.fr       */
+/*   Updated: 2022/06/11 12:43:36 by rruiz-la         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,8 +73,6 @@ static int	prepare_here_doc(char **here_doc, t_cmd *cmd_node)
 
 void	exec_here_doc(t_cmd *cmd_node, int i)
 {
-
-
 	if (ft_strncmp(cmd_node->redirect[i], "<<", 2) == 0)
 	{
 		i++;
