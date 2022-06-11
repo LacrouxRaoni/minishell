@@ -6,7 +6,7 @@
 /*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/17 12:26:53 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/06/10 18:33:35 by rruiz-la         ###   ########.fr       */
+/*   Updated: 2022/06/11 12:41:57 by rruiz-la         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -310,20 +310,15 @@ static void exec_child(t_cmd *cmd_node)
 		exit (1);
 	if (pid == 0)
 	{
-		if (cmd_node->fd_in > 0)
+		if (cmd_node->next != NULL)
 		{
-			dup2(cmd_node->fd_in, STDIN_FILENO);
+			dup2(exec->fd[1], STDOUT_FILENO);
+			close (exec->fd[0]);
+			close (exec->fd[1]);
 		}
 		if (cmd_node->fd_out > 0)
 		{
 			dup2(cmd_node->fd_out, STDOUT_FILENO);
-		}
-		if (cmd_node->next != NULL)
-		{
-			printf ("aqui tb\n");	
-			dup2(exec->fd[1], STDOUT_FILENO);
-			close (exec->fd[0]);
-			close (exec->fd[1]);
 		}
 		if (exec->error == 0)
 		{
@@ -372,8 +367,11 @@ int	exec_cmd(void)
 		g_data.exec.error = 0;
 		if (cmd_node->next != NULL)
 			open_pipe();
-		if (cmd_node->redirect != NULL)
+		if (cmd_node->redirect[i] != NULL)
+		{
 			exec_redirect(cmd_node);
+			dup2(cmd_node->fd_in, STDIN_FILENO);
+		}
 		if (cmd_node->word[i] != NULL)
 		{
 			if (cmd_node->expansion > 0)

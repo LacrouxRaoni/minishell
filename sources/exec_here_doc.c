@@ -6,16 +6,17 @@
 /*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/18 11:58:19 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/06/10 19:59:38 by rruiz-la         ###   ########.fr       */
+/*   Updated: 2022/06/11 12:30:03 by rruiz-la         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void	write_line(char **limiter, int size_limiter, t_exec *exec)
+static void	write_line(char **limiter, int size_limiter, int *fd)
 {
 	char	*line;
 
+	close (fd[0]);
 	while (1)
 	{
 		write (1, "> ", 2);
@@ -29,40 +30,54 @@ static void	write_line(char **limiter, int size_limiter, t_exec *exec)
 				break ;
 			}
 			else
-				write (exec->fd[1], line, ft_strlen(line));
+				write (fd[1], line, ft_strlen(line));
 		}
 		else
-			write (exec->fd[1], line, ft_strlen(line));
+			write (fd[1], line, ft_strlen(line));
 		free (line);
 	}
+	close (fd[1]);
 }
 
-static void	prepare_here_doc(char **here_doc, t_exec *exec)
+static int	prepare_here_doc(char **here_doc, t_cmd *cmd_node)
 {
 	int		size_limiter;
 	char	*limiter;
+	int		fd[2];
+	int		pid;
 
 	limiter = clean_quotes(*here_doc);
 	size_limiter = ft_strlen(limiter);
-	if (pipe(exec->fd) < 0)
+	if (pipe(fd) < 0)
 		exit (write(1, "Pipe error\n", ft_strlen("Pipe error\n")));
-	write_line(&limiter, size_limiter, exec);
+	pid = fork();
+	if (pid < 0)
+		exit (write (1, "Fork error\n", 14));
+	if (pid == 0)
+	{
+		write_line(&limiter, size_limiter, fd);
+		free_cmd_table();
+		free_envp_list();
+		free_hash_table();
+		free_lexical_line();
+		rl_clear_history();
+		free (limiter);
+		exit (0);
+	}
+	waitpid (pid, NULL, 0);
 	free (limiter);
-	close(exec->fd[1]);
+	close(fd[1]);
+	cmd_node->fd_in = dup(fd[0]);
+	close(fd[0]);
 }
 
 void	exec_here_doc(t_cmd *cmd_node, int i)
 {
-	t_exec	*exec;
 
-	exec = &(g_data.exec);
+
 	if (ft_strncmp(cmd_node->redirect[i], "<<", 2) == 0)
 	{
 		i++;
-		prepare_here_doc(&cmd_node->redirect[i], exec);
-		cmd_node->fd_in = exec->fd[0];
-		if (cmd_node->word[0] != NULL)
-			dup2(cmd_node->fd_in, STDIN_FILENO);
-		close(exec->fd[0]);
+		prepare_here_doc(&cmd_node->redirect[i], cmd_node);
 	}
 }
