@@ -6,13 +6,28 @@
 /*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/11 16:53:31 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/06/11 17:09:06 by rruiz-la         ###   ########.fr       */
+/*   Updated: 2022/06/11 19:59:35 by rruiz-la         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	parsing_and_exec(void)
+static void	expand_words_and_exec(void)
+{
+	if (word_expansion() < 0)
+	{
+		(g_data.mns).exit_code = 1;
+		free_cmd_table();
+	}
+	else
+	{
+		//exec_cmd
+		prepare_to_exec();
+		free_cmd_table();
+	}
+}
+
+void	parsing_and_exec(void)
 {
 	if (token_analysis() < 0)
 	{
@@ -27,21 +42,9 @@ int	parsing_and_exec(void)
 		else
 		{
 			create_cmd_table();
-			if (word_expansion() < 0)
-			{
-				(g_data.mns).exit_code = 1;
-				free_cmd_table();
-			}
-			else
-			{
-				//exec_cmd
-				prepare_to_exec();
-				free_cmd_table();
-			}
-			//retorna 0
+			expand_words_and_exec();
 		}
 		free_lexical_line();
 	}		
 	free ((g_data.mns).line);
-	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/08 11:01:55 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/06/11 17:28:11 by rruiz-la         ###   ########.fr       */
+/*   Updated: 2022/06/11 22:11:16 by rruiz-la         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-# include "execve.h"
+# include "exec.h"
 # include "env_list.h"
 # include "cmd_iterator.h"
 # include <stdio.h>
@@ -74,7 +74,7 @@ char	**cp_first_env(char **env);
 
 void	exec_prompt(void);
 
-int		parsing_and_exec(void);
+void	parsing_and_exec(void);
 
 int		token_analysis(void);
 int		lexical_analysis(void);
@@ -118,7 +118,7 @@ char	*find_env(char *var);
 char	**get_sorted_env(void);
 void	env_built_in(char **cmd);
 
-void	exec_built_in(t_cmd *cmd, int *fd);
+void	exec_built_in(t_cmd *cmd);
 int		check_if_built_in(t_cmd *cmd);
 int		ft_str_check(const char *s1, const char *s2);
 // char	*ft_my_strjoin(char *s1, char *s2);

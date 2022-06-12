@@ -6,7 +6,7 @@
 /*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/01 13:09:54 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/06/01 16:12:53 by rruiz-la         ###   ########.fr       */
+/*   Updated: 2022/06/11 22:09:09 by rruiz-la         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,6 @@ static void	transfer_from_src_to_dst(char **src, char **dst, int total_len)
 		(*dst)[k] = src[i][j];
 		j++;
 		k++;
-
 	}
 	(*dst)[k] = '\0';
 }

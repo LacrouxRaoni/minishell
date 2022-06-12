@@ -6,7 +6,7 @@
 /*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/17 12:26:53 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/06/11 17:32:45 by rruiz-la         ###   ########.fr       */
+/*   Updated: 2022/06/11 22:20:26 by rruiz-la         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -196,7 +196,7 @@ int	check_if_built_in(t_cmd *cmd)
 	else
 		return (0);
 }
-void	exec_built_in(t_cmd *cmd, int *fd)
+void	exec_built_in(t_cmd *cmd)
 {
 	if (ft_str_check(cmd->word[0], "echo"))
 		echo_built_in(cmd->word);
@@ -296,19 +296,19 @@ static void free_everything()
 	rl_clear_history();
 	free_hash_table();
 	free_envp_list();
-	free (g_data.exec.path_confirmed);
+	if (g_data.exec.error == 0)
+		free (g_data.exec.path_confirmed);
 }
 
 static void exec_child(t_cmd *cmd_node)
 {
-	int	pid;
 	t_exec *exec;
 
 	exec = &(g_data.exec);
-	pid = fork();
-	if (pid < 0)
+	exec->pid = fork();
+	if (exec->pid < 0)
 		exit (write (1, "Fork error\n", 14));
-	if (pid == 0)
+	if (exec->pid == 0)
 	{
 		if (cmd_node->next != NULL)
 		{
@@ -331,14 +331,15 @@ static void exec_child(t_cmd *cmd_node)
 			exit(0);
 		}
 	}
-	waitpid(pid, NULL, 0);
+	waitpid(exec->pid, NULL, 0);
 	if (cmd_node->next != NULL)
 	{
 		dup2(exec->fd[0], STDIN_FILENO);
 		close (exec->fd[0]);
 		close (exec->fd[1]);
 	}
-	free (exec->path_confirmed);
+	if (exec->error == 0)
+		free (exec->path_confirmed);
 }
 
 void	open_pipe()
@@ -372,6 +373,7 @@ int	exec_cmd(void)
 		}
 		if (cmd_node->word[i] != NULL)
 		{
+			//função
 			if (cmd_node->expansion > 0)
 			{	
 				if (ft_strchr(cmd_node->word[i], '/') != NULL)
@@ -386,22 +388,32 @@ int	exec_cmd(void)
 					else
 					{
 						printf ("bash: %s: Is a directory\n", cmd_node->word[0]);
+						g_data.mns.exit_code = 126;
 						closedir(dir);
 					}
 					break ;
 				}
 			}
-			if (check_valid_path_cmd(cmd_node, i) != 0)
+			//função
+			if (check_if_built_in(cmd_node) == 0)
 			{
-				if (cmd_node->next == NULL)
+				if (check_valid_path_cmd(cmd_node, i) != 0)
 				{
+					if (cmd_node->next == NULL)
+					{
+						write (1, cmd_node->word[i], ft_strlen(cmd_node->word[i]));
+						write (1, ": command not found\n", 21);
+						g_data.mns.exit_code = 127;
+						break ;
+					}
 					write (1, cmd_node->word[i], ft_strlen(cmd_node->word[i]));
 					write (1, ": command not found\n", 21);
-					g_data.mns.exit_code = 127;
-					break ;
+					g_data.exec.error = 1;
 				}
-				write (1, cmd_node->word[i], ft_strlen(cmd_node->word[i]));
-				write (1, ": command not found\n", 21);
+			}
+			else
+			{
+				exec_built_in(cmd_node);
 				g_data.exec.error = 1;
 			}
 			exec_child(cmd_node);

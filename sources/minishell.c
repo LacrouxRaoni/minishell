@@ -6,7 +6,7 @@
 /*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/15 20:36:06 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/06/11 17:00:39 by rruiz-la         ###   ########.fr       */
+/*   Updated: 2022/06/11 19:44:23 by rruiz-la         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,7 +112,7 @@ int	main(int argc, char *argv[], char *envp[])
 					clear_history();
 					exit (0);
 				};
-
+				
 				parsing_and_exec();
 			}
 			else
