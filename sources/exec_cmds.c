@@ -6,7 +6,7 @@
 /*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/17 12:26:53 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/06/11 22:11:56 by rruiz-la         ###   ########.fr       */
+/*   Updated: 2022/06/11 22:20:26 by rruiz-la         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -296,7 +296,8 @@ static void free_everything()
 	rl_clear_history();
 	free_hash_table();
 	free_envp_list();
-	free (g_data.exec.path_confirmed);
+	if (g_data.exec.error == 0)
+		free (g_data.exec.path_confirmed);
 }
 
 static void exec_child(t_cmd *cmd_node)
@@ -337,7 +338,8 @@ static void exec_child(t_cmd *cmd_node)
 		close (exec->fd[0]);
 		close (exec->fd[1]);
 	}
-	free (exec->path_confirmed);
+	if (exec->error == 0)
+		free (exec->path_confirmed);
 }
 
 void	open_pipe()
