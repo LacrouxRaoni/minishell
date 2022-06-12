@@ -6,7 +6,7 @@
 /*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/17 12:26:53 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/06/11 22:20:26 by rruiz-la         ###   ########.fr       */
+/*   Updated: 2022/06/12 12:24:17 by rruiz-la         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -296,7 +296,7 @@ static void free_everything()
 	rl_clear_history();
 	free_hash_table();
 	free_envp_list();
-	if (g_data.exec.error == 0)
+	if (g_data.exec.path_confirmed != NULL)
 		free (g_data.exec.path_confirmed);
 }
 
@@ -320,16 +320,20 @@ static void exec_child(t_cmd *cmd_node)
 		{
 			dup2(cmd_node->fd_out, STDOUT_FILENO);
 		}
-		if (exec->error == 0)
+		if (check_if_built_in(cmd_node) == 0)
 		{
-			if (execve(exec->path_confirmed, cmd_node->word, NULL) - 1)
-				exit(write (1, "execve returned an error\n", 30));
-		}
+			if (exec->path_confirmed != NULL)
+			{
+				if (execve(exec->path_confirmed, cmd_node->word, NULL) - 1)
+					exit(write (1, "execve returned an error\n", 30));
+			}
+		}	
 		else
 		{
-			free_everything();
-			exit(0);
+			exec_built_in(cmd_node);
 		}
+		free_everything();
+		exit(0);
 	}
 	waitpid(exec->pid, NULL, 0);
 	if (cmd_node->next != NULL)
@@ -338,7 +342,7 @@ static void exec_child(t_cmd *cmd_node)
 		close (exec->fd[0]);
 		close (exec->fd[1]);
 	}
-	if (exec->error == 0)
+	if (exec->path_confirmed != NULL)
 		free (exec->path_confirmed);
 }
 
@@ -358,12 +362,12 @@ int	exec_cmd(void)
 	int	i;
 
 	g_data.exec.temp_fd = dup(STDIN_FILENO);
+	g_data.exec.path_confirmed = NULL;
 	cmd_node = g_data.cmd;
 	g_data.exec.i = 0;
 	i = 0;
 	while (cmd_node != NULL)
 	{
-		g_data.exec.error = 0;
 		if (cmd_node->next != NULL)
 			open_pipe();
 		if (cmd_node->redirect[i] != NULL)
@@ -408,13 +412,7 @@ int	exec_cmd(void)
 					}
 					write (1, cmd_node->word[i], ft_strlen(cmd_node->word[i]));
 					write (1, ": command not found\n", 21);
-					g_data.exec.error = 1;
 				}
-			}
-			else
-			{
-				exec_built_in(cmd_node);
-				g_data.exec.error = 1;
 			}
 			exec_child(cmd_node);
 		}

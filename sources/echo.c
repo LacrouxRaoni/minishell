@@ -23,10 +23,7 @@ void	echo_built_in(char **cmd)
 	i = 1;
 	if (cmd[1] == NULL)
 	{
-		if (node->fd_out > 0)
-			write (node->fd_out, "\n", 1);
-		else
-			write (1, "\n", 1);
+		printf ("\n");
 	}
 	else
 	{
@@ -36,26 +33,17 @@ void	echo_built_in(char **cmd)
 		{
 			if (cmd[i][0] != '\0')
 			{
-				if (node->fd_out > 0)
-					ft_putstr_fd(cmd[i], node->fd_out);
-				else
-					ft_putstr_fd(cmd[i], 1);
+				printf ("%s", cmd[i]);
 			}
 			if (cmd[i + 1] != NULL)
 			{
-				if (node->fd_out > 0)
-					write (node->fd_out, " ", 1);
-				else
-				write (1, " ", 1);
+				printf (" ");
 			}
 			i++;
 		}
 		if ((ft_str_check(cmd[1], "-n")) == 0)
 		{
-			if (node->fd_out > 0)
-				write (node->fd_out, "\n", 1);
-			else
-				write (1, "\n", 1);
+			printf ("\n");
 		}
 	}
 	exit_code = 0;
