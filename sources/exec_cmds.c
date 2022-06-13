@@ -6,7 +6,7 @@
 /*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/17 12:26:53 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/06/13 14:14:43 by rruiz-la         ###   ########.fr       */
+/*   Updated: 2022/06/13 18:20:25 by rruiz-la         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -313,10 +313,9 @@ void	exec_cmd(void)
 	close (g_data.exec.temp_fd);
 }
 
-
 void	prepare_to_exec()
 {
-/*	t_cmd	*cmd_node;
+	/*t_cmd	*cmd_node;
 	
 	int	i;
 	i = 0;
@@ -327,7 +326,6 @@ void	prepare_to_exec()
 		cmd_node = cmd_node->next;
 	} 
 	printf_cmd(&g_data.cmd);
-
-*/	
-exec_cmd();
+	*/
+	exec_cmd();
 }
