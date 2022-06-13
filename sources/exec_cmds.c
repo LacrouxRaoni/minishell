@@ -6,7 +6,7 @@
 /*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/17 12:26:53 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/06/12 12:24:17 by rruiz-la         ###   ########.fr       */
+/*   Updated: 2022/06/13 14:14:43 by rruiz-la         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -160,135 +160,6 @@ void	printf_cmd(t_cmd **cmd)
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-int	check_if_built_in(t_cmd *cmd)
-{
-	if (ft_str_check(cmd->word[0], "echo"))
-		return (1);
-	else if (ft_str_check(cmd->word[0], "pwd"))
-		return (1);
-	else if (ft_str_check(cmd->word[0], "env"))
-		return (1);
-	// else if (ft_str_check(cmd->word[0], "cd"))
-	// 	return (1);
-	else
-		return (0);
-}
-void	exec_built_in(t_cmd *cmd)
-{
-	if (ft_str_check(cmd->word[0], "echo"))
-		echo_built_in(cmd->word);
-	else if (ft_str_check(cmd->word[0], "pwd"))
-		pwd_built_in();
-	else if (ft_str_check(cmd->word[0], "env"))
-		env_built_in(cmd->word);
-// 	else if (ft_str_check(cmd->word[0], "cd"))
-// 		cd_built_in(cmd->word);		
-}
-
-
-
-
-
-
-
-
-
-static char  **get_path()
-{
-	t_env_list *table;
-	int		index;
-	char	**path;
-
-	index = get_hash_pos("PATH", g_data.hash[0]->size);
-	table = g_data.hash[0]->list[index];
-	while (table != NULL)
-	{
-		if (ft_strcmp(table->key, "PATH") == 0)
-		{	
-			path = ft_split(table->value, ':');
-			return (path);
-		}
-		table = table->next;	
-	}
-	return (NULL);
-}
-
-static void free_path(void)
-{
-	int	i;
-
-	i = -1;
-	while (g_data.exec.path[++i] != NULL)
-		free(g_data.exec.path[i]);
-	free (g_data.exec.path);
-	g_data.exec.path = NULL;
-}
-
-
-static int	check_valid_path_cmd(t_cmd *cmd_node, int i)
-{
-	t_exec *exec;
-	int		j;
-	char	*aux;
-	
-	exec = &(g_data.exec);
-	exec->path = get_path();
-		//escrever sobre null
-	if (cmd_node->word[i][0] == '/')
-	{
-		exec->path_confirmed = ft_strdup(cmd_node->word[i]);
-		if (access(exec->path_confirmed, F_OK) == 0)
-			return (0);
-	}
-	j = 0;
-	while (exec->path[j])
-	{
-		aux = ft_strjoin(exec->path[j], "/");
-		exec->path_confirmed = ft_strjoin(aux, cmd_node->word[i]);
-		if (access(exec->path_confirmed, F_OK) == 0)
-		{
-			free_path();
-			free (aux);
-			return (0);
-		}
-		free (aux);
-		free (exec->path_confirmed);
-		exec->path_confirmed = NULL;
-		j++;
-	}
-	free_path();
-	return (1);
-}
-
-
-
-
-
-
-
 static void free_everything()
 {
 	free_cmd_table();
@@ -296,11 +167,46 @@ static void free_everything()
 	rl_clear_history();
 	free_hash_table();
 	free_envp_list();
+	if (g_data.exec.path != NULL)
+		free_path();
 	if (g_data.exec.path_confirmed != NULL)
+	{
 		free (g_data.exec.path_confirmed);
+		g_data.exec.path_confirmed = NULL;
+	}
 }
 
-static void exec_child(t_cmd *cmd_node)
+static void exec_child(t_cmd *cmd_node, t_exec *exec)
+{
+	if (cmd_node->next != NULL)
+	{
+		dup2(exec->fd[1], STDOUT_FILENO);
+		close (exec->fd[0]);
+		close (exec->fd[1]);
+	}
+	if (cmd_node->fd_out > 0)
+	{
+		dup2(cmd_node->fd_out, STDOUT_FILENO);
+	}
+	if (check_if_built_in(cmd_node) == 0)
+	{
+		if (exec->path_confirmed != NULL)
+		{
+			if (execve(exec->path_confirmed, cmd_node->word, NULL) - 1)
+			{	
+				free_everything();
+				exit(1);
+			}
+		}
+	}	
+	else
+		exec_built_in(cmd_node);
+	free_everything();
+	exit(0);
+}
+
+
+static void call_child_process(t_cmd *cmd_node)
 {
 	t_exec *exec;
 
@@ -310,30 +216,7 @@ static void exec_child(t_cmd *cmd_node)
 		exit (write (1, "Fork error\n", 14));
 	if (exec->pid == 0)
 	{
-		if (cmd_node->next != NULL)
-		{
-			dup2(exec->fd[1], STDOUT_FILENO);
-			close (exec->fd[0]);
-			close (exec->fd[1]);
-		}
-		if (cmd_node->fd_out > 0)
-		{
-			dup2(cmd_node->fd_out, STDOUT_FILENO);
-		}
-		if (check_if_built_in(cmd_node) == 0)
-		{
-			if (exec->path_confirmed != NULL)
-			{
-				if (execve(exec->path_confirmed, cmd_node->word, NULL) - 1)
-					exit(write (1, "execve returned an error\n", 30));
-			}
-		}	
-		else
-		{
-			exec_built_in(cmd_node);
-		}
-		free_everything();
-		exit(0);
+		exec_child(cmd_node, exec);
 	}
 	waitpid(exec->pid, NULL, 0);
 	if (cmd_node->next != NULL)
@@ -343,96 +226,92 @@ static void exec_child(t_cmd *cmd_node)
 		close (exec->fd[1]);
 	}
 	if (exec->path_confirmed != NULL)
-		free (exec->path_confirmed);
-}
-
-void	open_pipe()
-{
-	t_exec *exec;
-
-	exec = &(g_data.exec);
-	if (pipe(exec->fd) < 0)
-		exit (write (1, "Pipe error\n", 14));
-}
-
-int	exec_cmd(void)
-{
-	t_cmd *cmd_node;
-	DIR	*dir;
-	int	i;
-
-	g_data.exec.temp_fd = dup(STDIN_FILENO);
-	g_data.exec.path_confirmed = NULL;
-	cmd_node = g_data.cmd;
-	g_data.exec.i = 0;
-	i = 0;
-	while (cmd_node != NULL)
 	{
-		if (cmd_node->next != NULL)
-			open_pipe();
-		if (cmd_node->redirect[i] != NULL)
-		{
-			exec_redirect(cmd_node);
-			dup2(cmd_node->fd_in, STDIN_FILENO);
-		}
-		if (cmd_node->word[i] != NULL)
-		{
-			//função
-			if (cmd_node->expansion > 0)
-			{	
-				if (ft_strchr(cmd_node->word[i], '/') != NULL)
-				{
-					dir = opendir(cmd_node->word[i]);
-					if (!dir)
-					{
-						write (1, "bash: ", ft_strlen("bash: "));
-						perror(cmd_node->word[i]);
-						g_data.mns.exit_code = 127;
-					}
-					else
-					{
-						printf ("bash: %s: Is a directory\n", cmd_node->word[0]);
-						g_data.mns.exit_code = 126;
-						closedir(dir);
-					}
-					break ;
-				}
-			}
-			//função
-			if (check_if_built_in(cmd_node) == 0)
-			{
-				if (check_valid_path_cmd(cmd_node, i) != 0)
-				{
-					if (cmd_node->next == NULL)
-					{
-						write (1, cmd_node->word[i], ft_strlen(cmd_node->word[i]));
-						write (1, ": command not found\n", 21);
-						g_data.mns.exit_code = 127;
-						break ;
-					}
-					write (1, cmd_node->word[i], ft_strlen(cmd_node->word[i]));
-					write (1, ": command not found\n", 21);
-				}
-			}
-			exec_child(cmd_node);
-		}
-		if (cmd_node->fd_in > 0)
-			close (cmd_node->fd_in);
-		if (cmd_node->fd_out > 0)
-			close (cmd_node->fd_out);
-		cmd_node = cmd_node->next;
-		g_data.exec.i = 1;
+		free (exec->path_confirmed);
+		exec->path_confirmed = NULL;
 	}
-	dup2(g_data.exec.temp_fd, STDIN_FILENO);
+	if (exec->path != NULL)
+		free_path();
+}
+
+
+
+
+
+
+
+
+
+
+
+static void	exec_slashes(t_cmd *cmd_node, int i)
+{
+	DIR	*dir;
+
+	if (ft_strchr(cmd_node->word[i], '/') != NULL)
+	{
+		dir = opendir(cmd_node->word[i]);
+		if (!dir)
+		{
+			write (1, "bash: ", ft_strlen("bash: "));
+			perror(cmd_node->word[i]);
+			g_data.mns.exit_code = 127;
+		}
+		else
+		{
+			printf ("bash: %s: Is a directory\n", cmd_node->word[0]);
+			g_data.mns.exit_code = 126;
+			closedir(dir);
+		}
+	}
+}
+
+static int run_cmd(t_cmd *cmd_node, int i)
+{
+	if (cmd_node->next != NULL)
+		open_pipe();
+	if (cmd_node->redirect[i] != NULL)
+		init_redirects(cmd_node);
+	if (cmd_node->word[i] != NULL && (g_data.mns).exit_code == 0)
+	{
+		if (cmd_node->expansion > 0)
+			exec_slashes(cmd_node, i);
+		if (check_if_built_in(cmd_node) == 0 && g_data.mns.exit_code == 0)
+		{
+			if (get_path(cmd_node, i) == 1)
+				return (1);
+		}
+		call_child_process(cmd_node);
+	}
 	return (0);
 }
 
+void	exec_cmd(void)
+{
+	t_cmd *cmd_node;
+	int	i;
 
-
-
-
-
-
+	cmd_node = g_data.cmd;
+	g_data.exec.temp_fd = dup(STDIN_FILENO);
+	g_data.exec.path_confirmed = NULL;
+	g_data.exec.path = NULL;
+	g_data.exec.b_hdoc = 0;
+	i = 0;
+	while (cmd_node != NULL)
+	{
+		if (run_cmd(cmd_node, i) == 1)
+			break ;
+		close_files(cmd_node);
+		if (cmd_node->next != NULL)
+		{
+			g_data.mns.exit_code = 0;
+			g_data.exec.b_hdoc = 1;
+		}
+		cmd_node = cmd_node->next;
+	}
+	dup2(g_data.exec.temp_fd, STDIN_FILENO);
+	close (g_data.exec.temp_fd);
+}
 
 
 void	prepare_to_exec()

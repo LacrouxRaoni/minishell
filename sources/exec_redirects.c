@@ -6,7 +6,7 @@
 /*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/21 14:14:07 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/06/11 15:42:33 by rruiz-la         ###   ########.fr       */
+/*   Updated: 2022/06/13 09:50:41 by rruiz-la         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,21 +71,13 @@ static int	exec_dgreat(t_cmd *cmd_node, int i)
 static void	check_redirect_type(t_cmd *cmd_node, int i)
 {
 	if (ft_strncmp(cmd_node->redirect[i], "<\0", 2) == 0)
-	{
-		(g_data.mns).err_num = exec_less(cmd_node, i + 1);
-	}
+		(g_data.mns).exit_code = exec_less(cmd_node, i + 1);
 	else if (ft_strncmp(cmd_node->redirect[i], "<<\0", 3) == 0)
-	{
 		exec_here_doc(cmd_node, i);
-	}
 	else if (ft_strncmp(cmd_node->redirect[i], ">\0", 2) == 0)
-	{
-		(g_data.mns).err_num = exec_great(cmd_node, i + 1);
-	}
+		(g_data.mns).exit_code = exec_great(cmd_node, i + 1);
 	else if (ft_strncmp(cmd_node->redirect[i], ">>\0", 3) == 0)
-	{
-		(g_data.mns).err_num = exec_dgreat(cmd_node, i + 1);
-	}
+		(g_data.mns).exit_code = exec_dgreat(cmd_node, i + 1);
 }
 
 void	exec_redirect(t_cmd *cmd_node)

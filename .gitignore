@@ -5,3 +5,4 @@ objects/
 *.odt#
 *.txt
 .vscode/
+test.sh
