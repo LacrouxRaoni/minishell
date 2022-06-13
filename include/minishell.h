@@ -6,7 +6,7 @@
 /*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/08 11:01:55 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/06/11 22:11:16 by rruiz-la         ###   ########.fr       */
+/*   Updated: 2022/06/13 12:31:40 by rruiz-la         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,9 +85,7 @@ int		len_subline(t_mns *data, int start, int len, int aux);
 void	create_cmd_table(void);
 void	cmd_table(t_cmd *cmd_node, t_mns *data, t_cmd *last_node);
 
-void	prepare_to_exec(void);
-void	exec_here_doc(t_cmd *cmd_node, int i);
-void	exec_redirect(t_cmd *cmd_node);
+
 int		word_expansion(void);
 int		check_for_var(t_cmd *cmd_node, int w);
 int		tild_expansion(t_cmd *cmd_node, int i);
@@ -100,14 +98,27 @@ void	free_aux_assig(char ***tmp);
 int		count_keys(char *word, int j);
 int		count_dollars(t_cmd *cmd_node, int i, int *len, int *k);
 char	*assignment_expansion(char *assi_word);
-void	free_cmd_table(void);
-void	free_lexical_line(void);
 
 
+
+void	prepare_to_exec(void);
+
+void	open_pipe();
+void	init_redirects(t_cmd *cmd_node);
+void	exec_here_doc(t_cmd *cmd_node, int i);
+void	exec_redirect(t_cmd *cmd_node);
+void	close_files(t_cmd *cmd_node);
+
+int		check_if_built_in(t_cmd *cmd);
+void	exec_built_in(t_cmd *cmd);
+
+int		get_path(t_cmd *cmd_node, int i);
 
 void	free_hash_table();
 void	free_envp_list(void);
-
+void	free_cmd_table(void);
+void	free_lexical_line(void);
+void	free_path(void);
 
 
 int	get_hash_pos(char *key, int size);

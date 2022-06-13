@@ -43,8 +43,11 @@ SRC_FILES	=	minishell.c \
 				handle_s_quote.c \
 				handle_d_quotes.c \
 				exec_cmds.c \
+				treat_redirectsc.c \
 				exec_here_doc.c \
 				exec_redirects.c \
+				built_ins.c \
+				validate_path.c \
 				free_cmd_table.c \
 				\
 				pwd.c \

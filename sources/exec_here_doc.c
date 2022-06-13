@@ -6,7 +6,7 @@
 /*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/18 11:58:19 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/06/11 15:16:36 by rruiz-la         ###   ########.fr       */
+/*   Updated: 2022/06/13 09:10:54 by rruiz-la         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ static void	write_line(char **limiter, int size_limiter, int *fd)
 {
 	char	*line;
 
-	if (g_data.exec.i > 0)
+	if (g_data.exec.b_hdoc > 0)
 		dup2(g_data.exec.temp_fd, STDIN_FILENO);
 	while (1)
 	{

@@ -6,7 +6,7 @@
 /*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/15 20:36:06 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/06/11 19:44:23 by rruiz-la         ###   ########.fr       */
+/*   Updated: 2022/06/13 14:01:11 by rruiz-la         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,6 +105,13 @@ int	main(int argc, char *argv[], char *envp[])
 				//função
 				if (ft_strncmp((g_data.mns).line, "exit\0", 5) == 0)
 				{
+					if (g_data.exec.path != NULL)
+						free_path();
+					if (g_data.exec.path_confirmed != NULL)
+					{
+						free (g_data.exec.path_confirmed);
+						g_data.exec.path_confirmed = NULL;
+					}					
 					free ((g_data.mns).line);
 					free_hash_table();
 					free_envp_list();
