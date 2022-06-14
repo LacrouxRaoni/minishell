@@ -6,7 +6,7 @@
 /*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/08 11:01:55 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/06/13 12:31:40 by rruiz-la         ###   ########.fr       */
+/*   Updated: 2022/06/13 22:29:15 by rruiz-la         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@
 # include <sys/types.h>
 # include <dirent.h>
 # include <sys/wait.h>
+# include <sys/stat.h>
 # include <errno.h>
 # include "./libft.h"
 
@@ -58,7 +59,7 @@ typedef struct	s_main
 	t_hash *hash[2];
 	t_mns	mns;
 	t_cmd	*cmd;
-	t_env_list list;
+	t_env_list *list;
 	t_exec  exec;
 }	t_main;
 
@@ -132,16 +133,20 @@ void	env_built_in(char **cmd);
 void	exec_built_in(t_cmd *cmd);
 int		check_if_built_in(t_cmd *cmd);
 int		ft_str_check(const char *s1, const char *s2);
-// char	*ft_my_strjoin(char *s1, char *s2);
+//char	*ft_my_strjoin(char *s1, char *s2);
 
 void	echo_built_in(char **cmd);
 void	pwd_built_in(void);
 
-// static void	no_dir_error(char **cmd); CORRIGINDO VAZAMENTO
-// static void	cd_to_oldpwd(void);
-// static void	change_pwd(void);
-// void	cd_built_in(char **cmd);
+ static void	no_dir_error(char **cmd); //CORRIGINDO VAZAMENTO
+ static void	cd_to_oldpwd(void);
+ static void	change_pwd(void);
+ void	cd_built_in(char **cmd);
 
+void    remove_from_env(char *var);
+void    do_export(char *var);
+void    export_add(char *var);
+void    free_split(char **s);
 // void	kill_loop(int signum); IN PROGRESS
 // void	quit_core(int signum);
 

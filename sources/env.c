@@ -58,14 +58,14 @@ char	*find_env(char *var)
 	int		i;
 
 	i = 0;
-	while (g_data.list.env[i] != NULL)
+	while (g_data.exec.env[i] != NULL)
 	{
-		if (ft_strncmp(var, g_data.list.env[i], ft_strlen(var)) == 0 \
-		&& (g_data.list.env[i][ft_strlen(var)] == '=' \
-		|| g_data.list.env[i][ft_strlen(var)] == '\0'))
+		if (ft_strncmp(var, g_data.exec.env[i], ft_strlen(var)) == 0 \
+		&& (g_data.exec.env[i][ft_strlen(var)] == '=' \
+		|| g_data.exec.env[i][ft_strlen(var)] == '\0'))
 		{
-			if (g_data.list.env[i][ft_strlen(var)] == '=')
-				return (g_data.list.env[i] + ft_strlen(var) + 1);
+			if (g_data.exec.env[i][ft_strlen(var)] == '=')
+				return (g_data.exec.env[i] + ft_strlen(var) + 1);
 			else
 				return ("\0");
 		}
@@ -81,7 +81,7 @@ char	**get_sorted_env(void)
 	int		i;
 	char	*temp;
 
-	env = copy_env(g_data.list.env);
+	env = copy_env(g_data.exec.env);
 	env_size = 0;
 	while (env[env_size] != NULL)
 		env_size++;
@@ -117,10 +117,10 @@ void	env_built_in(char **cmd)
 	else
 	{
 		i = -1;
-		while (g_data.list.env[++i] != NULL)
+		while (g_data.exec.env[++i] != NULL)
 		{
-			if (ft_strchr(g_data.list.env[i], '=') != NULL)
-				printf ("%s\n", g_data.list.env[i]);
+			if (ft_strchr(g_data.exec.env[i], '=') != NULL)
+				printf ("%s\n", g_data.exec.env[i]);
 		}
 		exit_code = 0;
 		return ;

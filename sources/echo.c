@@ -17,7 +17,6 @@ void	echo_built_in(char **cmd)
 	t_exec	exec;
 	t_cmd	*node;
 	int	i;
-	int	exit_code;
 
 	node = g_data.cmd;
 	i = 1;
@@ -46,6 +45,6 @@ void	echo_built_in(char **cmd)
 			printf ("\n");
 		}
 	}
-	exit_code = 0;
+	g_data.mns.exit_code = 0;
 	return ;
 }

@@ -3,6 +3,7 @@
 
 typedef struct s_exec
 {
+	char	**env;
 	char	*path_confirmed;
 	char	**path;
 	int		fd[2];

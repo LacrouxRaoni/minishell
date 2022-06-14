@@ -52,9 +52,12 @@ SRC_FILES	=	minishell.c \
 				\
 				pwd.c \
 				echo.c \
+				cd.c \
 				ft_str_check.c \
-				# ft_my_strjoin.c \
-				# cd.c
+				export.c \
+				unset.c \
+				free_split.c
+			
 SRC	=	$(addprefix $(SRC_DIR)/, $(SRC_FILES))
 
 OBJ_DIR	=	objects

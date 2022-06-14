@@ -6,54 +6,31 @@
 /*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/01 10:00:48 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/06/11 17:29:37 by rruiz-la         ###   ########.fr       */
+/*   Updated: 2022/06/13 22:00:49 by rruiz-la         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	check_key_in_hash(char **dollar, int r)
-{
-	t_hash	*h_list;
-	int		index;
-
-	if (g_data.hash[(r)]->size == 0)
-	{
-		free (*dollar);
-		*dollar = ft_strdup("");
-		return (1);
-	}
-	index = get_hash_pos(*dollar, g_data.hash[(r)]->size);
-	h_list = g_data.hash[(r)];
-	while (h_list->list[index])
-	{
-		if (ft_strcmp(h_list->list[index]->key, *dollar) > 0)
-			h_list->list[index] = h_list->list[index]->next;
-		else
-		{
-			free (*dollar);
-			*dollar = ft_strdup(h_list->list[index]->value);
-			return (0);
-		}
-	}
-}
 
 static int	expand_key_value(char **dollar)
 {
-	int	i;
-	int	r;
+	t_env_list	*node;
 
-	i = 0;
-	r = 0;
-	while (r < 2)
+	node = g_data.list;
+	while (node != NULL)
 	{
-		check_key_in_hash(dollar, r);
-		if (i == 1)
-			return (1);
-		else
+		if (ft_strcmp(node->key, *dollar) == 0)
+		{
+			free (*dollar);
+			*dollar = ft_strdup(node->value);
 			return (0);
-		r++;
+		}
+		node = node->next;
 	}
+	free (*dollar);
+	*dollar = ft_strdup("");
+	return (1);
 }
 
 char	*assignment_expansion(char *assi_word)

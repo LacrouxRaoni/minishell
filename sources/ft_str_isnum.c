@@ -1,25 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pwd.c                                              :+:      :+:    :+:   */
+/*   ft_str_isnum.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tyago-ri <tyago-ri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/05/23 22:36:40 by tyago-ri          #+#    #+#             */
-/*   Updated: 2022/05/23 22:36:40 by tyago-ri         ###   ########.fr       */
+/*   Created: 2022/06/10 21:07:20 by tyago-ri          #+#    #+#             */
+/*   Updated: 2022/06/10 21:07:20 by tyago-ri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	pwd_built_in(void)
+int	ft_str_isnum(char *str)
 {
-	char	*str;
+	int	i;
 
-	g_data.mns.exit_code = 0;
-	str = malloc (1024);
-	ft_putstr_fd(getcwd(str, 1024), STDOUT);
-	write (1, "\n", 1);
-	free (str);
-	return ;
+	i = 0;
+	while (str[i] != '\0')
+	{
+		if (str[i] <= '9' && str[i] >= '0')
+			i++;
+		else
+			return (0);
+	}
+	return (1);
 }

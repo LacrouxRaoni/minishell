@@ -6,7 +6,7 @@
 /*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/15 20:36:06 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/06/13 14:01:11 by rruiz-la         ###   ########.fr       */
+/*   Updated: 2022/06/13 22:48:48 by rruiz-la         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,33 +15,38 @@
 
 void	free_envp_list(void)
 {
-	t_env_list *env;
+	t_env_list *node_env;
 	t_env_list *tmp;
+	t_exec	*envp;
 	int	i;
 
-	env = &(g_data.list);
-	while (env != NULL)
+	envp = &(g_data.exec);
+	if (envp != NULL)
 	{
 		i = 0;
-		tmp = env->next;
-		if (env->key != NULL)	
-			free (env->key);
-		if (env->value != NULL)
-			free (env->value);
-		if (env->env[i] != NULL)
+		while (envp->env[i] != NULL)
 		{
-			while (env->env[i] != NULL)
-			{
-				free(env->env[i]);
-				i++;
-			}
-			free (env->env);
-			env->env = NULL;
+			free(envp->env[i]);
+			i++;
 		}
-		free(tmp);
-		env = env->next;
+		free (envp->env);
+		envp->env = NULL;
 	}
-	free (env);
+
+	node_env = g_data.list;
+	if (node_env != NULL)
+	{
+		while (node_env != NULL)
+		{
+			if (node_env->key != NULL)
+				free (node_env->key);
+			if (node_env->value != NULL)
+				free (node_env->value);
+			tmp = node_env;
+			node_env = tmp->next;
+			free (tmp);
+		}
+	}
 }
 void	free_hash_table()
 {
@@ -93,7 +98,32 @@ int	main(int argc, char *argv[], char *envp[])
 		g_data.hash[1] = create_hashtable(NULL);
 		fulfill_hash(envp, g_data.hash[0]);
 		//ou esse função - dar free
-		g_data.list.env = cp_first_env(envp);
+		g_data.exec.env = cp_first_env(envp);
+
+
+		int	i = 0;
+		t_env_list	*node;
+		t_env_list	*last;
+
+		node = g_data.list;
+		g_data.list = NULL;
+		while(envp[i])
+		{
+			node = (t_env_list *)malloc(sizeof(t_env_list));
+			node->next = NULL;
+			node->key = extract_key(envp[i]);
+			node->value = extract_value(envp[i]);
+			if (g_data.list == NULL)
+				g_data.list = node;
+			else
+			{
+				last = g_data.list;
+				while(last->next != NULL)
+					last = last->next;
+				last->next = node;
+			}
+			i++;
+		}
 
 		while (1)
 		{
@@ -118,9 +148,10 @@ int	main(int argc, char *argv[], char *envp[])
 					rl_clear_history();
 					clear_history();
 					exit (0);
-				};
+				}
 				
 				parsing_and_exec();
+				
 			}
 			else
 				free ((g_data.mns).line);
