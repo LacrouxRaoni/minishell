@@ -6,7 +6,7 @@
 /*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/08 11:01:55 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/06/13 22:29:15 by rruiz-la         ###   ########.fr       */
+/*   Updated: 2022/06/14 12:32:41 by rruiz-la         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,13 +65,11 @@ typedef struct	s_main
 
 extern t_main g_data;
 
-t_hash	*create_hashtable(char **variables);
-void	fulfill_hash(char **envp, t_hash *hash);
+void	create_envp_list(char **envp);
 char	*extract_key(char  *key_line);
 char	*extract_value(char *value_line);
-
 char	**cp_first_env(char **env);
-
+void	free_envp_list(void);
 
 void	exec_prompt(void);
 
@@ -149,7 +147,6 @@ void    export_add(char *var);
 void    free_split(char **s);
 // void	kill_loop(int signum); IN PROGRESS
 // void	quit_core(int signum);
-
 
 
 #endif

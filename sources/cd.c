@@ -40,14 +40,19 @@ static void	change_pwd(void)
 	char	*buf;
 	char	*old_pwd;
 	char	*cwd;
+	char	*aux;
 
 	if (find_env("PWD") == NULL)
 		return ;
 	buf = malloc (1024);
-	old_pwd = ft_strjoin(ft_strdup("OLDPWD="), find_env("PWD"));
-	cwd = ft_strjoin(ft_strdup("PWD="), getcwd(buf, 1024));
+	aux = ft_strdup("OLDPWD=");
+	old_pwd = ft_strjoin(find_env("PWD"), aux);
+	free(aux);
+	aux = ft_strdup("PWD=");
+	cwd = ft_strjoin(aux, getcwd(buf, 1024));
 	do_export(cwd);
 	do_export(old_pwd);
+	free (aux);
 	free (cwd);
 	free (old_pwd);
 	free (buf);

@@ -6,7 +6,7 @@
 /*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/17 12:26:53 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/06/13 22:47:06 by rruiz-la         ###   ########.fr       */
+/*   Updated: 2022/06/15 07:56:19 by rruiz-la         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -163,9 +163,8 @@ void	printf_cmd(t_cmd **cmd)
 static void free_everything()
 {
 	free_cmd_table();
-	free_lexical_line();		
+	free_lexical_line();
 	rl_clear_history();
-	free_hash_table();
 	free_envp_list();
 	if (g_data.exec.path != NULL)
 		free_path();
@@ -193,22 +192,22 @@ static void exec_child(t_cmd *cmd_node, t_exec *exec)
 		if (exec->path_confirmed != NULL)
 		{
 			if (execve(exec->path_confirmed, cmd_node->word, NULL) - 1)
-			{	
+			{
 				free_everything();
 				exit(1);
 			}
 		}
-	}	
+	}
 	else
 		exec_built_in(cmd_node);
 	free_everything();
 	exit(0);
 }
 
-
 static void call_child_process(t_cmd *cmd_node)
 {
-	t_exec *exec;
+	t_exec	*exec;
+	int		wstatus;
 
 	exec = &(g_data.exec);
 	exec->pid = fork();
@@ -218,7 +217,10 @@ static void call_child_process(t_cmd *cmd_node)
 	{
 		exec_child(cmd_node, exec);
 	}
-	waitpid(exec->pid, NULL, 0);
+	waitpid(exec->pid, &wstatus, 0);
+	if (WIFEXITED(wstatus) != 0)
+		(g_data.mns).exit_code = WEXITSTATUS(wstatus);
+	printf("child %d\n", (g_data.mns).exit_code);
 	if (cmd_node->next != NULL)
 	{
 		dup2(exec->fd[0], STDIN_FILENO);
@@ -234,16 +236,6 @@ static void call_child_process(t_cmd *cmd_node)
 		free_path();
 }
 
-
-
-
-
-
-
-
-
-
-
 static void	exec_slashes(t_cmd *cmd_node, int i)
 {
 	DIR	*dir;
@@ -255,12 +247,12 @@ static void	exec_slashes(t_cmd *cmd_node, int i)
 		{
 			write (1, "bash: ", ft_strlen("bash: "));
 			perror(cmd_node->word[i]);
-			g_data.mns.exit_code = 127;
+			(g_data.mns).exit_code = 127;
 		}
 		else
 		{
 			printf ("bash: %s: Is a directory\n", cmd_node->word[0]);
-			g_data.mns.exit_code = 126;
+			(g_data.mns).exit_code = 126;
 			closedir(dir);
 		}
 	}
@@ -282,7 +274,7 @@ static int run_cmd(t_cmd *cmd_node, int i)
 		if (ft_str_check(cmd_node->word[0], "cd"))
 		{
 			cd_built_in(cmd_node->word);
-				return (1);
+				return (0);
 		}
 		///////
 
@@ -316,7 +308,7 @@ void	exec_cmd(void)
 		close_files(cmd_node);
 		if (cmd_node->next != NULL)
 		{
-			g_data.mns.exit_code = 0;
+			(g_data.mns).exit_code = 0;
 			g_data.exec.b_hdoc = 1;
 		}
 		cmd_node = cmd_node->next;

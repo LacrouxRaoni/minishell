@@ -6,7 +6,7 @@
 /*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/11 16:33:28 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/06/13 10:50:15 by rruiz-la         ###   ########.fr       */
+/*   Updated: 2022/06/15 07:58:27 by rruiz-la         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,11 @@ void	print_terminal_line(void)
 
 void	exec_prompt(void)
 {
+	
+	(g_data.exec).error = (g_data.mns).exit_code;
+	printf ("ppt %d %d\n", (g_data.exec).error, (g_data.mns).exit_code);
+	(g_data.mns).exit_code = 0;
 	print_terminal_line();
 	(g_data.mns).line = readline((g_data.mns).line_cmd);
 	free ((g_data.mns).line_cmd);
-	(g_data.mns).exit_code = 0;
 }

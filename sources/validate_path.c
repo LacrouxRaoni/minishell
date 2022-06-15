@@ -6,7 +6,7 @@
 /*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/13 10:54:23 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/06/13 21:47:58 by rruiz-la         ###   ########.fr       */
+/*   Updated: 2022/06/14 10:27:31 by rruiz-la         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,20 +15,17 @@
 static char  **get_path_content()
 {
 	t_env_list *table;
-	//int		index;
 	char	**path;
 
-	//index = get_hash_pos("PATH", g_data.hash[0]->size);
-	//table = g_data.hash[0]->list[index];
 	table = g_data.list;
 	while (table != NULL)
 	{
 		if (ft_strcmp(table->key, "PATH") == 0)
-		{	
+		{
 			path = ft_split(table->value, ':');
 			return (path);
 		}
-		table = table->next;	
+		table = table->next;
 	}
 	return (NULL);
 }
@@ -43,7 +40,6 @@ void free_path(void)
 	free (g_data.exec.path);
 	g_data.exec.path = NULL;
 }
-
 
 static int	check_valid_path_cmd(t_cmd *cmd_node, int i)
 {

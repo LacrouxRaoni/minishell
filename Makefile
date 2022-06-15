@@ -15,9 +15,9 @@ CC	=	gcc
 SRC_DIR		=	sources
 SRC_FILES	=	minishell.c \
 				\
-				create_hashtable.c \
-				fulfill_hash.c \
+				create_envp_list.c \
 				extract_key_n_value.c \
+				free_envp_list.c \
 				\
 				env.c \
 				\
@@ -56,7 +56,7 @@ SRC_FILES	=	minishell.c \
 				ft_str_check.c \
 				export.c \
 				unset.c \
-				free_split.c
+				free_split.c \
 			
 SRC	=	$(addprefix $(SRC_DIR)/, $(SRC_FILES))
 

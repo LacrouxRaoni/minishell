@@ -6,7 +6,7 @@
 /*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/01 10:00:48 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/06/13 22:00:49 by rruiz-la         ###   ########.fr       */
+/*   Updated: 2022/06/14 12:34:49 by rruiz-la         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,11 @@ static int	expand_key_value(char **dollar)
 	t_env_list	*node;
 
 	node = g_data.list;
+	if (ft_strcmp(*dollar, "?") == 0)
+	{
+		*dollar = ft_itoa((g_data.exec).error);
+		return (0);
+	}	
 	while (node != NULL)
 	{
 		if (ft_strcmp(node->key, *dollar) == 0)
