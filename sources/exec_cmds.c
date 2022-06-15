@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_cmds.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: tyago-ri <tyago-ri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/17 12:26:53 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/06/13 22:47:06 by rruiz-la         ###   ########.fr       */
+/*   Updated: 2022/06/14 23:26:58 by tyago-ri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -282,6 +282,16 @@ static int run_cmd(t_cmd *cmd_node, int i)
 		if (ft_str_check(cmd_node->word[0], "cd"))
 		{
 			cd_built_in(cmd_node->word);
+				return (1);
+		}
+		else if (ft_str_check(cmd_node->word[0], "unset"))
+		{
+			unset_built_in(cmd_node->word);
+				return (1);
+		}
+		else if (ft_str_check(cmd_node->word[0], "export"))
+		{
+			export_built_in(cmd_node->word);
 				return (1);
 		}
 		///////

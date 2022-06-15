@@ -10,6 +10,7 @@ typedef struct s_exec
 	int		temp_fd;
 	int		b_hdoc;
 	int		pid;
+	int		in_exec;
 } t_exec;
 #endif
 
