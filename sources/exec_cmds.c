@@ -6,10 +6,9 @@
 /*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/17 12:26:53 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/06/16 15:10:22 by rruiz-la         ###   ########.fr       */
+/*   Updated: 2022/06/16 16:31:51 by rruiz-la         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #include "minishell.h"
 
@@ -94,7 +93,7 @@ int	check_for_var(t_cmd *cmd_node, int w)
 
 
 
-void free_everything(void)
+void	free_everything(void)
 {
 	free_cmd_table();
 	free_lexical_line();
@@ -107,11 +106,7 @@ void free_everything(void)
 		free (g_data.exec.path_confirmed);
 		g_data.exec.path_confirmed = NULL;
 	}
-	if ((g_data.mns).line != NULL);
-	{
-		free ((g_data.mns).line);
-		(g_data.mns).line = NULL;
-	}
+	free_line();
 }
 
 static void	exec_slashes(t_cmd *cmd_node, int i)

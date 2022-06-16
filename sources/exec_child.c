@@ -6,13 +6,13 @@
 /*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/16 15:09:43 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/06/16 15:12:04 by rruiz-la         ###   ########.fr       */
+/*   Updated: 2022/06/16 16:28:56 by rruiz-la         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void exec_child(t_cmd *cmd_node, t_exec *exec)
+static void	exec_child(t_cmd *cmd_node, t_exec *exec)
 {
 	if (cmd_node->next != NULL)
 	{
@@ -21,9 +21,7 @@ static void exec_child(t_cmd *cmd_node, t_exec *exec)
 		close (exec->fd[1]);
 	}
 	if (cmd_node->fd_out > 0)
-	{
 		dup2(cmd_node->fd_out, STDOUT_FILENO);
-	}
 	if (check_if_built_in(cmd_node) == 0)
 	{
 		if (exec->path_confirmed != NULL)
@@ -41,7 +39,7 @@ static void exec_child(t_cmd *cmd_node, t_exec *exec)
 	exit(0);
 }
 
-void call_child_process(t_cmd *cmd_node)
+void	call_child_process(t_cmd *cmd_node)
 {
 	t_exec	*exec;
 	int		wstatus;
@@ -51,9 +49,7 @@ void call_child_process(t_cmd *cmd_node)
 	if (exec->pid < 0)
 		exit (write (1, "Fork error\n", 14));
 	if (exec->pid == 0)
-	{
 		exec_child(cmd_node, exec);
-	}
 	waitpid(exec->pid, &wstatus, 0);
 	if (!WIFEXITED(wstatus))
 		(g_data.mns).exit_code = WEXITSTATUS(wstatus);
