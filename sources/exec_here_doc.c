@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_here_doc.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: tyago-ri <tyago-ri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/18 11:58:19 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/06/13 09:10:54 by rruiz-la         ###   ########.fr       */
+/*   Updated: 2022/06/16 17:28:29 by tyago-ri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,12 @@ static int	prepare_here_doc(char **here_doc, t_cmd *cmd_node)
 	size_limiter = ft_strlen(limiter);
 	if (pipe(fd) < 0)
 		exit (write(1, "Pipe error\n", ft_strlen("Pipe error\n")));
+	
+	g_data.exec.b_hdoc = 1;
+	signal (SIGQUIT, SIG_IGN);
 	write_line(&limiter, size_limiter, fd);
+	// signal (SIGQUIT, quit_core);
+	// g_data.exec.b_hdoc = 0;
 	free (limiter);
 	close(fd[1]);
 	cmd_node->fd_in = dup(fd[0]);
