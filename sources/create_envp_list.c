@@ -6,7 +6,7 @@
 /*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/14 10:15:11 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/06/14 10:17:34 by rruiz-la         ###   ########.fr       */
+/*   Updated: 2022/06/15 21:39:10 by rruiz-la         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,5 +37,5 @@ void	create_envp_list(char **envp)
 		}
 		i++;
 	}
-	g_data.exec.env = cp_first_env(envp);
+	g_data.exec.env = copy_env(envp);
 }

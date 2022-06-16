@@ -11,6 +11,7 @@ typedef struct s_exec
 	int		b_hdoc;
 	int		pid;
 	int		error;
+	int		in_exec;
 } t_exec;
 #endif
 

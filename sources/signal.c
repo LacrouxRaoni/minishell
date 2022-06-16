@@ -15,17 +15,17 @@
 void	kill_loop(int signum)
 {
 	(void)signum;
-	if (g_data->here_doc == 1)
+	if (g_data.exec.b_hdoc == 1)
 	{
 		close (STDIN);
 		g_data.mns.err_num = 1;
 	}
-	if (g_data.exec.exec_pid != 0 && g_data->in_exec == 1)
+	if (g_data.exec.pid != 0 && g_data.exec.in_exec == 1)
 	{
-		kill(g_data->exec_pid, SIGKILL);
+		kill(g_data.exec.pid, SIGKILL);
 		write (1, "\n", 1);
 	}
-	if (g_data->in_exec == 0)
+	if (g_data.exec.in_exec == 0)
 	{
 		write (1, "\n", 1);
 		rl_on_new_line();
@@ -38,9 +38,9 @@ void	kill_loop(int signum)
 void	quit_core(int signum)
 {
 	(void)signum;
-	if (g_data->exec_pid != 0 && g_data->in_exec == 1)
+	if (g_data.exec.pid != 0 && g_data.exec.in_exec == 1)
 	{
-		kill(g_data->exec_pid, SIGKILL);
+		kill(g_data.exec.pid, SIGKILL);
 		ft_putstr_fd("Quit (Core dumped)\n", 1);
 	}
 }

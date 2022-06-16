@@ -16,9 +16,9 @@ void	exit_built_in(char **cmd)
 {
 	int	status;
 
-	g_data.mns.exit = 1;
+	g_data.list->d_exit = 1;
 	write (1, "exit\n", 5);
-	if (cmd[1] != NULL && ft_isalnum(cmd[1]) == 0)
+	if (cmd[1] != NULL && ft_str_isnum(cmd[1]) == 0)
 	{
 		g_data.mns.exit_code = 2;
 		ft_putstr_fd("exit: ", STDERR);
@@ -30,11 +30,10 @@ void	exit_built_in(char **cmd)
 		g_data.mns.exit_code = 1;
 		ft_putstr_fd("exit: too many arguments\n", STDERR);
 	}
-	else if (cmd[1] != NULL && ft_isalnum(cmd[1]) == 1)
+	else if (cmd[1] != NULL && ft_str_isnum(cmd[1]) == 1)
 		g_data.mns.exit_code = ft_atoi(cmd[1]);
 	status = g_data.mns.exit_code;
-	// free_all ();
 	free(g_data.mns.exit_code);
-	free(g_data.mns.exit);
+	free(g_data.list->d_exit);
 	exit(status);
 }

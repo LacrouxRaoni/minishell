@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_list.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: tyago-ri <tyago-ri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/15 18:26:21 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/06/13 20:53:19 by rruiz-la         ###   ########.fr       */
+/*   Updated: 2022/06/15 00:20:10 by tyago-ri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ typedef struct s_env_list
 {
 	char	*key;
 	char	*value;
+	int		d_exit;
 	struct	s_env_list *next;
 }	t_env_list;
 

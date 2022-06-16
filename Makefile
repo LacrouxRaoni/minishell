@@ -54,9 +54,12 @@ SRC_FILES	=	minishell.c \
 				echo.c \
 				cd.c \
 				ft_str_check.c \
+				ft_str_isnum.c \
 				export.c \
 				unset.c \
-				free_split.c \
+				exit.c \
+				signal.c \
+				free_split.c
 			
 SRC	=	$(addprefix $(SRC_DIR)/, $(SRC_FILES))
 

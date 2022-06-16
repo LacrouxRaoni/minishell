@@ -6,7 +6,7 @@
 /*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/15 20:36:06 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/06/14 12:31:26 by rruiz-la         ###   ########.fr       */
+/*   Updated: 2022/06/15 21:49:08 by rruiz-la         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,14 +20,19 @@ int	main(int argc, char *argv[], char *envp[])
 	if (argc == 1 && argv[0] != NULL)
 	{
 		create_envp_list(envp);
+		signal (SIGINT, kill_loop);
 		while (1)
 		{
+			signal (SIGQUIT, SIG_IGN);
+			g_data.exec.in_exec = 0;
 			exec_prompt();
 			if ((g_data.mns).line[0] != '\0')
 			{
+				signal (SIGQUIT, quit_core);
+				g_data.exec.in_exec = 1;
 				add_history((g_data.mns).line);
 				//função
-				if (ft_strncmp((g_data.mns).line, "exit\0", 5) == 0)
+				if ((g_data.mns).line == 0)
 				{
 					if (g_data.exec.path != NULL)
 						free_path();
@@ -40,6 +45,12 @@ int	main(int argc, char *argv[], char *envp[])
 					free_envp_list();
 					rl_clear_history();
 					clear_history();
+					write (1, "exit\n", 5);
+					exit (0);
+				}
+				if (g_data.list->d_exit == 1)
+				{
+					free_envp_list();
 					exit (0);
 				}
 				parsing_and_exec();
