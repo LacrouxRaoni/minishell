@@ -6,7 +6,7 @@
 /*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/08 11:01:55 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/06/15 21:40:53 by rruiz-la         ###   ########.fr       */
+/*   Updated: 2022/06/16 15:11:48 by rruiz-la         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,6 @@ typedef struct s_cmd
 
 typedef struct	s_main
 {
-	t_hash *hash[2];
 	t_mns	mns;
 	t_cmd	*cmd;
 	t_env_list *list;
@@ -103,7 +102,7 @@ char	*assignment_expansion(char *assi_word);
 
 
 
-void	prepare_to_exec(void);
+void	exec_cmd(void);
 
 void	open_pipe();
 void	init_redirects(t_cmd *cmd_node);
@@ -113,17 +112,20 @@ void	close_files(t_cmd *cmd_node);
 
 int		check_if_built_in(t_cmd *cmd);
 void	exec_built_in(t_cmd *cmd);
+int		check_n_exec_special_built_in(t_cmd *cmd_node);
+void	call_child_process(t_cmd *cmd_node);
+
 
 int		get_path(t_cmd *cmd_node, int i);
 
+void	free_line(void);
 void	free_hash_table();
 void	free_envp_list(void);
 void	free_cmd_table(void);
 void	free_lexical_line(void);
 void	free_path(void);
+void	free_everything(void);
 
-
-int	get_hash_pos(char *key, int size);
 
 
 char	*find_env(char *var);

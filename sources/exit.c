@@ -16,6 +16,8 @@ void	exit_built_in(char **cmd)
 {
 	int	status;
 
+	if (g_data.cmd->next != NULL)
+		return ;
 	g_data.list->d_exit = 1;
 	write (1, "exit\n", 5);
 	if (cmd[1] != NULL && ft_str_isnum(cmd[1]) == 0)
@@ -33,7 +35,6 @@ void	exit_built_in(char **cmd)
 	else if (cmd[1] != NULL && ft_str_isnum(cmd[1]) == 1)
 		g_data.mns.exit_code = ft_atoi(cmd[1]);
 	status = g_data.mns.exit_code;
-	free(g_data.mns.exit_code);
-	free(g_data.list->d_exit);
+	free_everything();
 	exit(status);
 }

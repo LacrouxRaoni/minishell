@@ -6,16 +6,16 @@
 /*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/13 10:54:23 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/06/14 10:27:31 by rruiz-la         ###   ########.fr       */
+/*   Updated: 2022/06/16 14:21:24 by rruiz-la         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static char  **get_path_content()
+static char	**get_path_content(void)
 {
-	t_env_list *table;
-	char	**path;
+	t_env_list	*table;
+	char		**path;
 
 	table = g_data.list;
 	while (table != NULL)
@@ -30,7 +30,7 @@ static char  **get_path_content()
 	return (NULL);
 }
 
-void free_path(void)
+void	free_path(void)
 {
 	int	i;
 
@@ -41,15 +41,11 @@ void free_path(void)
 	g_data.exec.path = NULL;
 }
 
-static int	check_valid_path_cmd(t_cmd *cmd_node, int i)
+static int	validate_path(t_cmd *cmd_node, int i, t_exec *exec)
 {
-	t_exec *exec;
 	int		j;
 	char	*aux;
-	
-	exec = &(g_data.exec);
-	exec->path = get_path_content();
-		//escrever sobre null
+
 	if (cmd_node->word[i][0] == '/')
 	{
 		exec->path_confirmed = ft_strdup(cmd_node->word[i]);
@@ -72,11 +68,21 @@ static int	check_valid_path_cmd(t_cmd *cmd_node, int i)
 		exec->path_confirmed = NULL;
 		j++;
 	}
+}
+
+static int	check_valid_path_cmd(t_cmd *cmd_node, int i)
+{
+	t_exec	*exec;
+
+	exec = &(g_data.exec);
+	exec->path = get_path_content();
+	if (validate_path(cmd_node, i, exec) == 0)
+		return (0);
 	free_path();
 	return (1);
 }
 
-int get_path(t_cmd *cmd_node, int i)
+int	get_path(t_cmd *cmd_node, int i)
 {
 	if (check_valid_path_cmd(cmd_node, i) != 0)
 	{

@@ -6,7 +6,7 @@
 /*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/14 10:15:11 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/06/15 21:39:10 by rruiz-la         ###   ########.fr       */
+/*   Updated: 2022/06/16 14:40:42 by rruiz-la         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,15 +14,16 @@
 
 void	create_envp_list(char **envp)
 {
-	int	i = 0;
+	int			i;
 	t_env_list	*node;
 	t_env_list	*last;
-	
+
+	i = 0;
 	node = g_data.list;
 	g_data.list = NULL;
-	while(envp[i])
+	while (envp[i])
 	{
-		node = (t_env_list *)malloc(sizeof(t_env_list));
+		node = (t_env_list *)ft_calloc(1, sizeof(t_env_list));
 		node->next = NULL;
 		node->key = extract_key(envp[i]);
 		node->value = extract_value(envp[i]);
@@ -31,7 +32,7 @@ void	create_envp_list(char **envp)
 		else
 		{
 			last = g_data.list;
-			while(last->next != NULL)
+			while (last->next != NULL)
 				last = last->next;
 			last->next = node;
 		}

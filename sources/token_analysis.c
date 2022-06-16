@@ -6,7 +6,7 @@
 /*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/12 23:26:32 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/06/11 16:46:19 by rruiz-la         ###   ########.fr       */
+/*   Updated: 2022/06/16 14:25:49 by rruiz-la         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,5 +102,6 @@ int	token_analysis(void)
 	}
 	else
 		malloc_data_parsed_line(data, parsed_line);
+	free_line();
 	return (0);
 }

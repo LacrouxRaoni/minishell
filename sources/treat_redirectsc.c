@@ -6,15 +6,15 @@
 /*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/13 11:36:22 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/06/15 20:38:11 by rruiz-la         ###   ########.fr       */
+/*   Updated: 2022/06/16 14:41:24 by rruiz-la         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	open_pipe()
+void	open_pipe(void)
 {
-	t_exec *exec;
+	t_exec	*exec;
 
 	exec = &(g_data.exec);
 	if (pipe(exec->fd) < 0)

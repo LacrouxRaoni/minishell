@@ -6,7 +6,7 @@
 /*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/11 16:53:31 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/06/15 19:02:51 by rruiz-la         ###   ########.fr       */
+/*   Updated: 2022/06/16 14:27:51 by rruiz-la         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,7 @@ static void	expand_words_and_exec(void)
 	}
 	else
 	{
-		//exec_cmd
-		prepare_to_exec();
+		exec_cmd();
 		free_cmd_table();
 	}
 }
@@ -36,6 +35,11 @@ void	parsing_and_exec(void)
 	{
 		if ((g_data.mns).err_num == -1)
 			printf("quote is missing\n");
+		if ((g_data.mns).line != NULL)
+		{
+			free ((g_data.mns).line);
+			(g_data.mns).line = NULL;
+		}
 	}
 	else
 	{
@@ -48,6 +52,5 @@ void	parsing_and_exec(void)
 			expand_words_and_exec();
 		}
 		free_lexical_line();
-	}		
-	free ((g_data.mns).line);
+	}
 }

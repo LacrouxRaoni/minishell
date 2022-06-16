@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   built_ins.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tyago-ri <tyago-ri@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/13 10:17:35 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/06/15 00:12:20 by tyago-ri         ###   ########.fr       */
+/*   Updated: 2022/06/16 13:41:09 by rruiz-la         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,6 @@ int	check_if_built_in(t_cmd *cmd)
 		return (1);
 	else if (ft_str_check(cmd->word[0], "env"))
 		return (1);
-	else if (ft_str_check(cmd->word[0], "exit"))
-		return (1);
 	else
 		return (0);
 }
@@ -34,6 +32,4 @@ void	exec_built_in(t_cmd *cmd)
 		pwd_built_in();
 	else if (ft_str_check(cmd->word[0], "env"))
 		env_built_in(cmd->word);
-	else if (ft_str_check(cmd->word[0], "exit"))
-		exit_built_in(cmd->word);		
 }

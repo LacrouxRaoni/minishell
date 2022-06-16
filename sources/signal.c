@@ -40,6 +40,7 @@ void	quit_core(int signum)
 	(void)signum;
 	if (g_data.exec.pid != 0 && g_data.exec.in_exec == 1)
 	{
+		free_envp_list();
 		kill(g_data.exec.pid, SIGKILL);
 		ft_putstr_fd("Quit (Core dumped)\n", 1);
 	}

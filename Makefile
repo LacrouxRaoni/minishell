@@ -47,7 +47,9 @@ SRC_FILES	=	minishell.c \
 				exec_here_doc.c \
 				exec_redirects.c \
 				built_ins.c \
+				special_built_in.c \
 				validate_path.c \
+				exec_child.c \
 				free_cmd_table.c \
 				\
 				pwd.c \
