@@ -69,6 +69,8 @@ int	check_dir(char *path)
 
 void	cd_built_in(char **cmd)
 {
+	if (g_data.cmd->next != NULL)
+		return ;
 	g_data.mns.exit_code = 0;
 	if (cmd[1] == NULL || ft_str_check(cmd[1], "~"))
 	{

@@ -6,7 +6,7 @@
 /*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/21 14:14:07 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/06/13 09:50:41 by rruiz-la         ###   ########.fr       */
+/*   Updated: 2022/06/15 20:35:34 by rruiz-la         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,12 +22,6 @@ static int	exec_less(t_cmd *cmd_node, int i)
 	{
 		perror(file_in);
 		free (file_in);
-		if (errno == 13)
-		{
-			g_data.mns.exit_code = 1;
-			return (0);
-		}
-		g_data.mns.exit_code = 1;
 		return (1);
 	}
 	free (file_in);
@@ -44,8 +38,7 @@ static int	exec_great(t_cmd *cmd_node, int i)
 	{
 		perror(file_out);
 		free (file_out);
-		g_data.mns.exit_code = 1;
-		return (0);
+		return (1);
 	}
 	free (file_out);
 	return (0);
@@ -61,8 +54,7 @@ static int	exec_dgreat(t_cmd *cmd_node, int i)
 	{
 		perror(file_out);
 		free (file_out);
-		g_data.mns.exit_code = 1;
-		return (0);
+		return (1);
 	}
 	free (file_out);
 	return (0);

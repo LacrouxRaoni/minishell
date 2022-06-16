@@ -6,7 +6,7 @@
 /*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/03 12:01:02 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/06/11 15:48:03 by rruiz-la         ###   ########.fr       */
+/*   Updated: 2022/06/15 19:02:15 by rruiz-la         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ static int	check_expansion_type(t_cmd *cmd_node, int i)
 	}
 	else if (ft_strchr(cmd_node->word[i], '$') != NULL)
 	{
-		if (parse_assignment_expansion(cmd_node, i) == -1)
+		if (parse_assignment_expansion(cmd_node, i) < 0)
 			return (-1);
 	}
 	return (i);
@@ -48,9 +48,10 @@ int	word_expansion(void)
 		i = 0;
 		while (cmd_node->word[i] != NULL)
 		{
-			check_expansion_type(cmd_node, i);
-			if (i < 0)
+			if (check_expansion_type(cmd_node, i) < 0)
 				return (-1);
+			else if ((g_data.mns).exit_code == -3)
+				return (-2);
 			i++;
 		}
 		cmd_node = cmd_node->next;

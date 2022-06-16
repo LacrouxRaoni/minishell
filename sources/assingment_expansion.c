@@ -6,7 +6,7 @@
 /*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/01 10:00:48 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/06/14 12:34:49 by rruiz-la         ###   ########.fr       */
+/*   Updated: 2022/06/15 19:01:37 by rruiz-la         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ static int	expand_key_value(char **dollar)
 	node = g_data.list;
 	if (ft_strcmp(*dollar, "?") == 0)
 	{
+		free (*dollar);
 		*dollar = ft_itoa((g_data.exec).error);
 		return (0);
 	}	
@@ -35,7 +36,8 @@ static int	expand_key_value(char **dollar)
 	}
 	free (*dollar);
 	*dollar = ft_strdup("");
-	return (1);
+	(g_data.mns).exit_code = -3;
+	return (0);
 }
 
 char	*assignment_expansion(char *assi_word)

@@ -6,7 +6,7 @@
 /*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/11 16:53:31 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/06/14 11:58:57 by rruiz-la         ###   ########.fr       */
+/*   Updated: 2022/06/15 19:02:51 by rruiz-la         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,10 @@ static void	expand_words_and_exec(void)
 {
 	if (word_expansion() < 0)
 	{
-		(g_data.mns).exit_code = 1;
+		if ((g_data.mns).exit_code == -3)
+			(g_data.mns).exit_code = 0;
+		else
+			(g_data.mns).exit_code = 1;
 		free_cmd_table();
 	}
 	else
