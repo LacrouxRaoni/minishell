@@ -6,7 +6,7 @@
 /*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/17 12:26:53 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/06/15 21:07:08 by rruiz-la         ###   ########.fr       */
+/*   Updated: 2022/06/15 21:22:02 by rruiz-la         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -191,7 +191,7 @@ static void exec_child(t_cmd *cmd_node, t_exec *exec)
 	{
 		if (exec->path_confirmed != NULL)
 		{
-			if (execve(exec->path_confirmed, cmd_node->word, NULL) - 1)
+			if (execve(exec->path_confirmed, cmd_node->word, exec->env) - 1)
 			{
 				free_everything();
 				exit(1);
