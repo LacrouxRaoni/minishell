@@ -6,7 +6,7 @@
 /*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/15 21:20:42 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/06/17 17:07:56 by rruiz-la         ###   ########.fr       */
+/*   Updated: 2022/06/17 17:40:52 by rruiz-la         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,5 +53,6 @@ void	free_cmd_table(void)
 			cmd = temp->next;
 			free (temp);
 		}
+		free (cmd);
 	}
 }

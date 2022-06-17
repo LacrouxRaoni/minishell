@@ -6,7 +6,7 @@
 /*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/27 12:59:43 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/06/07 11:54:31 by rruiz-la         ###   ########.fr       */
+/*   Updated: 2022/06/17 17:42:01 by rruiz-la         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,7 @@ int	tild_expansion(t_cmd *cmd_node, int i)
 		if (cmd_node->word[i][1] == '\0')
 		{
 			line = getenv("HOME");
+			free (cmd_node->word[i]);
 			cmd_node->word[i] = ft_strdup(line);
 		}
 		else if ((ft_strchr(cmd_node->word[i], '\'') == NULL)

@@ -12,8 +12,9 @@
 
 #include "minishell.h"
 
-void	abort_sig(int sig __attribute__((unused)))
+void	abort_sig(int signum)
 {
+	(void)signum;
 	write (1, "\n", 1);
 	rl_replace_line("", 0);
 	rl_on_new_line();
@@ -21,9 +22,9 @@ void	abort_sig(int sig __attribute__((unused)))
 	(g_data.exec).error = 130;
 }
 
-void	kill_loop(int signum)
+void	kill_loop(void)
 {
-	(void)signum;
+
 	if (g_data.exec.b_hdoc == 1)
 	{
 		close (STDIN);
