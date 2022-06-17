@@ -6,7 +6,7 @@
 /*   By: tyago-ri <tyago-ri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/11 16:33:28 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/06/17 02:06:46 by tyago-ri         ###   ########.fr       */
+/*   Updated: 2022/06/17 02:36:49 by tyago-ri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,11 +43,7 @@ void	exec_prompt(void)
 	printf ("ppt %d %d\n", (g_data.exec).error, (g_data.mns).exit_code);
 	(g_data.mns).exit_code = 0;
 	print_terminal_line();
-	
 	(g_data.mns).line = readline((g_data.mns).line_cmd);
-	
-
-	
 	if ((g_data.mns).line == NULL)
 	{
 		rl_clear_history();
