@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_here_doc.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tyago-ri <tyago-ri@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/18 11:58:19 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/06/17 02:34:45 by tyago-ri         ###   ########.fr       */
+/*   Updated: 2022/06/17 17:07:00 by rruiz-la         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ static void	write_line(char **limiter, int size_limiter, int *fd)
 	}
 }
 
-static int	prepare_here_doc(char **here_doc, t_cmd *cmd_node)
+static void	prepare_here_doc(char **here_doc, t_cmd *cmd_node)
 {
 	int		size_limiter;
 	char	*limiter;
@@ -54,8 +54,8 @@ static int	prepare_here_doc(char **here_doc, t_cmd *cmd_node)
 	g_data.exec.b_hdoc = 1;
 	signal (SIGQUIT, SIG_IGN);
 	write_line(&limiter, size_limiter, fd);
-	// signal (SIGQUIT, quit_core);
-	// g_data.exec.b_hdoc = 0;
+	//signal (SIGQUIT, quit_core);
+	//g_data.exec.b_hdoc = 1;
 	free (limiter);
 	close(fd[1]);
 	cmd_node->fd_in = dup(fd[0]);

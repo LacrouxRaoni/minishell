@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_cmds.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tyago-ri <tyago-ri@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/17 12:26:53 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/06/17 02:37:19 by tyago-ri         ###   ########.fr       */
+/*   Updated: 2022/06/17 17:06:23 by rruiz-la         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,10 @@ static int	split_var_n_content(t_cmd *cmd_node, int w, int *i, int *j)
 		else if (ft_isalnum(cmd_node->word[w][(*i)]) == 0)
 			return (-1);
 		else
-			*j++;
+			(*j)++;
 		(*i)++;
 	}
+	return (0);
 }
 
 char	*clean_quotes(char *content)

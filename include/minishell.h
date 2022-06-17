@@ -6,7 +6,7 @@
 /*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/08 11:01:55 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/06/16 22:29:15 by rruiz-la         ###   ########.fr       */
+/*   Updated: 2022/06/17 16:55:27 by rruiz-la         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,10 +142,8 @@ void	free_split(char **s);
 void	echo_built_in(char **cmd);
 void	pwd_built_in(void);
 
- static void	no_dir_error(char **cmd); //CORRIGINDO VAZAMENTO
- static void	cd_to_oldpwd(void);
- static void	change_pwd(void);
- void	cd_built_in(char **cmd);
+
+void	cd_built_in(char **cmd);
 
 void    remove_from_env(char *var);
 void    do_export(char *var);
@@ -162,7 +160,6 @@ int		check_export_var(char *var);
 void	export_built_in(char **cmd);
 
 void	remove_from_env(char *var);
-static int	check_unset_var(char *var);
 void	unset_built_in(char	**cmd);
 
 

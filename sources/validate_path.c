@@ -6,7 +6,7 @@
 /*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/13 10:54:23 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/06/16 22:16:35 by rruiz-la         ###   ########.fr       */
+/*   Updated: 2022/06/17 16:48:30 by rruiz-la         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,8 +52,8 @@ static int	validate_path(t_cmd *cmd_node, int i, t_exec *exec)
 		if (access(exec->path_confirmed, F_OK) == 0)
 			return (0);
 	}
-	j = 0;
-	while (exec->path[j])
+	j = -1;
+	while (exec->path[++j])
 	{
 		aux = ft_strjoin(exec->path[j], "/");
 		exec->path_confirmed = ft_strjoin(aux, cmd_node->word[i]);
@@ -66,7 +66,6 @@ static int	validate_path(t_cmd *cmd_node, int i, t_exec *exec)
 		free (aux);
 		free (exec->path_confirmed);
 		exec->path_confirmed = NULL;
-		j++;
 	}
 	return (1);
 }

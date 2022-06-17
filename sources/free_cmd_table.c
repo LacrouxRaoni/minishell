@@ -6,7 +6,7 @@
 /*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/15 21:20:42 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/06/10 12:24:20 by rruiz-la         ###   ########.fr       */
+/*   Updated: 2022/06/17 17:07:56 by rruiz-la         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ void	free_cmd_table(void)
 	t_cmd	*temp;
 	t_cmd	*cmd;
 
+	i = 0;
 	cmd = g_data.cmd;
 	if (cmd != NULL)
 	{

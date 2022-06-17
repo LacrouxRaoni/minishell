@@ -14,11 +14,8 @@
 
 void	echo_built_in(char **cmd)
 {
-	t_exec	exec;
-	t_cmd	*node;
 	int		i;
 
-	node = g_data.cmd;
 	i = 1;
 	if (cmd[1] == NULL)
 		printf ("\n");

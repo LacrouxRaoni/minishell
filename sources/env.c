@@ -81,13 +81,13 @@ char	**get_sorted_env(void)
 
 void	env_built_in(char **cmd)
 {
-	int	exit_code;
+	//int	exit_code;
 	int	i;
 
 	if (cmd[1] != NULL)
 	{
 		ft_putstr_fd("env: too many arguments\n", STDERR);
-		exit_code = 1;
+		//exit_code = 1;
 		return ;
 	}
 	else
@@ -98,7 +98,7 @@ void	env_built_in(char **cmd)
 			if (ft_strchr(g_data.exec.env[i], '=') != NULL)
 				printf ("%s\n", g_data.exec.env[i]);
 		}
-		exit_code = 0;
+		//exit_code = 0;
 		return ;
 	}
 }

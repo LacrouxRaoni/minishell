@@ -6,7 +6,7 @@
 /*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/03 12:01:02 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/06/15 19:02:15 by rruiz-la         ###   ########.fr       */
+/*   Updated: 2022/06/17 17:03:34 by rruiz-la         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,4 +56,5 @@ int	word_expansion(void)
 		}
 		cmd_node = cmd_node->next;
 	}
+	return (0);
 }
