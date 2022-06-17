@@ -6,7 +6,7 @@
 /*   By: tyago-ri <tyago-ri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/15 20:36:06 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/06/17 02:08:55 by tyago-ri         ###   ########.fr       */
+/*   Updated: 2022/06/17 02:32:06 by tyago-ri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,8 @@ int	main(int argc, char *argv[], char *envp[])
 			exec_prompt();
 			if ((g_data.mns).line[0] != '\0' && (g_data.mns).line != NULL)
 			{
-				// signal (SIGQUIT, quit_core);
-				// (g_data.exec).in_exec = 1;
+				signal (SIGQUIT, quit_core);
+				(g_data.exec).in_exec = 1;
 				add_history((g_data.mns).line);
 				if (g_data.list->d_exit == 1)
 				{
