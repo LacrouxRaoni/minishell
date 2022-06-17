@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_child.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: tyago-ri <tyago-ri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/16 15:09:43 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/06/16 16:28:56 by rruiz-la         ###   ########.fr       */
+/*   Updated: 2022/06/17 03:10:57 by tyago-ri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ void	call_child_process(t_cmd *cmd_node)
 	waitpid(exec->pid, &wstatus, 0);
 	if (!WIFEXITED(wstatus))
 		(g_data.mns).exit_code = WEXITSTATUS(wstatus);
+	printf("%d ", g_data.mns.exit_code );
 	if (cmd_node->next != NULL)
 	{
 		dup2(exec->fd[0], STDIN_FILENO);

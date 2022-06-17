@@ -17,13 +17,15 @@ void	abort_sig(int sig __attribute__((unused)))
 	write (1, "\n", 1);
 	rl_replace_line("", 0);
 	rl_on_new_line();
-	g_data.mns.exit_code = 130;
 	rl_redisplay();
-	//printf("%d\n", g_data.mns.exit_code );
+	
 }
 
 void	kill_loop(int signum)
 {
+	int *code_ex;
+
+	code_ex = &g_data.mns.exit_code;
 	(void)signum;
 	if (g_data.exec.b_hdoc == 1)
 	{
@@ -37,10 +39,11 @@ void	kill_loop(int signum)
 	}
 	if (g_data.exec.in_exec == 0)
 		abort_sig(signum);
-	// printf ("%d", g_data.mns.exit_code ); 
-	// if (g_data.mns.exit_code == 0)
-	// 	kill(g_data.exec.pid, SIGKILL);
-	// g_data.mns.exit_code = 130;
+	g_data.mns.exit_code = 130;
+	printf("%d ", g_data.mns.exit_code );
+
+	g_data.mns.exit_code = 0; // MUDANDO PARA ZERO
+	printf ("%d", g_data.mns.exit_code ); 
 }
 
 void	quit_core(int signum)
