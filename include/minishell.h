@@ -6,7 +6,7 @@
 /*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/08 11:01:55 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/06/16 15:11:48 by rruiz-la         ###   ########.fr       */
+/*   Updated: 2022/06/16 22:29:15 by rruiz-la         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -169,5 +169,6 @@ void	unset_built_in(char	**cmd);
 void	kill_loop(int signum);// IN PROGRESS
 void	quit_core(int signum);
 
+void    abort_sig(int sig __attribute__((unused)));
 
 #endif

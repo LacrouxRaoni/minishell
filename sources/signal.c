@@ -12,6 +12,15 @@
 
 #include "minishell.h"
 
+void    abort_sig(int sig __attribute__((unused)))
+{
+    write (1, "\n", 1);
+    rl_replace_line("", 0);
+    rl_on_new_line();
+    rl_redisplay();
+	g_data.mns.exit_code = 130;
+}
+
 void	kill_loop(int signum)
 {
 	(void)signum;
@@ -24,13 +33,6 @@ void	kill_loop(int signum)
 	{
 		kill(g_data.exec.pid, SIGKILL);
 		write (1, "\n", 1);
-	}
-	if (g_data.exec.in_exec == 0)
-	{
-		write (1, "\n", 1);
-		rl_on_new_line();
-		rl_replace_line("", 0);
-		rl_redisplay();
 	}
 	g_data.mns.exit_code = 130;
 }

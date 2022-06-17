@@ -6,7 +6,7 @@
 /*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/11 16:33:28 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/06/16 14:26:12 by rruiz-la         ###   ########.fr       */
+/*   Updated: 2022/06/16 22:31:01 by rruiz-la         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,15 @@ void	exec_prompt(void)
 	printf ("ppt %d %d\n", (g_data.exec).error, (g_data.mns).exit_code);
 	(g_data.mns).exit_code = 0;
 	print_terminal_line();
+	
+	signal (SIGINT, abort_sig);
+	signal (SIGQUIT, SIG_IGN);
+
+
 	(g_data.mns).line = readline((g_data.mns).line_cmd);
+	
+
+	
 	if ((g_data.mns).line == NULL)
 	{
 		rl_clear_history();

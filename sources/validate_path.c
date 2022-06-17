@@ -6,7 +6,7 @@
 /*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/13 10:54:23 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/06/16 14:21:24 by rruiz-la         ###   ########.fr       */
+/*   Updated: 2022/06/16 22:16:35 by rruiz-la         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,7 @@ static int	validate_path(t_cmd *cmd_node, int i, t_exec *exec)
 		exec->path_confirmed = NULL;
 		j++;
 	}
+	return (1);
 }
 
 static int	check_valid_path_cmd(t_cmd *cmd_node, int i)

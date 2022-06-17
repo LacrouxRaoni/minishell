@@ -6,7 +6,7 @@
 /*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/10 21:40:00 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/06/11 17:27:59 by rruiz-la         ###   ########.fr       */
+/*   Updated: 2022/06/16 21:42:51 by rruiz-la         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ static int	fulfill_cmd_table(char **lexical_line, t_iterator *utils,
 	return (0);
 }
 
-static void	prepara_cmd_table(t_mns *data, t_iterator *cmd_utils,
+static void	prepare_cmd_table(t_mns *data, t_iterator *cmd_utils,
 		t_cmd *cmd_node)
 {
 	int	r;
@@ -114,7 +114,7 @@ void	cmd_table(t_cmd *cmd_node, t_mns *data, t_cmd *last_node)
 		cmd_node = (t_cmd *)malloc(sizeof(t_cmd));
 		if (!cmd_node)
 			exit (1);
-		prepara_cmd_table(data, &cmd_utils, cmd_node);
+		prepare_cmd_table(data, &cmd_utils, cmd_node);
 		cmd_utils.start = cmd_utils.i + 1;
 		if (g_data.cmd == NULL)
 			g_data.cmd = cmd_node;
