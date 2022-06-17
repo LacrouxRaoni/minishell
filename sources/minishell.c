@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: tyago-ri <tyago-ri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/15 20:36:06 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/06/16 22:31:29 by rruiz-la         ###   ########.fr       */
+/*   Updated: 2022/06/17 02:08:55 by tyago-ri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,13 +20,16 @@ int	main(int argc, char *argv[], char *envp[])
 	if (argc == 1 && argv[0] != NULL)
 	{
 		create_envp_list(envp);
+		signal (SIGINT, kill_loop);
 		while (1)
 		{
+			signal (SIGQUIT, SIG_IGN);
 			(g_data.exec).in_exec = 0;
 			exec_prompt();
 			if ((g_data.mns).line[0] != '\0' && (g_data.mns).line != NULL)
 			{
-				(g_data.exec).in_exec = 1;
+				// signal (SIGQUIT, quit_core);
+				// (g_data.exec).in_exec = 1;
 				add_history((g_data.mns).line);
 				if (g_data.list->d_exit == 1)
 				{
