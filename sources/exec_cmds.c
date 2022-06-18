@@ -6,7 +6,7 @@
 /*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/17 12:26:53 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/06/17 17:06:23 by rruiz-la         ###   ########.fr       */
+/*   Updated: 2022/06/17 20:47:19 by rruiz-la         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -170,7 +170,6 @@ void	exec_cmd(void)
 		if (cmd_node->next != NULL)
 		{
 			(g_data.mns).exit_code = 0;
-			g_data.exec.b_hdoc = 1;
 		}
 		cmd_node = cmd_node->next;
 	}

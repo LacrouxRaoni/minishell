@@ -6,7 +6,7 @@
 /*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/08 11:01:55 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/06/17 19:11:07 by rruiz-la         ###   ########.fr       */
+/*   Updated: 2022/06/17 20:01:10 by rruiz-la         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -163,7 +163,7 @@ void	remove_from_env(char *var);
 void	unset_built_in(char	**cmd);
 
 
-void	kill_loop(void);// IN PROGRESS
+void	kill_loop(int signum);// IN PROGRESS
 void	quit_core(int signum);
 
 void    abort_sig(int signum);

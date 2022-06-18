@@ -6,7 +6,7 @@
 /*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/15 20:36:06 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/06/17 19:38:27 by rruiz-la         ###   ########.fr       */
+/*   Updated: 2022/06/17 20:31:47 by rruiz-la         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	main(int argc, char *argv[], char *envp[])
 	if (argc == 1 && argv[0] != NULL)
 	{
 		create_envp_list(envp);
-		signal (SIGINT, abort_sig);
+		signal (SIGINT, kill_loop);
 		
 		while (1)
 		{
@@ -30,13 +30,13 @@ int	main(int argc, char *argv[], char *envp[])
 			{
 				rl_clear_history();
 				free_envp_list();
-				write (1, "exit\n", 5);
+				write (1, "exit\n", 5);	
 				exit (0);
 			}
 			if ((g_data.mns).line[0] != '\0' && (g_data.mns).line != NULL)
 			{
-				signal (SIGQUIT, quit_core);
 				(g_data.exec).in_exec = 1;
+				signal (SIGQUIT, quit_core);
 				add_history((g_data.mns).line);	
 				parsing_and_exec();
 			}

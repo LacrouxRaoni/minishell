@@ -6,7 +6,7 @@
 /*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/21 14:14:07 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/06/15 20:35:34 by rruiz-la         ###   ########.fr       */
+/*   Updated: 2022/06/17 22:06:24 by rruiz-la         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,8 @@ void	exec_redirect(t_cmd *cmd_node)
 		{
 			check_redirect_type(cmd_node, i);
 			i = i + 2;
+			if ((g_data.mns).exit_code > 0)
+				break ;
 		}
 	}
 }

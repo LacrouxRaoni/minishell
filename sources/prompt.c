@@ -6,7 +6,7 @@
 /*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/11 16:33:28 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/06/17 19:36:55 by rruiz-la         ###   ########.fr       */
+/*   Updated: 2022/06/17 21:20:16 by rruiz-la         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,5 +44,5 @@ void	exec_prompt(void)
 	g_data.mns.exit_code = 0;
 	print_terminal_line();
 	(g_data.mns).line = readline((g_data.mns).line_cmd);
-	free ((g_data.mns).line_cmd);
+	free ((g_data.mns).line_cmd);	
 }

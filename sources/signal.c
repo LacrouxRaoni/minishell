@@ -12,28 +12,29 @@
 
 #include "minishell.h"
 
-void	abort_sig(int signum)
+void	kill_loop(int signum)
 {
 	(void)signum;
-	write (1, "\n", 1);
-	rl_replace_line("", 0);
-	rl_on_new_line();
-	rl_redisplay();
-	(g_data.exec).error = 130;
-}
-
-void	kill_loop(void)
-{
-
-	if (g_data.exec.b_hdoc == 1)
+	if ((g_data.exec).in_exec == 2)
 	{
 		close (STDIN);
-		g_data.mns.err_num = 1;
+		g_data.mns.err_num = 0;
+		(g_data.mns).exit_code = 130;
 	}
 	if (g_data.exec.pid != 0 && g_data.exec.in_exec == 1)
 	{
 		kill(g_data.exec.pid, SIGKILL);
 		write (1, "\n", 1);
+		(g_data.mns).exit_code = 130;
+	}
+	if (g_data.exec.in_exec == 0)
+	{
+		write (1, "\n", 1);
+		rl_replace_line("", 0);
+		rl_on_new_line();
+		rl_redisplay();
+		(g_data.exec).error = 130;
+		g_data.exec.in_exec == 1;
 	}
 }
 
@@ -42,8 +43,6 @@ void	quit_core(int signum)
 	(void)signum;
 	if (g_data.exec.pid != 0 && g_data.exec.in_exec == 1)
 	{
-		free_envp_list();
-		kill(g_data.exec.pid, SIGKILL);
 		ft_putstr_fd("Quit (Core dumped)\n", 1);
 	}
 }

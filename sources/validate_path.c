@@ -6,7 +6,7 @@
 /*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/13 10:54:23 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/06/17 18:28:00 by rruiz-la         ###   ########.fr       */
+/*   Updated: 2022/06/17 22:09:49 by rruiz-la         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,10 +41,9 @@ void	free_path(void)
 	g_data.exec.path = NULL;
 }
 
-static int	validate_path(t_cmd *cmd_node, int i, t_exec *exec)
+static int	validate_path(t_cmd *cmd_node, int i, t_exec *exec, char *aux)
 {
 	int		j;
-	char	*aux;
 
 	if (cmd_node->word[i][0] == '/')
 	{
@@ -74,10 +73,11 @@ static int	validate_path(t_cmd *cmd_node, int i, t_exec *exec)
 static int	check_valid_path_cmd(t_cmd *cmd_node, int i)
 {
 	t_exec	*exec;
+	char	*aux;
 
 	exec = &(g_data.exec);
 	exec->path = get_path_content();
-	if (validate_path(cmd_node, i, exec) == 0)
+	if (validate_path(cmd_node, i, exec, aux) == 0)
 		return (0);
 	free_path();
 	return (1);

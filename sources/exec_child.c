@@ -6,7 +6,7 @@
 /*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/16 15:09:43 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/06/17 18:54:57 by rruiz-la         ###   ########.fr       */
+/*   Updated: 2022/06/17 21:53:02 by rruiz-la         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,8 +51,14 @@ void	call_child_process(t_cmd *cmd_node)
 	if (exec->pid == 0)
 		exec_child(cmd_node, exec);
 	waitpid(exec->pid, &wstatus, 0);
+	if ((g_data.mns).exit_code == 0)
+		(g_data.exec).in_exec = 5;
 	if (!WIFEXITED(wstatus))
 		(g_data.mns).exit_code = WEXITSTATUS(wstatus);
+	if (g_data.exec.in_exec == 1)
+		(g_data.mns).exit_code = 130;
+	else if (g_data.exec.in_exec == 5)
+		(g_data.mns).exit_code = 0;
 	exec->pid = 0;
 	if (cmd_node->next != NULL)
 	{

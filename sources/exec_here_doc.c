@@ -6,7 +6,7 @@
 /*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/18 11:58:19 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/06/17 17:07:00 by rruiz-la         ###   ########.fr       */
+/*   Updated: 2022/06/17 21:13:05 by rruiz-la         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,12 +18,18 @@ static void	write_line(char **limiter, int size_limiter, int *fd)
 
 	if (g_data.exec.b_hdoc > 0)
 		dup2(g_data.exec.temp_fd, STDIN_FILENO);
+	g_data.exec.b_hdoc = 1;
 	while (1)
 	{
 		write (1, "> ", 2);
 		line = get_next_line(STDIN_FILENO);
-		if (line == NULL)
+		if (!line)
+		{
+			if ((g_data.mns).exit_code == 0)
+				write (1, "minishell: warning: (expected delimited word)", ft_strlen("minishell: warning: (expected delimited word)"));
+			write (1, "\n", 1);	
 			break ;
+		}
 		if (ft_strncmp(line, (*limiter), size_limiter) == 0)
 		{
 			if (line[size_limiter] == '\n')
@@ -54,8 +60,6 @@ static void	prepare_here_doc(char **here_doc, t_cmd *cmd_node)
 	g_data.exec.b_hdoc = 1;
 	signal (SIGQUIT, SIG_IGN);
 	write_line(&limiter, size_limiter, fd);
-	//signal (SIGQUIT, quit_core);
-	//g_data.exec.b_hdoc = 1;
 	free (limiter);
 	close(fd[1]);
 	cmd_node->fd_in = dup(fd[0]);
@@ -64,6 +68,7 @@ static void	prepare_here_doc(char **here_doc, t_cmd *cmd_node)
 
 void	exec_here_doc(t_cmd *cmd_node, int i)
 {
+	(g_data.exec).in_exec = 2;
 	if (ft_strncmp(cmd_node->redirect[i], "<<", 2) == 0)
 	{
 		i++;
