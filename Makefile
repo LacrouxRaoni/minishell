@@ -1,27 +1,27 @@
-NAME	=	minishell
+NAME		=	minishell
 
 PATH_LIBFT	=	./librarie/libft
-LIBFT	=	$(PATH_LIBFT)/libft.a
+LIBFT		=	$(PATH_LIBFT)/libft.a
 
-SRC_DIR = sources
-PATH_OBJ = objects
+SRC_DIR		= sources
+PATH_OBJ	= objects
 
-BUILTIN = built_ins/
-ENVP = envp/
-EXEC = execs/
-EXPANSION = expansions/
-PARSER = parser/
-SIGNAL = signals/
-SYSTEM = system/
-UTILS = utils/
+BUILTIN		= built_ins/
+ENVP		= envp/
+EXEC		= execs/
+EXPANSION	= expansions/
+PARSER		= parser/
+SIGNAL		= signals/
+SYSTEM		= system/
+UTILS		= utils/
 
-HEADERS = include/minishell.h
+HEADERS		= include/minishell.h
 
-CC	=	gcc
-CFLAGS = -Wall -Wextra -Werror
-RM = rm -rf
-LEAK = -fsanitize=address
-CFLAGS	=	-Wall -Wextra -Werror -lreadline
+CC			=	gcc
+CFLAGS		= -Wall -Wextra -Werror
+RM			= rm -rf
+LEAK		= -fsanitize=address
+CFLAGS		=	-Wall -Wextra -Werror -lreadline
 
 
 SRC_FILES	=	$(SYSTEM)minishell.c \
@@ -67,10 +67,10 @@ SRC_FILES	=	$(SYSTEM)minishell.c \
 				$(UTILS)ft_str_isnum.c \
 				$(UTILS)free_split.c
 
-SRC = $(addprefix $(SRC_DIR)/, $(SRC_FILES))
-OBJ = $(SRC:$(SRC_DIR)/%.c=$(PATH_OBJ)/%.o)
+SRC 		= $(addprefix $(SRC_DIR)/, $(SRC_FILES))
+OBJ			= $(SRC:$(SRC_DIR)/%.c=$(PATH_OBJ)/%.o)
 
-NAME = minishell
+NAME		= minishell
 
 all: make_libft $(NAME)
 

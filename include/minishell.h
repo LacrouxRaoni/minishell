@@ -6,7 +6,7 @@
 /*   By: tyago-ri <tyago-ri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/08 11:01:55 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/06/18 19:50:34 by tyago-ri         ###   ########.fr       */
+/*   Updated: 2022/06/18 20:04:54 by tyago-ri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,31 +58,27 @@ typedef struct s_main
 	t_env_list	*list;
 	t_exec		exec;
 }	t_main;
-
-extern t_main g_data;
-
+//
+extern t_main	g_data;
 void	create_envp_list(char **envp);
-char	*extract_key(char  *key_line);
+char	*extract_key(char *key_line);
 char	*extract_value(char *value_line);
 char	**copy_env(char **env);
 void	free_envp_list(void);
-
-
-
+//
 void	exec_prompt(void);
-
+//
 void	parsing_and_exec(void);
-
+//
 int		token_analysis(void);
 int		lexical_analysis(void);
 int		syntax_analysis(void);
 int		get_n_break(t_mns *data, int i);
 int		len_subline(t_mns *data, int start, int len, int aux);
-
+//
 void	create_cmd_table(void);
 void	cmd_table(t_cmd *cmd_node, t_mns *data, t_cmd *last_node);
-
-
+//
 int		word_expansion(void);
 int		tild_expansion(t_cmd *cmd_node, int i);
 int		quote_expansion(t_cmd *cmd_node, int i);
@@ -94,60 +90,53 @@ void	free_aux_assig(char ***tmp);
 int		count_keys(char *word, int j);
 int		count_dollars(t_cmd *cmd_node, int i, int *len, int *k);
 char	*assignment_expansion(char *assi_word);
-
-
-
+//
 void	exec_cmd(void);
-
-void	open_pipe();
+//
+void	open_pipe(void);
 void	init_redirects(t_cmd *cmd_node);
 void	exec_here_doc(t_cmd *cmd_node, int i);
 void	exec_redirect(t_cmd *cmd_node);
 void	close_files(t_cmd *cmd_node);
-
+//
 int		check_if_built_in(t_cmd *cmd);
 void	exec_built_in(t_cmd *cmd);
 int		check_n_exec_special_built_in(t_cmd *cmd_node);
 void	call_child_process(t_cmd *cmd_node);
-
-
+//
 int		get_path(t_cmd *cmd_node, int i);
-
+//
 void	free_line(void);
-void	free_hash_table();
+// void	free_hash_table(void);
 void	free_envp_list(void);
 void	free_cmd_table(void);
 void	free_lexical_line(void);
 void	free_path(void);
 void	free_everything(void);
-
-
-
+//
 char	*find_env(char *var);
 char	**get_sorted_env(void);
 void	env_built_in(char **cmd);
-
+//
 void	exec_built_in(t_cmd *cmd);
 int		check_if_built_in(t_cmd *cmd);
-
+//
 int		ft_str_check(const char *s1, const char *s2);
 int		ft_str_isnum(char *str);
 void	free_split(char **s);
-
+//
 void	echo_built_in(char **cmd);
 void	pwd_built_in(void);
-
-
+//
 void	cd_built_in(char **cmd);
-
-void    remove_from_env(char *var);
-void    do_export(char *var);
-void    export_add(char *var);
-void    free_split(char **s);
-
-
+//
+void	remove_from_env(char *var);
+void	do_export(char *var);
+void	export_add(char *var);
+void	free_split(char **s);
+//
 void	exit_built_in(char **cmd);
-
+//
 void	export_list(void);
 void	export_add(char *var);
 void	do_export(char *var);
@@ -157,6 +146,5 @@ void	remove_from_env(char *var);
 void	unset_built_in(char	**cmd);
 void	kill_loop(int signum);
 void	quit_core(int signum);
-
 
 #endif
