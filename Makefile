@@ -1,7 +1,7 @@
-NAME		=	minishell
+NAME		= minishell
 
-PATH_LIBFT	=	./librarie/libft
-LIBFT		=	$(PATH_LIBFT)/libft.a
+PATH_LIBFT	= ./librarie/libft
+LIBFT		= $(PATH_LIBFT)/libft.a
 
 SRC_DIR		= sources
 PATH_OBJ	= objects
@@ -17,11 +17,11 @@ UTILS		= utils/
 
 HEADERS		= include/minishell.h
 
-CC			=	gcc
+CC			= gcc
 CFLAGS		= -Wall -Wextra -Werror
 RM			= rm -rf
 LEAK		= -fsanitize=address
-CFLAGS		=	-Wall -Wextra -Werror -lreadline
+CFLAGS		= -Wall -Wextra -Werror -lreadline
 
 
 SRC_FILES	=	$(SYSTEM)minishell.c \
