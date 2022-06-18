@@ -6,10 +6,9 @@
 /*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/08 11:01:55 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/06/17 20:01:10 by rruiz-la         ###   ########.fr       */
+/*   Updated: 2022/06/18 12:06:01 by rruiz-la         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
@@ -44,22 +43,20 @@ typedef struct s_mns
 
 typedef struct s_cmd
 {
-	char 	**word;
-	char 	**redirect;
-	int		fd_in;
-	int		fd_out;
-	char	*var_name;
-	char	*content;
-	int		expansion;
-	struct s_cmd *next;
-} t_cmd;
+	char			**word;
+	char			**redirect;
+	int				fd_in;
+	int				fd_out;
+	int				expansion;
+	struct s_cmd	*next;
+}	t_cmd;
 
-typedef struct	s_main
+typedef struct s_main
 {
-	t_mns	mns;
-	t_cmd	*cmd;
-	t_env_list *list;
-	t_exec  exec;
+	t_mns		mns;
+	t_cmd		*cmd;
+	t_env_list	*list;
+	t_exec		exec;
 }	t_main;
 
 extern t_main g_data;
@@ -67,7 +64,6 @@ extern t_main g_data;
 void	create_envp_list(char **envp);
 char	*extract_key(char  *key_line);
 char	*extract_value(char *value_line);
-
 char	**copy_env(char **env);
 void	free_envp_list(void);
 
@@ -88,7 +84,6 @@ void	cmd_table(t_cmd *cmd_node, t_mns *data, t_cmd *last_node);
 
 
 int		word_expansion(void);
-int		check_for_var(t_cmd *cmd_node, int w);
 int		tild_expansion(t_cmd *cmd_node, int i);
 int		quote_expansion(t_cmd *cmd_node, int i);
 void	handle_s_quote(t_cmd *cmd_node, int i);
@@ -158,14 +153,10 @@ void	export_add(char *var);
 void	do_export(char *var);
 int		check_export_var(char *var);
 void	export_built_in(char **cmd);
-
 void	remove_from_env(char *var);
 void	unset_built_in(char	**cmd);
-
-
-void	kill_loop(int signum);// IN PROGRESS
+void	kill_loop(int signum);
 void	quit_core(int signum);
 
-void    abort_sig(int signum);
 
 #endif

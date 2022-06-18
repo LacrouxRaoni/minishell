@@ -1,30 +1,42 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env_list.h                                         :+:      :+:    :+:   */
+/*   clean_quotes.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/04/15 18:26:21 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/06/18 12:03:07 by rruiz-la         ###   ########.fr       */
+/*   Created: 2022/06/18 10:30:31 by rruiz-la          #+#    #+#             */
+/*   Updated: 2022/06/18 10:31:38 by rruiz-la         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef ENV_LIST_H
-# define ENV_LIST_H
+#include "minishell.h"
 
-# include "libft.h"
-
-# define STDIN 0
-# define STDOUT 1
-# define STDERR 2
-
-typedef struct s_env_list
+char	*clean_quotes(char *content)
 {
-	char				*key;
-	char				*value;
-	int					d_exit;
-	struct s_env_list	*next;
-}	t_env_list;
+	int		i;
+	int		j;
+	char	*aux;
 
-#endif
+	i = 0;
+	j = 0;
+	while (content[i])
+	{
+		if (content[i] != '\'' && content[i] != '\"')
+			j++;
+		i++;
+	}
+	aux = (char *)ft_calloc(j + 1, sizeof(char *));
+	i = -1;
+	j = 0;
+	while (content[++i])
+	{
+		if (content[i] != '\'' && content[i] != '\"')
+		{
+			aux[j] = content[i];
+			j++;
+		}
+	}
+	aux[j] = '\0';
+	return (aux);
+}

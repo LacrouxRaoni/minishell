@@ -6,11 +6,38 @@
 /*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/18 11:58:19 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/06/17 21:13:05 by rruiz-la         ###   ########.fr       */
+/*   Updated: 2022/06/18 10:47:10 by rruiz-la         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+static int	check_line(char *line, char **limiter, int size_limiter, int *fd)
+{
+	if (!line)
+	{
+		if ((g_data.mns).exit_code == 0)
+			write (1, "minishell: warning: (expected delimited word)",
+				ft_strlen("minishell: warning: (expected delimited word)"));
+		write (1, "\n", 1);
+		return (1);
+	}
+	if (ft_strncmp(line, (*limiter), size_limiter) == 0)
+	{
+		if (line[size_limiter] == '\n')
+		{
+			get_next_line(-1);
+			free(line);
+			return (1);
+		}
+		else
+			write (fd[1], line, ft_strlen(line));
+	}
+	else
+		write (fd[1], line, ft_strlen(line));
+	free (line);
+	return (0);
+}
 
 static void	write_line(char **limiter, int size_limiter, int *fd)
 {
@@ -23,27 +50,8 @@ static void	write_line(char **limiter, int size_limiter, int *fd)
 	{
 		write (1, "> ", 2);
 		line = get_next_line(STDIN_FILENO);
-		if (!line)
-		{
-			if ((g_data.mns).exit_code == 0)
-				write (1, "minishell: warning: (expected delimited word)", ft_strlen("minishell: warning: (expected delimited word)"));
-			write (1, "\n", 1);	
+		if (check_line(line, limiter, size_limiter, fd) == 1)
 			break ;
-		}
-		if (ft_strncmp(line, (*limiter), size_limiter) == 0)
-		{
-			if (line[size_limiter] == '\n')
-			{
-				get_next_line(-1);
-				free(line);
-				break ;
-			}
-			else
-				write (fd[1], line, ft_strlen(line));
-		}
-		else
-			write (fd[1], line, ft_strlen(line));
-		free (line);
 	}
 }
 

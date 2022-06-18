@@ -6,7 +6,7 @@
 /*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/15 21:20:42 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/06/17 17:40:52 by rruiz-la         ###   ########.fr       */
+/*   Updated: 2022/06/18 10:21:18 by rruiz-la         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,10 +45,6 @@ void	free_cmd_table(void)
 		while (cmd != NULL)
 		{
 			free_sublines(cmd, i);
-			if (cmd->var_name != NULL)
-				free(cmd->var_name);
-			if (cmd->content != NULL)
-				free(cmd->content);
 			temp = cmd;
 			cmd = temp->next;
 			free (temp);

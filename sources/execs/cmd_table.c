@@ -6,7 +6,7 @@
 /*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/10 21:40:00 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/06/16 21:42:51 by rruiz-la         ###   ########.fr       */
+/*   Updated: 2022/06/18 10:17:58 by rruiz-la         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,8 +48,6 @@ static void	define_cmd_size(char **lexical_line,
 	cmd_node->fd_in = 0;
 	cmd_node->fd_out = 0;
 	cmd_node->next = NULL;
-	cmd_node->var_name = NULL;
-	cmd_node->content = NULL;
 	cmd_node->word = (char **)ft_calloc(utils->cmd_n + 1, sizeof(char *));
 	if (!cmd_node->word)
 		exit (1);

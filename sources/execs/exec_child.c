@@ -6,7 +6,7 @@
 /*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/16 15:09:43 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/06/17 21:53:02 by rruiz-la         ###   ########.fr       */
+/*   Updated: 2022/06/18 10:13:37 by rruiz-la         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,18 +39,8 @@ static void	exec_child(t_cmd *cmd_node, t_exec *exec)
 	exit(0);
 }
 
-void	call_child_process(t_cmd *cmd_node)
+static void	check_child_exit_code(int wstatus)
 {
-	t_exec	*exec;
-	int		wstatus;
-
-	exec = &(g_data.exec);
-	exec->pid = fork();
-	if (exec->pid < 0)
-		exit (write (1, "Fork error\n", 14));
-	if (exec->pid == 0)
-		exec_child(cmd_node, exec);
-	waitpid(exec->pid, &wstatus, 0);
 	if ((g_data.mns).exit_code == 0)
 		(g_data.exec).in_exec = 5;
 	if (!WIFEXITED(wstatus))
@@ -59,7 +49,10 @@ void	call_child_process(t_cmd *cmd_node)
 		(g_data.mns).exit_code = 130;
 	else if (g_data.exec.in_exec == 5)
 		(g_data.mns).exit_code = 0;
-	exec->pid = 0;
+}
+
+static void	redirect_to_pipe_and_free_path(t_cmd *cmd_node, t_exec *exec)
+{
 	if (cmd_node->next != NULL)
 	{
 		dup2(exec->fd[0], STDIN_FILENO);
@@ -73,4 +66,20 @@ void	call_child_process(t_cmd *cmd_node)
 	}
 	if (exec->path != NULL)
 		free_path();
+}
+
+void	call_child_process(t_cmd *cmd_node)
+{
+	t_exec	*exec;
+	int		wstatus;
+
+	exec = &(g_data.exec);
+	exec->pid = fork();
+	if (exec->pid < 0)
+		exit (write (1, "Fork error\n", 14));
+	if (exec->pid == 0)
+		exec_child(cmd_node, exec);
+	waitpid(exec->pid, &wstatus, 0);
+	check_child_exit_code(wstatus);
+	redirect_to_pipe_and_free_path(cmd_node, exec);
 }

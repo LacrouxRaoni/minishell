@@ -6,7 +6,7 @@
 /*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/03 12:01:02 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/06/17 17:03:34 by rruiz-la         ###   ########.fr       */
+/*   Updated: 2022/06/18 10:19:57 by rruiz-la         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,7 @@
 
 static int	check_expansion_type(t_cmd *cmd_node, int i)
 {
-	if (ft_strchr(cmd_node->word[i], '=') != NULL)
-	{
-		check_for_var(cmd_node, i);
-	}
-	else if (cmd_node->word[i][0] == '~')
+	if (cmd_node->word[i][0] == '~')
 	{
 		tild_expansion(cmd_node, i);
 		cmd_node->expansion++;
