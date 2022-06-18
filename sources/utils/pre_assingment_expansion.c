@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   pre_assingment_expansion.c                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: tyago-ri <tyago-ri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/31 21:27:12 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/06/15 11:45:24 by rruiz-la         ###   ########.fr       */
+/*   Updated: 2022/06/18 19:49:36 by tyago-ri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../../include/minishell.h"
 
 static int	malloc_assignment_word(t_cmd *cmd_node, int i, char ***assi_word)
 {

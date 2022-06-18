@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   handle_d_quotes.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: tyago-ri <tyago-ri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/27 21:09:16 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/06/17 17:05:23 by rruiz-la         ###   ########.fr       */
+/*   Updated: 2022/06/18 19:49:36 by tyago-ri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../../include/minishell.h"
 
 static int	check_for_assignment(t_cmd *cmd_node, int i, int *j, int *b)
 {

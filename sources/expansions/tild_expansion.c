@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   tild_expansion.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: tyago-ri <tyago-ri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/27 12:59:43 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/06/17 17:42:01 by rruiz-la         ###   ########.fr       */
+/*   Updated: 2022/06/18 19:49:36 by tyago-ri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../../include/minishell.h"
 
 static int	check_tild_type(t_cmd *cmd_node, int i, char **line, char **tmp)
 {

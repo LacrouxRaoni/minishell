@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   create_envp_list.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: tyago-ri <tyago-ri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/14 10:15:11 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/06/16 14:40:42 by rruiz-la         ###   ########.fr       */
+/*   Updated: 2022/06/18 19:49:36 by tyago-ri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../../include/minishell.h"
 
 void	create_envp_list(char **envp)
 {

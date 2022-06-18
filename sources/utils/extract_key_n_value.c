@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   extract_key_n_value.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: tyago-ri <tyago-ri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/02 10:39:52 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/06/03 14:10:54 by rruiz-la         ###   ########.fr       */
+/*   Updated: 2022/06/18 19:49:36 by tyago-ri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../../include/minishell.h"
 
 char	*extract_key(char *key_line)
 {

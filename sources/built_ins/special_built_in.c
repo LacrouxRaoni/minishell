@@ -6,11 +6,11 @@
 /*   By: tyago-ri <tyago-ri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/16 14:57:37 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/06/17 02:35:10 by tyago-ri         ###   ########.fr       */
+/*   Updated: 2022/06/18 19:49:36 by tyago-ri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../../include/minishell.h"
 
 int	check_n_exec_special_built_in(t_cmd *cmd_node)
 {

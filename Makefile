@@ -3,99 +3,107 @@ NAME	=	minishell
 PATH_LIBFT	=	./librarie/libft
 LIBFT	=	$(PATH_LIBFT)/libft.a
 
-I_MINISHELL	=	-I ./include
+SRC_DIR = sources
+PATH_OBJ = objects
 
-I_OBJ	=	-I ./ -I ./librarie/libft/
-LINK	=	-I ./ -I ./librarie/libft/ -L ./librarie/libft/ -lft
-LDFLAGS	=	-lreadline
+BUILTIN = built_ins/
+ENVP = envp/
+EXEC = execs/
+EXPANSION = expansions/
+PARSER = parser/
+SIGNAL = signals/
+SYSTEM = system/
+UTILS = utils/
+
+HEADERS = include/minishell.h
 
 CC	=	gcc
+CFLAGS = -Wall -Wextra -Werror
+RM = rm -rf
+LEAK = -fsanitize=address
 CFLAGS	=	-Wall -Wextra -Werror -lreadline
 
 
-SRC_DIR		=	sources
-SRC_FILES	=	minishell.c \
-				prompt.c \
-				create_envp_list.c \
-				extract_key_n_value.c \
-				free_envp_list.c \
-				parsing_n_exec.c \
-				token_analysis.c \
-				lexical_analysis.c \
-				syntax_analysis.c \
-				word_expansion.c \
-				tild_expansion.c \
-				quote_exapansion.c \
-				assingment_expansion.c \
-				handle_s_quote.c \
-				handle_d_quotes.c \
-				create_cmd_table.c \
-				cmd_table.c \
-				free_cmd_table.c \
-				exec_cmds.c \
-				treat_redirectsc.c \
-				exec_here_doc.c \
-				exec_redirects.c \
-				validate_path.c \
-				exec_child.c \
-				built_ins.c \
-				special_built_in.c \
-				env.c \
-				pwd.c \
-				echo.c \
-				cd.c \
-				export.c \
-				unset.c \
-				exit.c \
-				signal.c \
-				count_line.c \
-				len_subline.c \
-				pre_assingment_expansion.c \
-				pre_assingment_expansion_utils.c \
-				clean_quotes.c \
-				ft_str_check.c \
-				ft_str_isnum.c \
-				free_split.c
+SRC_FILES	=	$(SYSTEM)minishell.c \
+				$(SYSTEM)prompt.c \
+				$(ENVP)create_envp_list.c \
+				$(UTILS)extract_key_n_value.c \
+				$(ENVP)free_envp_list.c \
+				$(PARSER)parsing_n_exec.c \
+				$(PARSER)token_analysis.c \
+				$(PARSER)lexical_analysis.c \
+				$(PARSER)syntax_analysis.c \
+				$(EXPANSION)word_expansion.c \
+				$(EXPANSION)tild_expansion.c \
+				$(EXPANSION)quote_expansion.c \
+				$(EXPANSION)assingment_expansion.c \
+				$(EXPANSION)handle_s_quote.c \
+				$(EXPANSION)handle_d_quotes.c \
+				$(EXEC)create_cmd_table.c \
+				$(EXEC)cmd_table.c \
+				$(EXEC)free_cmd_table.c \
+				$(EXEC)exec_cmds.c \
+				$(EXEC)treat_redirectsc.c \
+				$(EXEC)exec_here_doc.c \
+				$(EXEC)exec_redirects.c \
+				$(EXEC)validate_path.c \
+				$(EXEC)exec_child.c \
+				$(BUILTIN)built_ins.c \
+				$(BUILTIN)special_built_in.c \
+				$(BUILTIN)env.c \
+				$(BUILTIN)pwd.c \
+				$(BUILTIN)echo.c \
+				$(BUILTIN)cd.c \
+				$(BUILTIN)export.c \
+				$(BUILTIN)unset.c \
+				$(BUILTIN)exit.c \
+				$(SIGNAL)signal.c \
+				$(UTILS)count_line.c \
+				$(UTILS)len_subline.c \
+				$(UTILS)pre_assingment_expansion.c \
+				$(UTILS)pre_assingment_expansion_utils.c \
+				$(UTILS)clean_quotes.c \
+				$(UTILS)ft_str_check.c \
+				$(UTILS)ft_str_isnum.c \
+				$(UTILS)free_split.c
 
-#system
-#env
-#parser
-#expansions
-#execs
-#built_ins
-#signals
-#utils
+SRC = $(addprefix $(SRC_DIR)/, $(SRC_FILES))
+OBJ = $(SRC:$(SRC_DIR)/%.c=$(PATH_OBJ)/%.o)
 
-SRC	=	$(addprefix $(SRC_DIR)/, $(SRC_FILES))
+NAME = minishell
 
-OBJ_DIR	=	objects
-OBJ	=	$(SRC:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
+all: make_libft $(NAME)
 
-FS	=	-g3
+$(NAME): $(OBJ)
+	@echo done!!
+	@$(CC) $(CFLAGS) $(OBJ) $(LIBFT) $(LEAK) -lreadline -g -o $(NAME)
 
-all:	$(NAME)
+$(PATH_OBJ)/%.o: $(SRC_DIR)/%.c $(HEADERS)
+	@mkdir -p $(PATH_OBJ)
+	@mkdir -p $(PATH_OBJ)/$(BUILTIN)
+	@mkdir -p $(PATH_OBJ)/$(ENVP)
+	@mkdir -p $(PATH_OBJ)/$(EXEC)
+	@mkdir -p $(PATH_OBJ)/$(EXPANSION)
+	@mkdir -p $(PATH_OBJ)/$(PARSER)
+	@mkdir -p $(PATH_OBJ)/$(SIGNAL)
+	@mkdir -p $(PATH_OBJ)/$(SYSTEM)
+	@mkdir -p $(PATH_OBJ)/$(UTILS)
+	$(CC) -g $(CFLAGS) -c -Iincludes -o $@ $<
 
-$(NAME):	$(LIBFT) $(OBJ_DIR) $(OBJ)
-	$(CC) $(CFLAGS) $(OBJ) $(LINK) $(LDFLAGS) -o $(NAME) $(I_MINISHELL)
-
-$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
-	$(CC) $(CFLAGS) $(FS) -c $< -o $@ $(I_OBJ) $(I_MINISHELL)
-
-$(LIBFT):
-	make -C $(PATH_LIBFT)
-
-$(OBJ_DIR):
-	mkdir objects
+make_libft:
+	@make -C $(PATH_LIBFT)
 
 clean:
-	rm -rf $(OBJ_DIR)
-	make -C $(PATH_LIBFT) clean
+	@$(RM) $(PATH_OBJ)
+	@make -C $(PATH_LIBFT) clean
+	@echo obj removed!
 
 fclean: clean
-	rm -rf $(NAME)
-	make -C $(PATH_LIBFT) fclean
+	@$(RM) $(NAME)
+	@make -C $(PATH_LIBFT) clean fclean
+	@echo clean everything
 
-re:	fclean all
+re: fclean all
 
 valgrind:
 	make
