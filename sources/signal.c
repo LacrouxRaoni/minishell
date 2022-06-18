@@ -34,7 +34,6 @@ void	kill_loop(int signum)
 		rl_on_new_line();
 		rl_redisplay();
 		(g_data.exec).error = 130;
-		g_data.exec.in_exec == 1;
 	}
 }
 

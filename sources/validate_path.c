@@ -6,7 +6,7 @@
 /*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/13 10:54:23 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/06/17 22:09:49 by rruiz-la         ###   ########.fr       */
+/*   Updated: 2022/06/17 22:15:56 by rruiz-la         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,7 @@ static int	check_valid_path_cmd(t_cmd *cmd_node, int i)
 	t_exec	*exec;
 	char	*aux;
 
+	aux = NULL;
 	exec = &(g_data.exec);
 	exec->path = get_path_content();
 	if (validate_path(cmd_node, i, exec, aux) == 0)
