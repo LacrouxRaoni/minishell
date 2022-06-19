@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tyago-ri <tyago-ri@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/08 11:01:55 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/06/18 20:04:54 by tyago-ri         ###   ########.fr       */
+/*   Updated: 2022/06/19 16:31:53 by rruiz-la         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,13 +132,12 @@ void	cd_built_in(char **cmd);
 //
 void	remove_from_env(char *var);
 void	do_export(char *var);
-void	export_add(char *var);
+void	export_add(char *var, char *temp);
 void	free_split(char **s);
 //
 void	exit_built_in(char **cmd);
 //
 void	export_list(void);
-void	export_add(char *var);
 void	do_export(char *var);
 int		check_export_var(char *var);
 void	export_built_in(char **cmd);

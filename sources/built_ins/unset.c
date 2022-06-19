@@ -12,6 +12,22 @@
 
 #include "../../include/minishell.h"
 
+static void remove_node(char *var)
+{
+	t_env_list *list;
+	t_env_list	*node;
+
+	node = NULL;
+	list = g_data.list;
+	while(ft_strncmp(list->key, var, ft_strlen(list->key)) != 0)
+		list = list->next;
+	if (list != NULL)
+	{
+		node = list;
+		list = node->next;
+	}
+}
+
 void	remove_from_env(char *var)
 {
 	int		i;
@@ -38,6 +54,7 @@ void	remove_from_env(char *var)
 	str[n + 1] = NULL;
 	free_split (g_data.exec.env);
 	g_data.exec.env = str;
+	remove_node(var);
 }
 
 static int	check_unset_var(char *var)
