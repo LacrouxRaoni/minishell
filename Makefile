@@ -18,10 +18,9 @@ UTILS		= utils/
 HEADERS		= include/minishell.h
 
 CC			= gcc
-CFLAGS		= -Wall -Wextra -Werror
 RM			= rm -rf
-LEAK		= -fsanitize=address
-CFLAGS		= -Wall -Wextra -Werror -lreadline
+# LEAK		= -fsanitize=address
+# CFLAGS		= -Wall -Wextra -Werror -lreadline
 
 
 SRC_FILES	=	$(SYSTEM)minishell.c \

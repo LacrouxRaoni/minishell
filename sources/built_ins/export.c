@@ -41,6 +41,27 @@ void	export_list(void)
 	free_split (sorted_env);
 }
 
+static void	add_node(int i)
+{
+	// int			i;
+	t_env_list	*node;
+	t_env_list	*last;
+
+	// i = 0;
+	node = g_data.list;
+	while (node != NULL)
+		node = node->next;	
+	if (node->next == NULL)
+	{
+		last = (t_env_list *)ft_calloc(1, sizeof(t_env_list));
+		last->next = NULL;
+		last->key = extract_key(g_data.exec.env[i]);
+		last->value = extract_value(g_data.exec.env[i]);
+		node->next = last;
+	}
+}
+
+
 void	export_add(char *var)
 {
 	int		size;
@@ -68,6 +89,7 @@ void	export_add(char *var)
 	str[size + 1] = NULL;
 	free_split (g_data.exec.env);
 	g_data.exec.env = str;
+	add_node(i);
 }
 
 void	do_export(char *var)
