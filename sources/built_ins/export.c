@@ -50,7 +50,15 @@ static void	add_node(char *temp)
 	i = 0;
 	node = (g_data.list);
 	while (node->next != NULL)
+	{
+		if (ft_strncmp(node->key, temp, ft_strlen(temp)) == 0)
+		{
+			free(node->value);
+			node->value = extract_value(g_data.exec.env[i]);
+			return ;
+		}
 		node = node->next;
+	}	
 	while (ft_strncmp((g_data.exec).env[i], temp, ft_strlen(temp)) != 0)
 		i++;
 	if (node->next == NULL)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   create_envp_list.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tyago-ri <tyago-ri@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/14 10:15:11 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/06/19 11:31:30 by tyago-ri         ###   ########.fr       */
+/*   Updated: 2022/06/19 19:42:56 by rruiz-la         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,13 +28,18 @@ void	create_envp_list(char **envp)
 		node->key = extract_key(envp[i]);
 		node->value = extract_value(envp[i]);
 		if (g_data.list == NULL)
+		{
 			g_data.list = node;
+			g_data.list->previous = NULL;
+		}
 		else
 		{
 			last = g_data.list;
 			while (last->next != NULL)
-				last = last->next;
+				last = last->next;	
+			last->previous = last;
 			last->next = node;
+			
 		}
 		i++;
 	}

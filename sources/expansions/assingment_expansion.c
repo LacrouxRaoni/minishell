@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   assingment_expansion.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tyago-ri <tyago-ri@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/01 10:00:48 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/06/18 20:02:07 by tyago-ri         ###   ########.fr       */
+/*   Updated: 2022/06/19 18:54:33 by rruiz-la         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,8 @@ static int	expand_key_value(char **dollar)
 			*dollar = ft_strdup(node->value);
 			return (0);
 		}
+		if (node->next == NULL)
+			break ;
 		node = node->next;
 	}
 	free (*dollar);

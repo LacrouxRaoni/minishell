@@ -15,16 +15,22 @@
 static void remove_node(char *var)
 {
 	t_env_list *list;
-	t_env_list	*node;
+	t_env_list	*remove;
+	t_env_list	*tmp;
 
-	node = NULL;
+	remove = NULL;
+	tmp = NULL;
 	list = g_data.list;
 	while(ft_strncmp(list->key, var, ft_strlen(list->key)) != 0)
 		list = list->next;
 	if (list != NULL)
 	{
-		node = list;
-		list = node->next;
+		remove = list;
+		if (list->next != NULL)
+			tmp = list->next;
+		if (list->previous != NULL)
+			list = list->previous;
+		list->next = tmp;
 	}
 }
 
