@@ -12,25 +12,40 @@
 
 #include "../../include/minishell.h"
 
-static void remove_node(char *var)
+static void	free_remove(t_env_list *remove)
 {
-	t_env_list *list;
+	if (remove)
+	{
+		free (remove->key);
+		remove->key = NULL;
+		free (remove->value);
+		remove->value = NULL;
+		free (remove);
+	}
+}
+
+static void	remove_node(char *var)
+{
+	t_env_list	*list;
 	t_env_list	*remove;
-	t_env_list	*tmp;
 
 	remove = NULL;
-	tmp = NULL;
 	list = g_data.list;
-	while(ft_strncmp(list->key, var, ft_strlen(list->key)) != 0)
-		list = list->next;
 	if (list != NULL)
 	{
-		remove = list;
-		if (list->next != NULL)
-			tmp = list->next;
-		if (list->previous != NULL)
-			list = list->previous;
-		list->next = tmp;
+		if (ft_strcmp(list->key, var) == 0)
+		{
+			remove = list;
+			list = remove->next;
+		}
+		else
+		{
+			while (ft_strcmp(list->next->key, var) != 0)
+				list = list->next;
+			remove = list->next;
+			list->next = remove->next;
+		}
+		free_remove(remove);
 	}
 }
 

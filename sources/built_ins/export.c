@@ -41,38 +41,7 @@ void	export_list(void)
 	free_split (sorted_env);
 }
 
-static void	add_node(char *temp)
-{
-	t_env_list	*node;
-	t_env_list	*last;
-	int	i;
-
-	i = 0;
-	node = (g_data.list);
-	while (ft_strncmp((g_data.exec).env[i], temp, ft_strlen(temp)) != 0)
-		i++;
-	while (node->next != NULL)
-	{
-		if (ft_strncmp(node->key, temp, ft_strlen(temp)) == 0)
-		{
-			free(node->value);
-			node->value = extract_value(g_data.exec.env[i]);
-			return ;
-		}
-		node = node->next;
-	}
-	if (node->next == NULL)
-	{
-		last = (t_env_list *)ft_calloc(1, sizeof(t_env_list));
-		last->next = NULL;
-		last->key = extract_key(g_data.exec.env[i]);
-		last->value = extract_value(g_data.exec.env[i]);
-		node->next = last;
-	}
-}
-
-
-void	export_add(char *var, char *temp)
+void	export_add(char *var)
 {
 	int		size;
 	int		i;
@@ -99,7 +68,6 @@ void	export_add(char *var, char *temp)
 	str[size + 1] = NULL;
 	free_split (g_data.exec.env);
 	g_data.exec.env = str;
-	add_node(temp);
 }
 
 void	do_export(char *var)
@@ -114,7 +82,9 @@ void	do_export(char *var)
 	if (ft_strchr(var, '=') != NULL && find_env(temp) != NULL)
 		remove_from_env(temp);
 	if (find_env(temp) == NULL)
-		export_add(var, temp);
+		export_add(var);
+	free_list();
+	create_envp_list();
 	free (temp);
 }
 

@@ -6,7 +6,7 @@
 /*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/08 11:01:55 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/06/19 16:31:53 by rruiz-la         ###   ########.fr       */
+/*   Updated: 2022/06/20 19:18:13 by rruiz-la         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ typedef struct s_main
 }	t_main;
 //
 extern t_main	g_data;
-void	create_envp_list(char **envp);
+void	create_envp_list(void);
 char	*extract_key(char *key_line);
 char	*extract_value(char *value_line);
 char	**copy_env(char **env);
@@ -109,6 +109,7 @@ int		get_path(t_cmd *cmd_node, int i);
 void	free_line(void);
 // void	free_hash_table(void);
 void	free_envp_list(void);
+void	free_list(void);
 void	free_cmd_table(void);
 void	free_lexical_line(void);
 void	free_path(void);
@@ -132,7 +133,7 @@ void	cd_built_in(char **cmd);
 //
 void	remove_from_env(char *var);
 void	do_export(char *var);
-void	export_add(char *var, char *temp);
+void	export_add(char *var);
 void	free_split(char **s);
 //
 void	exit_built_in(char **cmd);

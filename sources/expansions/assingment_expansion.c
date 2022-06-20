@@ -6,23 +6,30 @@
 /*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/01 10:00:48 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/06/19 18:54:33 by rruiz-la         ###   ########.fr       */
+/*   Updated: 2022/06/20 19:44:00 by rruiz-la         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
+
+static int	error_code_return(char **dollar)
+{
+	if (ft_strcmp(*dollar, "?") == 0)
+	{
+		free (*dollar);
+		*dollar = ft_itoa((g_data.exec).error);
+		return (0);
+	}
+	return (1);
+}
 
 static int	expand_key_value(char **dollar)
 {
 	t_env_list	*node;
 
 	node = g_data.list;
-	if (ft_strcmp(*dollar, "?") == 0)
-	{
-		free (*dollar);
-		*dollar = ft_itoa((g_data.exec).error);
+	if (error_code_return(dollar) == 0)
 		return (0);
-	}	
 	while (node != NULL)
 	{
 		if (ft_strcmp(node->key, *dollar) == 0)
@@ -33,7 +40,8 @@ static int	expand_key_value(char **dollar)
 		}
 		if (node->next == NULL)
 			break ;
-		node = node->next;
+		else
+			node = node->next;
 	}
 	free (*dollar);
 	*dollar = ft_strdup("");

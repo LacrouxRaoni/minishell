@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free_envp_list.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tyago-ri <tyago-ri@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/14 10:21:09 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/06/18 19:49:36 by tyago-ri         ###   ########.fr       */
+/*   Updated: 2022/06/20 16:59:03 by rruiz-la         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ static void	free_envp(void)
 	}
 }
 
-static void	free_list(void)
+void	free_list(void)
 {
 	t_env_list	*node_env;
 	t_env_list	*tmp;
@@ -49,6 +49,7 @@ static void	free_list(void)
 			node_env = tmp->next;
 			free (tmp);
 		}
+		free (node_env);
 	}
 }
 

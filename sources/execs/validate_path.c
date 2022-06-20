@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   validate_path.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tyago-ri <tyago-ri@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/13 10:54:23 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/06/18 19:49:36 by tyago-ri         ###   ########.fr       */
+/*   Updated: 2022/06/20 18:48:32 by rruiz-la         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,14 @@ static char	**get_path_content(void)
 		if (ft_strcmp(table->key, "PATH") == 0)
 		{
 			path = ft_split(table->value, ':');
+			if (!path)
+				break ;
 			return (path);
 		}
-		table = table->next;
+		if (table->next == NULL)
+			break ;
+		else
+			table = table->next;
 	}
 	return (NULL);
 }
@@ -78,6 +83,8 @@ static int	check_valid_path_cmd(t_cmd *cmd_node, int i)
 	aux = NULL;
 	exec = &(g_data.exec);
 	exec->path = get_path_content();
+	if (!exec->path)
+		return (1);
 	if (validate_path(cmd_node, i, exec, aux) == 0)
 		return (0);
 	free_path();

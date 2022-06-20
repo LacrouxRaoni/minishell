@@ -6,11 +6,21 @@
 /*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/27 12:59:43 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/06/19 20:07:33 by rruiz-la         ###   ########.fr       */
+/*   Updated: 2022/06/20 19:39:03 by rruiz-la         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
+
+static void	get_tild_line(char **line, t_cmd *cmd_node, int i)
+{
+	(*line) = find_env("HOME");
+	free (cmd_node->word[i]);
+	if ((*line))
+		cmd_node->word[i] = ft_strdup((*line));
+	else
+		cmd_node->word[i] = ft_strdup("");
+}
 
 static int	check_tild_type(t_cmd *cmd_node, int i, char **line, char **tmp)
 {
@@ -61,11 +71,7 @@ int	tild_expansion(t_cmd *cmd_node, int i)
 	if (cmd_node->word[i][0] == '~')
 	{
 		if (cmd_node->word[i][1] == '\0')
-		{
-			line = find_env("HOME");
-			free (cmd_node->word[i]);
-			cmd_node->word[i] = ft_strdup(line);
-		}
+			get_tild_line(&line, cmd_node, i);
 		else if ((ft_strchr(cmd_node->word[i], '\'') == NULL)
 			|| ft_strchr(cmd_node->word[i], '\"') == NULL)
 		{
