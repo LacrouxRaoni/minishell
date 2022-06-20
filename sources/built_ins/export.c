@@ -49,6 +49,8 @@ static void	add_node(char *temp)
 
 	i = 0;
 	node = (g_data.list);
+	while (ft_strncmp((g_data.exec).env[i], temp, ft_strlen(temp)) != 0)
+		i++;
 	while (node->next != NULL)
 	{
 		if (ft_strncmp(node->key, temp, ft_strlen(temp)) == 0)
@@ -58,9 +60,7 @@ static void	add_node(char *temp)
 			return ;
 		}
 		node = node->next;
-	}	
-	while (ft_strncmp((g_data.exec).env[i], temp, ft_strlen(temp)) != 0)
-		i++;
+	}
 	if (node->next == NULL)
 	{
 		last = (t_env_list *)ft_calloc(1, sizeof(t_env_list));
