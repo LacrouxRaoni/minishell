@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: coder <coder@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/08 11:01:55 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/06/21 15:16:27 by rruiz-la         ###   ########.fr       */
+/*   Updated: 2022/06/22 01:10:58 by coder            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,7 @@ extern t_main	g_data;
 void	create_envp_list(void);
 char	*extract_key(char *key_line);
 char	*extract_value(char *value_line);
+char	**workspace_env(char **env);
 char	**copy_env(char **env);
 void	free_envp_list(void);
 //

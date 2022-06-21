@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: coder <coder@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/15 20:36:06 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/06/20 18:59:23 by rruiz-la         ###   ########.fr       */
+/*   Updated: 2022/06/22 01:10:51 by coder            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ t_main	g_data;
 
 static void	start_minishell(char **envp)
 {
-	g_data.exec.env = copy_env(envp);
+	g_data.exec.env = workspace_env(envp);
 	create_envp_list();
 	signal (SIGINT, kill_loop);
 	while (1)
