@@ -19,7 +19,6 @@ HEADERS		= include/minishell.h
 
 CC			= gcc
 RM			= rm -rf
-# LEAK		= -fsanitize=address
 CFLAGS		= -Wall -Wextra -Werror -lreadline
 
 
@@ -87,7 +86,7 @@ $(PATH_OBJ)/%.o: $(SRC_DIR)/%.c $(HEADERS)
 	@mkdir -p $(PATH_OBJ)/$(SIGNAL)
 	@mkdir -p $(PATH_OBJ)/$(SYSTEM)
 	@mkdir -p $(PATH_OBJ)/$(UTILS)
-	$(CC) -g $(CFLAGS) -c -Iincludes -o $@ $<
+	$(CC) -g $(CFLAGS) -c -I includes -o $@ $<
 
 make_libft:
 	@make -C $(PATH_LIBFT)

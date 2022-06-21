@@ -6,7 +6,7 @@
 /*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/17 12:26:53 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/06/20 19:30:58 by rruiz-la         ###   ########.fr       */
+/*   Updated: 2022/06/21 11:14:25 by rruiz-la         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ void	free_everything(void)
 	free_line();
 }
 
-static void	exec_slashes(t_cmd *cmd_node, int i)
+static int	exec_slashes(t_cmd *cmd_node, int i)
 {
 	DIR	*dir;
 
@@ -55,7 +55,10 @@ static void	exec_slashes(t_cmd *cmd_node, int i)
 			(g_data.mns).exit_code = 126;
 			closedir(dir);
 		}
+		if (cmd_node->next == NULL)
+			return (1);
 	}
+	return (0);
 }
 
 static int	run_cmd(t_cmd *cmd_node, int i)
@@ -67,7 +70,10 @@ static int	run_cmd(t_cmd *cmd_node, int i)
 	if (cmd_node->word[i] != NULL && (g_data.mns).exit_code == 0)
 	{
 		if (cmd_node->expansion > 0)
-			exec_slashes(cmd_node, i);
+		{
+			if (exec_slashes(cmd_node, i) == 1)
+				return (1);
+		}		
 		if (check_n_exec_special_built_in(cmd_node) == 0)
 			return (0);
 		if (check_if_built_in(cmd_node) == 0 && g_data.mns.exit_code == 0)
