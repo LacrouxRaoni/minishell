@@ -12,6 +12,35 @@
 
 #include "../../include/minishell.h"
 
+static int	check_word(char *env)
+{
+	int		i;
+	int		j;
+	char	*val;
+
+	i = 0;
+	j = 0;
+	val = '\0';
+	while (env[i] != '\0')
+	{
+		if (env[i] == '_' && env[i + 1] == 'W')
+		{
+			while (env[i] != '_')
+			{
+				val[j] = env[i];
+				j++;
+				i++;
+			}
+		}
+		i++;
+	}
+	if (!val)
+		return (0);
+	if (ft_strcmp(val, "_WORKSPACE_") == 0)
+		return (1);
+	return (0);
+}
+
 char	**copy_env(char **env)
 {
 	char	**ret;
@@ -24,8 +53,8 @@ char	**copy_env(char **env)
 		i++;
 	ret = (char **) malloc (sizeof(char *) * (i + 1));
 	while (env[++n] != NULL)
-	{
-		if (ft_strncmp(env[n], "_WORKSPACE_", ft_strlen("_WORKSPACE_")) != 0)
+	{	
+		if (check_word(env[n]) == 0)
 			ret[n] = ft_strdup(env[n]);
 	}
 	ret[n] = NULL;
