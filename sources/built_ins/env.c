@@ -24,7 +24,10 @@ char	**copy_env(char **env)
 		i++;
 	ret = (char **) malloc (sizeof(char *) * (i + 1));
 	while (env[++n] != NULL)
-		ret[n] = ft_strdup(env[n]);
+	{
+		if (ft_strncmp(env[n], "_WORKSPACE_", ft_strlen("_WORKSPACE_")) != 0)
+			ret[n] = ft_strdup(env[n]);
+	}
 	ret[n] = NULL;
 	return (ret);
 }
