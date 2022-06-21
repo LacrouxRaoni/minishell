@@ -6,7 +6,7 @@
 /*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/17 12:26:53 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/06/21 11:14:25 by rruiz-la         ###   ########.fr       */
+/*   Updated: 2022/06/21 15:19:29 by rruiz-la         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,10 @@ static int	run_cmd(t_cmd *cmd_node, int i)
 	if (cmd_node->next != NULL)
 		open_pipe();
 	if (cmd_node->redirect[i] != NULL)
-		init_redirects(cmd_node);
+	{
+		if (init_redirects(cmd_node) == 1)
+			return (1);
+	}
 	if (cmd_node->word[i] != NULL && (g_data.mns).exit_code == 0)
 	{
 		if (cmd_node->expansion > 0)

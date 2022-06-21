@@ -6,7 +6,7 @@
 /*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/08 11:01:55 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/06/20 19:18:13 by rruiz-la         ###   ########.fr       */
+/*   Updated: 2022/06/21 15:16:27 by rruiz-la         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@ char	*assignment_expansion(char *assi_word);
 void	exec_cmd(void);
 //
 void	open_pipe(void);
-void	init_redirects(t_cmd *cmd_node);
+int		init_redirects(t_cmd *cmd_node);
 void	exec_here_doc(t_cmd *cmd_node, int i);
 void	exec_redirect(t_cmd *cmd_node);
 void	close_files(t_cmd *cmd_node);
