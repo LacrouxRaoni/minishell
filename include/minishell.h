@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: coder <coder@student.42.fr>                +#+  +:+       +#+        */
+/*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/08 11:01:55 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/06/22 01:10:58 by coder            ###   ########.fr       */
+/*   Updated: 2022/06/22 14:57:27 by rruiz-la         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,7 +108,6 @@ void	call_child_process(t_cmd *cmd_node);
 int		get_path(t_cmd *cmd_node, int i);
 //
 void	free_line(void);
-// void	free_hash_table(void);
 void	free_envp_list(void);
 void	free_list(void);
 void	free_cmd_table(void);

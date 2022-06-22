@@ -6,7 +6,7 @@
 /*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/13 10:54:23 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/06/22 13:55:31 by rruiz-la         ###   ########.fr       */
+/*   Updated: 2022/06/22 15:01:51 by rruiz-la         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,21 +33,26 @@ static char	**get_path_content(void)
 	return (NULL);
 }
 
-void	free_path(void)
+static int	check_absolut_path(t_cmd *cmd_node, int i, t_exec *exec)
 {
-	int	i;
-
-	i = -1;
-	while (g_data.exec.path[++i] != NULL)
-		free(g_data.exec.path[i]);
-	free (g_data.exec.path);
-	g_data.exec.path = NULL;
+	if (cmd_node->word[i][0] == '/')
+	{
+		exec->path_confirmed = ft_strdup(cmd_node->word[i]);
+		if (access(exec->path_confirmed, F_OK) == 0)
+			return (0);
+		free (exec->path_confirmed);
+	}
+	else
+		return (1);
+	return (0);
 }
 
 static int	validate_path(t_cmd *cmd_node, int i, t_exec *exec, char *aux)
 {
 	int		j;
 
+	if (check_absolut_path(cmd_node, i, exec) == 0)
+		return (0);
 	j = -1;
 	while (exec->path[++j])
 	{
@@ -76,13 +81,8 @@ static int	check_valid_path_cmd(t_cmd *cmd_node, int i)
 	exec->path = get_path_content();
 	if (!exec->path)
 	{
-		if (cmd_node->word[i][0] == '/')
-		{
-			exec->path_confirmed = ft_strdup(cmd_node->word[i]);
-			if (access(exec->path_confirmed, F_OK) == 0)
-				return (0);
-			free (exec->path_confirmed);
-		}
+		if (check_absolut_path(cmd_node, i, exec) == 0)
+			return (0);
 		else
 			return (1);
 	}

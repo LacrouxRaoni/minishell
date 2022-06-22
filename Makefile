@@ -63,7 +63,8 @@ SRC_FILES	=	$(SYSTEM)minishell.c \
 				$(UTILS)clean_quotes.c \
 				$(UTILS)ft_str_check.c \
 				$(UTILS)ft_str_isnum.c \
-				$(UTILS)free_split.c
+				$(UTILS)free_split.c \
+				$(UTILS)free_path.c
 
 SRC 		= $(addprefix $(SRC_DIR)/, $(SRC_FILES))
 OBJ			= $(SRC:$(SRC_DIR)/%.c=$(PATH_OBJ)/%.o)
