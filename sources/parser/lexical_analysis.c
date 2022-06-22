@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexical_analysis.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tyago-ri <tyago-ri@student.42.fr>          +#+  +:+       +#+        */
+/*   By: coder <coder@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/08 11:14:21 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/06/18 19:49:36 by tyago-ri         ###   ########.fr       */
+/*   Updated: 2022/06/22 02:51:49 by coder            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ void	free_lexical_line(void)
 static int	sort_lexical_line(int i, t_mns *data)
 {
 	if (ft_strncmp(data->parsed_line[i], "|", 1) == 0)
-	data->lexical_line[i] = ft_strdup("PIPE");
+		data->lexical_line[i] = ft_strdup("PIPE");
 	else if (ft_strncmp(data->parsed_line[i], "<\0", 2) == 0)
 		data->lexical_line[i] = ft_strdup("LESS");
 	else if ((ft_strncmp(data->parsed_line[i], "<<\0", 3) == 0))
