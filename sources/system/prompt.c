@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   prompt.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: coder <coder@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/11 16:33:28 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/06/19 20:07:09 by rruiz-la         ###   ########.fr       */
+/*   Updated: 2022/06/22 04:39:50 by coder            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void	print_terminal_line(void)
 	char	*aux;
 	char	*aux2;
 
-	user = find_env("USER");
+	user = getenv("USER");
 	getcwd(dir, sizeof(dir));
 	aux = ft_strjoin(user, "@:");
 	aux2 = ft_strjoin(dir, "$ ");
