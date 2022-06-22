@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   validate_path.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: coder <coder@student.42.fr>                +#+  +:+       +#+        */
+/*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/13 10:54:23 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/06/22 04:48:38 by coder            ###   ########.fr       */
+/*   Updated: 2022/06/22 13:55:31 by rruiz-la         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,6 @@ static char	**get_path_content(void)
 				break ;
 			return (path);
 		}
-		if (table->next == NULL)
-			break ;
 		else
 			table = table->next;
 	}
@@ -50,13 +48,6 @@ static int	validate_path(t_cmd *cmd_node, int i, t_exec *exec, char *aux)
 {
 	int		j;
 
-	if (cmd_node->word[i][0] == '/')
-	{
-		exec->path_confirmed = ft_strdup(cmd_node->word[i]);
-		if (access(exec->path_confirmed, F_OK) == 0)
-			return (0);
-		free (exec->path_confirmed);
-	}
 	j = -1;
 	while (exec->path[++j])
 	{
@@ -84,7 +75,17 @@ static int	check_valid_path_cmd(t_cmd *cmd_node, int i)
 	exec = &(g_data.exec);
 	exec->path = get_path_content();
 	if (!exec->path)
-		return (1);
+	{
+		if (cmd_node->word[i][0] == '/')
+		{
+			exec->path_confirmed = ft_strdup(cmd_node->word[i]);
+			if (access(exec->path_confirmed, F_OK) == 0)
+				return (0);
+			free (exec->path_confirmed);
+		}
+		else
+			return (1);
+	}
 	if (validate_path(cmd_node, i, exec, aux) == 0)
 		return (0);
 	free_path();

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pre_assingment_expansion.c                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tyago-ri <tyago-ri@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/31 21:27:12 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/06/18 19:49:36 by tyago-ri         ###   ########.fr       */
+/*   Updated: 2022/06/22 13:24:41 by rruiz-la         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,6 +100,7 @@ static void	get_value_expansion(t_cmd *cmd_node, int i, char ***assi_word)
 	}	
 	free(cmd_node->word[i]);
 	cmd_node->word[i] = ft_str_superjoin(aux);
+	printf ("%s\n", cmd_node->word[i]);
 	free_aux_assig(&aux);
 }
 

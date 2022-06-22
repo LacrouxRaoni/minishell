@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_child.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: coder <coder@student.42.fr>                +#+  +:+       +#+        */
+/*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/16 15:09:43 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/06/22 03:40:18 by coder            ###   ########.fr       */
+/*   Updated: 2022/06/22 09:14:48 by rruiz-la         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,8 @@ static void	check_child_exit_code(int wstatus)
 		(g_data.mns).exit_code = 0;
 }
 
-static void	redirect_to_pipe_and_free_path(t_cmd *cmd_node, t_exec *exec, int wstatus)
+static void	redirect_to_pipe_and_free_path(t_cmd *cmd_node,
+		t_exec *exec, int wstatus)
 {
 	if (cmd_node->next != NULL)
 	{
@@ -72,7 +73,6 @@ static void	redirect_to_pipe_and_free_path(t_cmd *cmd_node, t_exec *exec, int ws
 	}
 	if (exec->path != NULL)
 		free_path();
-	
 }
 
 void	call_child_process(t_cmd *cmd_node)

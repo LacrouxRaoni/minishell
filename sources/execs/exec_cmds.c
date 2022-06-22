@@ -6,7 +6,7 @@
 /*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/17 12:26:53 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/06/21 15:19:29 by rruiz-la         ###   ########.fr       */
+/*   Updated: 2022/06/22 12:05:11 by rruiz-la         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ static int	run_cmd(t_cmd *cmd_node, int i)
 	}
 	if (cmd_node->word[i] != NULL && (g_data.mns).exit_code == 0)
 	{
-		if (cmd_node->expansion > 0)
+		if (cmd_node->expansion > 0 || cmd_node->word[i][0] == '.')
 		{
 			if (exec_slashes(cmd_node, i) == 1)
 				return (1);
