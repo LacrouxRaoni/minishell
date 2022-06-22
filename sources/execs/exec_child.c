@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_child.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: coder <coder@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/16 15:09:43 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/06/20 13:37:34 by rruiz-la         ###   ########.fr       */
+/*   Updated: 2022/06/22 03:40:18 by coder            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ static void	exec_child(t_cmd *cmd_node, t_exec *exec)
 		{
 			if (execve(exec->path_confirmed, cmd_node->word, exec->env) - 1)
 			{
+				(g_data.mns).exit_code = 1;
 				free_everything();
 				exit(1);
 			}
@@ -51,13 +52,18 @@ static void	check_child_exit_code(int wstatus)
 		(g_data.mns).exit_code = 0;
 }
 
-static void	redirect_to_pipe_and_free_path(t_cmd *cmd_node, t_exec *exec)
+static void	redirect_to_pipe_and_free_path(t_cmd *cmd_node, t_exec *exec, int wstatus)
 {
 	if (cmd_node->next != NULL)
 	{
 		dup2(exec->fd[0], STDIN_FILENO);
 		close (exec->fd[0]);
 		close (exec->fd[1]);
+	}
+	else
+	{
+		waitpid(exec->pid, &wstatus, 0);
+		(g_data.mns).exit_code = WEXITSTATUS(wstatus);
 	}
 	if (exec->path_confirmed != NULL)
 	{
@@ -66,6 +72,7 @@ static void	redirect_to_pipe_and_free_path(t_cmd *cmd_node, t_exec *exec)
 	}
 	if (exec->path != NULL)
 		free_path();
+	
 }
 
 void	call_child_process(t_cmd *cmd_node)
@@ -81,5 +88,5 @@ void	call_child_process(t_cmd *cmd_node)
 		exec_child(cmd_node, exec);
 	waitpid(exec->pid, &wstatus, 0);
 	check_child_exit_code(wstatus);
-	redirect_to_pipe_and_free_path(cmd_node, exec);
+	redirect_to_pipe_and_free_path(cmd_node, exec, wstatus);
 }
