@@ -6,7 +6,7 @@
 /*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/31 21:27:12 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/06/23 12:53:48 by rruiz-la         ###   ########.fr       */
+/*   Updated: 2022/06/23 15:49:09 by rruiz-la         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,11 +110,13 @@ int	parse_assignment_expansion(t_cmd *cmd_node, int i)
 	char	**assi_word;
 	int		k;
 
+	j = 0;
+	k = 0;
+	if (cmd_node->word[i][j] == '$' && cmd_node->word[i][j + 1] == '\0')
+		return (0);
 	size = malloc_assignment_word(cmd_node, i, &assi_word);
 	if (size < 0)
 		return (-1);
-	j = 0;
-	k = 0;
 	while (j < size)
 	{
 		sweep_word_line(cmd_node->word[i], &assi_word, &j, &k);
