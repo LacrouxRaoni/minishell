@@ -6,7 +6,7 @@
 /*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/08 11:01:55 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/06/23 14:50:14 by rruiz-la         ###   ########.fr       */
+/*   Updated: 2022/06/23 18:31:07 by rruiz-la         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ void	cmd_table(t_cmd *cmd_node, t_mns *data, t_cmd *last_node);
 int		word_expansion(void);
 int		tild_expansion(t_cmd *cmd_node, int i);
 int		quote_expansion(t_cmd *cmd_node, int i);
-void	handle_s_quote(t_cmd *cmd_node, int i);
+int		handle_s_quote(t_cmd *cmd_node, int i);
 int		handle_d_quotes(t_cmd *cmd_node, int i);
 char	*clean_quotes(char *content);
 int		parse_assignment_expansion(t_cmd *cmd_node, int i);

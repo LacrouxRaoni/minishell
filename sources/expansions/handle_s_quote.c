@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handle_s_quote.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tyago-ri <tyago-ri@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/27 19:50:29 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/06/18 19:49:36 by tyago-ri         ###   ########.fr       */
+/*   Updated: 2022/06/23 18:58:26 by rruiz-la         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ static void	fulfill_quote_line(t_cmd *cmd_node,
 	}
 }
 
-void	handle_s_quote(t_cmd *cmd_node, int i)
+int	handle_s_quote(t_cmd *cmd_node, int i)
 {
 	int		b;
 	int		j;
@@ -74,6 +74,8 @@ void	handle_s_quote(t_cmd *cmd_node, int i)
 	b = 0;
 	check_for_assignment(cmd_node, i, &j, &b);
 	check_word_size(cmd_node, i, &j, &k);
+	if (j == 2)
+		return (-2);
 	if (cmd_node->word[i][j - 1] == '\'')
 	{
 		quote_line = ft_calloc(k + 1, sizeof(char *));
@@ -84,4 +86,5 @@ void	handle_s_quote(t_cmd *cmd_node, int i)
 	free(cmd_node->word[i]);
 	cmd_node->word[i] = ft_strdup(quote_line);
 	free (quote_line);
+	return (0);
 }

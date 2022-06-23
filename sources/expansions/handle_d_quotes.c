@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handle_d_quotes.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tyago-ri <tyago-ri@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/27 21:09:16 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/06/18 19:49:36 by tyago-ri         ###   ########.fr       */
+/*   Updated: 2022/06/23 19:22:24 by rruiz-la         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,8 @@ static void	check_word_size(t_cmd *cmd_node, int i, int *j, int *k)
 			(*k)++;
 		(*j)++;
 	}
+	if ((*j) == 2)
+		(*j) = -2;
 }
 
 static void	fulfill_dquote_line(t_cmd *cmd_node,
@@ -62,6 +64,13 @@ static void	fulfill_dquote_line(t_cmd *cmd_node,
 	}
 }
 
+static void	init_variables(int *b, int *j, int *k)
+{
+	(*b) = 0;
+	(*j) = 0;
+	(*k) = 0;
+}
+
 int	handle_d_quotes(t_cmd *cmd_node, int i)
 {
 	int		b;
@@ -69,11 +78,11 @@ int	handle_d_quotes(t_cmd *cmd_node, int i)
 	int		k;
 	char	*dquote_line;
 
-	b = 0;
-	j = 0;
-	k = 0;
+	init_variables(&b, &j, &k);
 	check_for_assignment(cmd_node, i, &j, &b);
 	check_word_size(cmd_node, i, &j, &k);
+	if (j < 0)
+		return (-2);
 	if (cmd_node->word[i][j - 1] == '\"')
 	{
 		dquote_line = ft_calloc(k + 1, sizeof(char *));
