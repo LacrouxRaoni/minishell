@@ -22,7 +22,10 @@ void	kill_loop(int signum)
 		(g_data.mns).exit_code = 130;
 	}
 	if (g_data.exec.pid != 0 && g_data.exec.in_exec == 1)
+	{
+		kill(g_data.exec.pid, SIGKILL);
 		write (1, "\n", 1);
+	}
 	if (g_data.exec.in_exec == 0)
 	{
 		write (1, "\n", 1);
@@ -31,6 +34,7 @@ void	kill_loop(int signum)
 		rl_redisplay();
 		(g_data.exec).error = 130;
 	}
+	(g_data.mns).exit_code = 130;
 }
 
 void	quit_core(int signum)
@@ -41,6 +45,5 @@ void	quit_core(int signum)
 		kill(g_data.exec.pid, SIGKILL);
 		ft_putstr_fd("Quit (Core dumped)\n", 1);
 	}
-	(g_data.exec).error = 131;
 	(g_data.mns).exit_code = 131;
 }

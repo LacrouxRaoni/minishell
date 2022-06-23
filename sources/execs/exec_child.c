@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_child.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: tyago-ri <tyago-ri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/16 15:09:43 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/06/23 13:14:52 by rruiz-la         ###   ########.fr       */
+/*   Updated: 2022/06/23 14:41:06 by tyago-ri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,9 +78,7 @@ static void	redirect_to_pipe_and_free_path(t_cmd *cmd_node,
 		waitpid(exec->pid, &wstatus, 0);
 		(g_data.mns).exit_code = WEXITSTATUS(wstatus);
 	}
-	if (signal (SIGQUIT, quit_core) && (g_data.exec).error == 131)
-		(g_data.mns).exit_code = 131;
-	else
+	if (g_data.exec.pid != 0 && g_data.exec.in_exec == 1)
 		(g_data.mns).exit_code = 130;
 	if (exec->path_confirmed != NULL)
 	{
