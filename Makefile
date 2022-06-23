@@ -69,8 +69,6 @@ SRC_FILES	=	$(SYSTEM)minishell.c \
 SRC 		= $(addprefix $(SRC_DIR)/, $(SRC_FILES))
 OBJ			= $(SRC:$(SRC_DIR)/%.c=$(PATH_OBJ)/%.o)
 
-NAME		= minishell
-
 all: make_libft $(NAME)
 
 $(NAME): $(OBJ)

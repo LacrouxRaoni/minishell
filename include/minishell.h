@@ -6,7 +6,7 @@
 /*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/08 11:01:55 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/06/23 12:56:29 by rruiz-la         ###   ########.fr       */
+/*   Updated: 2022/06/23 14:50:14 by rruiz-la         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,10 +138,8 @@ void	free_split(char **s);
 void	exit_built_in(char **cmd);
 //
 void	export_list(void);
-void	do_export(char *var);
 int		check_export_var(char *var);
 void	export_built_in(char **cmd);
-void	remove_from_env(char *var);
 void	unset_built_in(char	**cmd);
 void	kill_loop(int signum);
 void	quit_core(int signum);
