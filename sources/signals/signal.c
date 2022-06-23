@@ -25,6 +25,7 @@ void	kill_loop(int signum)
 	{
 		kill(g_data.exec.pid, SIGKILL);
 		write (1, "\n", 1);
+		(g_data.mns).exit_code = 130;
 	}
 	if (g_data.exec.in_exec == 0)
 	{
