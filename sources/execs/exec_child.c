@@ -78,6 +78,10 @@ static void	redirect_to_pipe_and_free_path(t_cmd *cmd_node,
 		waitpid(exec->pid, &wstatus, 0);
 		(g_data.mns).exit_code = WEXITSTATUS(wstatus);
 	}
+	if (signal (SIGQUIT, quit_core) && (g_data.exec).error == 131)
+		(g_data.mns).exit_code = 131;
+	else
+		(g_data.mns).exit_code = 130;
 	if (exec->path_confirmed != NULL)
 	{
 		free (exec->path_confirmed);
