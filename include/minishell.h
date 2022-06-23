@@ -6,7 +6,7 @@
 /*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/08 11:01:55 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/06/22 14:57:27 by rruiz-la         ###   ########.fr       */
+/*   Updated: 2022/06/23 12:56:29 by rruiz-la         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,6 @@ typedef struct s_cmd
 	char			**redirect;
 	int				fd_in;
 	int				fd_out;
-	int				expansion;
 	struct s_cmd	*next;
 }	t_cmd;
 

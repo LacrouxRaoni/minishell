@@ -6,7 +6,7 @@
 /*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/13 10:54:23 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/06/22 15:01:51 by rruiz-la         ###   ########.fr       */
+/*   Updated: 2022/06/23 11:23:39 by rruiz-la         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,13 +35,8 @@ static char	**get_path_content(void)
 
 static int	check_absolut_path(t_cmd *cmd_node, int i, t_exec *exec)
 {
-	if (cmd_node->word[i][0] == '/')
-	{
+	if (ft_strchr(cmd_node->word[i], '/') != NULL)
 		exec->path_confirmed = ft_strdup(cmd_node->word[i]);
-		if (access(exec->path_confirmed, F_OK) == 0)
-			return (0);
-		free (exec->path_confirmed);
-	}
 	else
 		return (1);
 	return (0);

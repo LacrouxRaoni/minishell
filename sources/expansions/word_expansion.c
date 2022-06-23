@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   word_expansion.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tyago-ri <tyago-ri@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/03 12:01:02 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/06/18 19:49:36 by tyago-ri         ###   ########.fr       */
+/*   Updated: 2022/06/23 12:53:42 by rruiz-la         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@ static int	check_expansion_type(t_cmd *cmd_node, int i)
 	if (cmd_node->word[i][0] == '~')
 	{
 		tild_expansion(cmd_node, i);
-		cmd_node->expansion++;
 	}
 	else if ((ft_strchr(cmd_node->word[i], '\'') != NULL)
 		|| (ft_strchr(cmd_node->word[i], '\"') != NULL))

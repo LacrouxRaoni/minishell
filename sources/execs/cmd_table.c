@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_table.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tyago-ri <tyago-ri@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/10 21:40:00 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/06/18 19:49:36 by tyago-ri         ###   ########.fr       */
+/*   Updated: 2022/06/23 12:53:35 by rruiz-la         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,6 @@ static void	define_cmd_size(char **lexical_line,
 			break ;
 		i++;
 	}
-	cmd_node->expansion = 0;
 	cmd_node->fd_in = 0;
 	cmd_node->fd_out = 0;
 	cmd_node->next = NULL;

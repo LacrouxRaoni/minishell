@@ -6,11 +6,27 @@
 /*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/16 15:09:43 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/06/22 09:14:48 by rruiz-la         ###   ########.fr       */
+/*   Updated: 2022/06/23 13:00:42 by rruiz-la         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
+
+static void	exit_child(t_cmd *cmd_node, int flag)
+{
+	int	n;
+
+	n = 0;
+	if (flag == EACCES)
+		n = 126;
+	else if (flag == ENOENT)
+		n = 127;
+	else
+		n = 127;
+	perror(cmd_node->word[0]);
+	free_everything();
+	exit (n);
+}
 
 static void	exec_child(t_cmd *cmd_node, t_exec *exec)
 {
@@ -27,11 +43,7 @@ static void	exec_child(t_cmd *cmd_node, t_exec *exec)
 		if (exec->path_confirmed != NULL)
 		{
 			if (execve(exec->path_confirmed, cmd_node->word, exec->env) - 1)
-			{
-				(g_data.mns).exit_code = 1;
-				free_everything();
-				exit(1);
-			}
+				exit_child(cmd_node, errno);
 		}
 	}
 	else

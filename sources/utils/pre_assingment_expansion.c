@@ -6,7 +6,7 @@
 /*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/31 21:27:12 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/06/22 17:42:25 by rruiz-la         ###   ########.fr       */
+/*   Updated: 2022/06/23 12:53:48 by rruiz-la         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,6 +123,5 @@ int	parse_assignment_expansion(t_cmd *cmd_node, int i)
 	assi_word[k] = NULL;
 	get_value_expansion(cmd_node, i, &assi_word);
 	free_aux_assig(&assi_word);
-	cmd_node->expansion++;
 	return (0);
 }
