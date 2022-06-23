@@ -6,7 +6,7 @@
 /*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/27 21:09:16 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/06/23 19:22:24 by rruiz-la         ###   ########.fr       */
+/*   Updated: 2022/06/23 19:40:36 by rruiz-la         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,11 @@ static void	check_word_size(t_cmd *cmd_node, int i, int *j, int *k)
 		(*j)++;
 	}
 	if ((*j) == 2)
+	{
+		free (cmd_node->word[i]);
+		cmd_node->word[i] = ft_strdup(" ");
 		(*j) = -2;
+	}
 }
 
 static void	fulfill_dquote_line(t_cmd *cmd_node,
@@ -82,7 +86,7 @@ int	handle_d_quotes(t_cmd *cmd_node, int i)
 	check_for_assignment(cmd_node, i, &j, &b);
 	check_word_size(cmd_node, i, &j, &k);
 	if (j < 0)
-		return (-2);
+		return (0);
 	if (cmd_node->word[i][j - 1] == '\"')
 	{
 		dquote_line = ft_calloc(k + 1, sizeof(char *));

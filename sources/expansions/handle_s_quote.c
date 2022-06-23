@@ -6,7 +6,7 @@
 /*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/27 19:50:29 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/06/23 18:58:26 by rruiz-la         ###   ########.fr       */
+/*   Updated: 2022/06/23 19:38:24 by rruiz-la         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,13 @@ static void	fulfill_quote_line(t_cmd *cmd_node,
 	}
 }
 
+static void	init_variables(int *b, int *j, int *k)
+{
+	(*b) = 0;
+	(*j) = 0;
+	(*k) = 0;
+}
+
 int	handle_s_quote(t_cmd *cmd_node, int i)
 {
 	int		b;
@@ -69,13 +76,15 @@ int	handle_s_quote(t_cmd *cmd_node, int i)
 	int		k;
 	char	*quote_line;
 
-	j = 0;
-	k = 0;
-	b = 0;
+	init_variables(&b, &j, &k);
 	check_for_assignment(cmd_node, i, &j, &b);
 	check_word_size(cmd_node, i, &j, &k);
 	if (j == 2)
-		return (-2);
+	{
+		free (cmd_node->word[i]);
+		cmd_node->word[i] = ft_strdup(" ");
+		return (0);
+	}
 	if (cmd_node->word[i][j - 1] == '\'')
 	{
 		quote_line = ft_calloc(k + 1, sizeof(char *));
