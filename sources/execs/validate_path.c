@@ -98,11 +98,13 @@ int	get_path(t_cmd *cmd_node, int i)
 	{
 		if (cmd_node->next == NULL)
 		{
+			write (1, "bash: ", ft_strlen("bash: "));
 			write (1, cmd_node->word[i], ft_strlen(cmd_node->word[i]));
 			write (1, ": command not found\n", 21);
 			g_data.mns.exit_code = 127;
 			return (1);
 		}
+		write (1, "bash: ", ft_strlen("bash: "));
 		write (1, cmd_node->word[i], ft_strlen(cmd_node->word[i]));
 		write (1, ": command not found\n", 21);
 	}
